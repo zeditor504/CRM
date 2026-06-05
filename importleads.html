@@ -23,35 +23,32 @@
             display: flex; flex-direction: column;
         }
 
-        /* 
-         * MASSIVE GOLDEN GLOW ANIMATION 
-         * Fixed position securely behind the UI
+        /* * AMPLIFIED GOLDEN GLOW BLOB (25% More Prominent)
          */
         .golden-blob {
             position: fixed;
             top: 50%; left: 50%;
-            width: 800px; height: 800px; 
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 65%);
+            width: 950px; height: 950px; 
+            background: radial-gradient(circle, rgba(230, 185, 55, 0.28) 0%, transparent 70%);
             transform: translate(-50%, -50%);
-            animation: breatheGold 6s ease-in-out infinite alternate;
-            filter: blur(80px);
+            animation: breatheGold 5s ease-in-out infinite alternate;
+            filter: blur(75px);
             z-index: 0;
             pointer-events: none;
         }
 
         @keyframes breatheGold {
-            0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
-            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.85; }
+            100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
         }
 
-        /* Frosted Glass Card */
         .import-card {
-            background: rgba(9, 9, 11, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(9, 9, 11, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             z-index: 10;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
         }
 
         .crm-tab { transition: all 0.2s ease; }
@@ -86,27 +83,27 @@
             <div class="w-full space-y-3">
                 <button onclick="simulateImport('Lightspeed DMS')" class="crm-tab w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                     <span>Import from Lightspeed DMS</span>
-                    <span class="text-zinc-600 group-hover:text-[#00a4ef] transition uppercase tracking-widest font-black">Lightspeed</span>
+                    <span class="text-[#00a4ef] opacity-80 group-hover:opacity-100 transition uppercase tracking-widest font-black text-xs">Lightspeed</span>
                 </button>
 
                 <button onclick="simulateImport('DX1 Platform')" class="crm-tab w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                     <span>Import from DX1 Platform</span>
-                    <span class="text-zinc-600 group-hover:text-[#e11d48] transition uppercase tracking-widest font-black">DX1</span>
+                    <span class="text-[#e11d48] opacity-80 group-hover:opacity-100 transition uppercase tracking-widest font-black text-xs">DX1</span>
                 </button>
 
                 <button onclick="simulateImport('DealerSpike CRM')" class="crm-tab w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                     <span>Import from DealerSpike CRM</span>
-                    <span class="text-zinc-600 group-hover:text-[#f59e0b] transition uppercase tracking-widest font-black">DealerSpike</span>
+                    <span class="text-[#f59e0b] opacity-80 group-hover:opacity-100 transition uppercase tracking-widest font-black text-xs">DealerSpike</span>
                 </button>
 
                 <button onclick="simulateImport('Elead CRM')" class="crm-tab w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                     <span>Import from Elead CRM</span>
-                    <span class="text-zinc-600 group-hover:text-[#3b82f6] transition uppercase tracking-widest font-black">Elead</span>
+                    <span class="text-[#3b82f6] opacity-80 group-hover:opacity-100 transition uppercase tracking-widest font-black text-xs">Elead</span>
                 </button>
 
                 <button onclick="simulateImport('VinSolutions')" class="crm-tab w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                     <span>Import from VinSolutions</span>
-                    <span class="text-zinc-600 group-hover:text-[#10b981] transition uppercase tracking-widest font-black">VinSolutions</span>
+                    <span class="text-[#10b981] opacity-80 group-hover:opacity-100 transition uppercase tracking-widest font-black text-xs">VinSolutions</span>
                 </button>
             </div>
             
@@ -114,9 +111,9 @@
         </div>
     </main>
 
-    <footer class="w-full max-w-[1400px] mx-auto flex justify-between items-center text-[10px] text-textm font-semibold pb-4 px-6 shrink-0 relative z-20 uppercase tracking-widest">
-        <div id="live-clock" class="text-left text-gray-500 flex-1">Time: --:--:--</div>
-        <div class="text-center flex-1"><span style="color:#39FF14;">All Systems Online</span></div>
+    <footer class="w-full bg-panel border-t border-border flex justify-between items-center text-[11.8pt] text-textm font-semibold py-3 px-6 shrink-0 relative z-20 uppercase tracking-widest">
+        <div id="live-clock" class="text-left text-gray-500 flex-1 font-mono">Time: --:--:--</div>
+        <div class="text-center flex-1"><span style="color:#39FF14;" class="font-bold">All Systems Online</span></div>
         <div class="text-right text-gray-500 flex-1">Central Time Zone (CT)</div>
     </footer>
 
