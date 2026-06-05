@@ -10,12 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Base document properties matching your market terminal */
+        /* Force the Inter Tight font onto EVERY element, overriding browser defaults for buttons */
+        * {
+            font-family: 'Inter Tight', sans-serif !important;
+        }
+
+        /* Base document properties */
         body {
             margin: 0; padding: 20px 0; background-color: #000000;
-            font-family: 'Inter Tight', sans-serif; color: #FFFFFF;
-            min-height: 100vh; display: flex; flex-direction: column;
-            align-items: center; overflow-x: hidden;
+            color: #FFFFFF; min-height: 100vh; display: flex; 
+            flex-direction: column; align-items: center; overflow-x: hidden;
         }
         
         /* Container width restrictions */
@@ -28,7 +32,7 @@
             text-align: center; margin-bottom: 25px; margin-top: 10px;
         }
         
-        /* Shifting gradient text effect */
+        /* Shifting gradient text effect with ambient glow */
         .header h1 { 
             margin: 0; font-size: 2.5rem; font-weight: 600; letter-spacing: -0.5px;
             background: linear-gradient(120deg, #8E8E93, #FFFFFF, #8E8E93, #FFFFFF);
@@ -36,6 +40,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: shimmerFlow 8s ease infinite;
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.2)); /* Header Text Glow */
         }
         .header p { margin: 5px 0 0 0; color: #8E8E93; font-size: 1.1rem; }
 
@@ -50,20 +55,23 @@
             text-align: center; margin-bottom: 30px;
         }
         .hero-counter h2 {
-            font-size: 2.2rem; color: #FFFFFF; margin: 0;
+            font-size: 2.5rem; color: #FFFFFF; margin: 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
         .hero-counter .highlight {
-            color: #57bb8a; /* Soft green from your heatmap */
+            color: #57bb8a; /* Soft green */
             font-variant-numeric: tabular-nums;
+            text-shadow: 0 0 20px rgba(87, 187, 138, 0.7), 0 0 40px rgba(87, 187, 138, 0.3); /* Deep Neon Green Glow */
         }
 
-        /* Native Data Table Styling */
+        /* Native Data Table Styling with Glow */
         .table-container {
             overflow-x: auto;
             border: 1px solid #1C1C1E;
             border-radius: 8px;
             background-color: #000000;
             margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.04); /* Subtle ambient border glow */
         }
         
         table {
@@ -90,26 +98,28 @@
         td { color: #8E8E93; } 
         tr:hover { background-color: #0a0a0c; }
 
-        /* Conditional formatting custom classes */
+        /* Conditional formatting custom classes with Glow */
         .status-new { 
-            background-color: #c8e6c9 !important; color: #2e7d32 !important; 
+            background-color: rgba(87, 187, 138, 0.1) !important; 
+            color: #57bb8a !important; 
             font-weight: 600; padding: 4px 12px; border-radius: 100px;
+            border: 1px solid rgba(87, 187, 138, 0.3);
+            box-shadow: 0 0 15px rgba(87, 187, 138, 0.2); /* Soft green pill glow */
         }
 
-        /* Custom UI Scrollbar */
-        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
-        .table-container::-webkit-scrollbar-track { background: #000000; }
-        .table-container::-webkit-scrollbar-thumb { background: #2C2C2E; border-radius: 4px; }
-        .table-container::-webkit-scrollbar-thumb:hover { background: #3A3A3C; }
-
-        /* Import Button */
+        /* Import Button with Hover Glow */
         .import-btn {
-            display: inline-block; margin-bottom: 40px; padding: 12px 24px;
+            display: inline-block; margin-bottom: 40px; padding: 14px 28px;
             background-color: #1C1C1E; color: #8E8E93; border-radius: 100px;
-            text-decoration: none; font-size: 1rem; font-weight: 600;
-            transition: all 0.2s ease; border: 1px solid transparent; cursor: pointer;
+            text-decoration: none; font-size: 1.05rem; font-weight: 600;
+            transition: all 0.3s ease; border: 1px solid transparent; cursor: pointer;
         }
-        .import-btn:hover { color: #FFFFFF; background-color: #3A3A3C; }
+        .import-btn:hover { 
+            color: #FFFFFF; 
+            background-color: #2C2C2E; 
+            transform: translateY(-2px); /* Slight 3D lift effect */
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15); /* Lifted White Glow */
+        }
 
         /* Footer alignment and tabular numeric layout */
         .chart-footer {
@@ -119,7 +129,12 @@
         }
         .chart-footer > div { flex: 1; }
         #live-clock { text-align: left; color: #FFFFFF; font-weight: 600; font-variant-numeric: tabular-nums; }
-        #system-status { text-align: center; color: #57bb8a; font-weight: 600; }
+        
+        #system-status { 
+            text-align: center; color: #57bb8a; font-weight: 600; 
+            text-shadow: 0 0 10px rgba(87, 187, 138, 0.5); /* Glowing status text */
+        }
+        
         .chart-footer > div:last-child { text-align: right; color: #FFFFFF; font-weight: 600; }
 
         /* Mobile responsive adjustments */
@@ -166,19 +181,18 @@
     </div>
 
     <script>
-        // 1. Live Increasing Counter
+        // 1. Hyper-Fast Live Counter (25 updates per second)
         let currentCount = 10000;
         const counterElement = document.getElementById('leadCounter');
 
+        // 40ms interval = exactly 25 updates every second (1000 / 40 = 25). 
+        // We add exactly 1 per tick so the ones-place is in constant, blurry motion.
         setInterval(() => {
-            const increment = Math.floor(Math.random() * 3) + 1;
-            currentCount += increment;
+            currentCount += 1;
             counterElement.innerText = currentCount.toLocaleString();
-        }, 2500);
+        }, 40);
 
         // 2. JavaScript Database Engine
-        // Since GitHub Pages cannot run Python/SQLite, we store the mock data directly in the browser array.
-        // Later, you can easily hook this up to fetch() data from a Google Sheet CSV just like your Market Terminal!
         const leadsDatabase = [
             { id: 4, name: "John Doe", phone: "555-9999", vehicle: "2024 Yamaha R1", rep: "Umair", status: "New" },
             { id: 5, name: "Jane Smith", phone: "555-8888", vehicle: "Kawasaki Ninja 400", rep: "Umair", status: "New" },
@@ -205,7 +219,7 @@
         }
         loadData();
 
-        // 4. Live Clock (From your Terminal code)
+        // 4. Live Clock
         function updateClock() {
             const now = new Date();
             const timeOptions = { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
