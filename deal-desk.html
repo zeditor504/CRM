@@ -6,7 +6,9 @@
     <title>Apex Dealer Systems | Deal Desk</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Updated Font Awesome CDN fixing the broken icon squares -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,14 +21,12 @@
     </script>
     
     <style>
-        /* Force Inter Tight globally to override all defaults */
         * { font-family: 'Inter Tight', sans-serif !important; }
         
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #262626; border-radius: 10px; }
         
-        /* Demanding UI Animation */
         .pulse-urgent { animation: pulse 1.5s infinite; }
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); border-color: #e11d48; }
@@ -34,7 +34,6 @@
             100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); border-color: #e11d48; }
         }
 
-        /* Orange Stale Style for the left panel */
         .stale-badge {
             background-color: rgba(249, 115, 22, 0.1) !important; 
             color: #f97316 !important; 
@@ -42,7 +41,6 @@
             box-shadow: 0 0 10px rgba(249, 115, 22, 0.2); 
         }
 
-        /* PRINT STYLES - Hides the app and formats perfectly for 8.5x11 paper */
         @media print {
             body * { visibility: hidden; }
             #print-deal-sheet, #print-deal-sheet * { visibility: visible; }
@@ -60,7 +58,7 @@
             </a>
             
             <i class="fa-solid fa-motorcycle text-apex text-2xl"></i>
-            <h1 class="text-xl font-black tracking-widest text-white uppercase">Apex<span class="text-apex">Dealer</span></h1>
+            <h1 class="text-xl font-black tracking-widest text-white uppercase">Apex <span class="text-apex">Dealer Systems</span></h1>
         </div>
         <div class="flex items-center space-x-6">
             <div id="top-lock-warning" class="text-apex font-bold animate-pulse flex items-center text-sm bg-red-950/30 px-3 py-1 rounded-full border border-red-900/50 transition-all">
@@ -83,27 +81,19 @@
             <div class="flex-1 overflow-y-auto p-4 space-y-3">
                 <div id="urgent-queue-card" class="bg-dark border-2 rounded-lg p-4 pulse-urgent cursor-pointer relative overflow-hidden transition-all">
                     <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-bold text-white text-lg">Josh Stevenson</h3>
+                        <h3 class="font-bold text-white text-lg" id="ui-queue-name">Loading...</h3>
                         <span id="urgent-timer" class="bg-apex text-white text-[10px] font-bold px-2 py-0.5 rounded animate-pulse">03:45 LEFT</span>
                     </div>
-                    <p class="text-xs text-gray-400 mb-2"><i class="fa-solid fa-location-dot mr-1"></i> Houston, TX</p>
+                    <p class="text-xs text-gray-400 mb-2"><i class="fa-solid fa-location-dot mr-1"></i> <span id="ui-queue-loc">Loading...</span></p>
                     <p id="urgent-message" class="text-xs text-apex font-bold bg-red-950/50 p-2 rounded border border-red-900/50 transition-all"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Reply Required to Unlock CRM</p>
                 </div>
 
-                <div class="bg-dark border border-orange-500/30 rounded-lg p-4 cursor-pointer hover:bg-neutral-900 transition">
+                <div class="bg-dark border border-orange-500/30 rounded-lg p-4 cursor-pointer hover:bg-neutral-900 transition mt-4">
                     <div class="flex justify-between items-start mb-1">
                         <h3 class="font-bold text-gray-300">Michael Knight</h3>
                         <span class="stale-badge text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest">Stale</span>
                     </div>
                     <p class="text-xs text-gray-500">2024 Yamaha R1</p>
-                </div>
-
-                <div class="bg-dark border border-border rounded-lg p-4 opacity-40 cursor-not-allowed">
-                    <div class="flex justify-between items-start mb-1">
-                        <h3 class="font-bold text-gray-500">Sarah Miller</h3>
-                        <i class="fa-solid fa-lock text-gray-600"></i>
-                    </div>
-                    <p class="text-xs text-gray-600">2023 Honda CBR600RR</p>
                 </div>
             </div>
         </div>
@@ -112,14 +102,14 @@
             <div class="p-6 border-b border-border bg-panel flex justify-between items-start shrink-0">
                 <div>
                     <div class="flex items-center gap-3 mb-1">
-                        <h2 class="text-3xl font-black text-white" id="ui-fname">Josh Stevenson</h2>
-                        <span class="bg-green-900/40 text-green-400 border border-green-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest"><i class="fa-solid fa-fire mr-1"></i> AI Score: Hot Lead</span>
+                        <h2 class="text-3xl font-black text-white" id="ui-fname">Loading Name...</h2>
+                        <span id="ui-status-pill" class="bg-green-900/40 text-green-400 border border-green-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest"><i class="fa-solid fa-fire mr-1"></i> AI Score: Hot Lead</span>
                     </div>
-                    <p class="text-sm text-gray-400" id="ui-address"><i class="fa-solid fa-map-pin mr-1"></i> 123 Powersports Lane, Houston, TX 77001</p>
+                    <p class="text-sm text-gray-400" id="ui-address"><i class="fa-solid fa-map-pin mr-1"></i> Loading Address...</p>
                 </div>
                 <div class="flex space-x-3">
                     <button class="bg-green-600 hover:bg-green-500 text-white px-5 py-2 rounded-md text-sm font-bold transition shadow-lg shadow-green-900/20">
-                        <i class="fa-solid fa-phone mr-2"></i> Call (Recorded)
+                        <i class="fa-solid fa-phone mr-2"></i> Call <span id="ui-phone"></span>
                     </button>
                     <button onclick="generatePrintout()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-md text-sm font-bold transition shadow-lg shadow-blue-900/20 border border-blue-500">
                         <i class="fa-solid fa-print mr-2"></i> Print Deal Sheet
@@ -131,7 +121,7 @@
                 <div class="text-center text-xs text-gray-600 mb-4 tracking-widest uppercase font-bold">Lead originated from Website Inventory Sync • Today 10:14 AM</div>
                 <div class="flex items-start">
                     <div class="bg-panel border border-border p-4 rounded-xl rounded-tl-none max-w-lg shadow-md">
-                        <p class="text-sm text-gray-300">Hey, I saw the Ducati Panigale on your site. Do you guys take trade-ins? How much do I need to put down if I want to finance it?</p>
+                        <p class="text-sm text-gray-300" id="ui-customer-msg">Loading message...</p>
                     </div>
                 </div>
                 <div class="flex items-start justify-end mt-4">
@@ -139,8 +129,8 @@
                         <div class="text-[10px] text-purple-400 font-bold mb-1 flex items-center justify-end uppercase tracking-widest">
                             <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> AI Auto-Draft Suggestion
                         </div>
-                        <div class="bg-purple-900/10 border border-purple-500/30 p-4 rounded-xl rounded-tr-none text-sm text-purple-100 shadow-inner">
-                            Hi Josh! Yes, we pay top dollar for trades. You can put as little as $0 down with approved credit, but most put around $1,500. Are you free to bring your trade by today?
+                        <div class="bg-purple-900/10 border border-purple-500/30 p-4 rounded-xl rounded-tr-none text-sm text-purple-100 shadow-inner" id="ui-ai-msg">
+                            Loading AI suggestion...
                         </div>
                     </div>
                 </div>
@@ -148,7 +138,7 @@
 
             <div class="p-6 bg-panel border-t border-border shrink-0">
                 <div class="relative">
-                    <textarea id="reply-input" class="w-full bg-dark border border-apex rounded-lg p-4 text-sm focus:outline-none focus:ring-1 focus:ring-apex text-white placeholder-gray-600 resize-none h-24 shadow-inner" placeholder="Type your mandatory reply to Josh to clear the lockout..."></textarea>
+                    <textarea id="reply-input" class="w-full bg-dark border border-apex rounded-lg p-4 text-sm focus:outline-none focus:ring-1 focus:ring-apex text-white placeholder-gray-600 resize-none h-24 shadow-inner" placeholder="Type your mandatory reply to clear the lockout..."></textarea>
                     <button id="unlock-btn" onclick="sendAndUnlock()" class="absolute bottom-4 right-4 bg-apex hover:bg-red-600 text-white px-6 py-2 rounded-md text-sm font-bold transition shadow-lg shadow-red-900/50">Send & Unlock <i class="fa-solid fa-unlock ml-2"></i></button>
                 </div>
             </div>
@@ -158,12 +148,14 @@
             <div class="p-6 border-b border-border">
                 <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center"><i class="fa-solid fa-globe text-blue-500 mr-2"></i> Website Sync Data</h3>
                 <div class="bg-dark rounded-xl p-4 border border-border shadow-inner">
-                    <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full h-32 object-cover rounded-lg mb-4 opacity-90 border border-gray-800">
-                    <h4 class="font-black text-lg text-white mb-2" id="ui-bike">2024 Ducati Panigale V4</h4>
+                    <div class="w-full h-32 bg-[#1a1a1a] rounded-lg mb-4 border border-gray-800 flex items-center justify-center">
+                        <i class="fa-solid fa-motorcycle text-4xl text-gray-700"></i>
+                    </div>
+                    <h4 class="font-black text-lg text-white mb-2" id="ui-bike">Loading Vehicle...</h4>
                     <div class="grid grid-cols-2 gap-2 text-xs">
-                        <div class="text-gray-500">VIN:</div><div class="font-mono text-blue-400 font-bold" id="ui-vin">ZDM1234567890</div>
-                        <div class="text-gray-500">Stock #:</div><div class="text-gray-300">D24-101</div>
-                        <div class="text-gray-500">Retail Price:</div><div class="text-green-400 font-black text-sm">$24,495</div>
+                        <div class="text-gray-500">VIN:</div><div class="font-mono text-blue-400 font-bold" id="ui-vin">Loading...</div>
+                        <div class="text-gray-500">Stock #:</div><div class="text-gray-300" id="ui-stock">D24-101</div>
+                        <div class="text-gray-500">Retail Price:</div><div class="text-green-400 font-black text-sm" id="ui-price">$0</div>
                     </div>
                 </div>
             </div>
@@ -214,7 +206,7 @@
                 <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
                     <tr><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; width: 30%;"><strong>Full Name:</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold; font-size: 20px;" id="print-fname"></td></tr>
                     <tr><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; vertical-align: top;"><strong>Address:</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;" id="print-address"></td></tr>
-                    <tr><td style="padding: 10px 0;"><strong>Phone:</strong></td><td style="padding: 10px 0;">(555) 123-4567</td></tr>
+                    <tr><td style="padding: 10px 0;"><strong>Phone:</strong></td><td style="padding: 10px 0;" id="print-phone"></td></tr>
                 </table>
             </div>
 
@@ -223,7 +215,7 @@
                 <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
                     <tr><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; width: 30%;"><strong>Unit:</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold; font-size: 18px;" id="print-bike"></td></tr>
                     <tr><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;"><strong>VIN:</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-family: monospace; font-size: 18px;" id="print-vin"></td></tr>
-                    <tr><td style="padding: 10px 0;"><strong>Stock #:</strong></td><td style="padding: 10px 0;">D24-101</td></tr>
+                    <tr><td style="padding: 10px 0;"><strong>Stock #:</strong></td><td style="padding: 10px 0;" id="print-stock"></td></tr>
                 </table>
             </div>
         </div>
@@ -247,7 +239,83 @@
     </div>
 
     <script>
-        // JS Sequence to organically unlock the Deal Desk
+        // --- DYNAMIC DATA POPULATION ENGINE ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const leadId = parseInt(urlParams.get('id')) || 1;
+
+            const sampleNames = [
+                "Josh Stevenson", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", 
+                "James Easton", "Benjamin Mercer", "Lucas Thorne", "Henry Blackwell", "Alexander Cross",
+                "Mia Davenport", "Ethan Gallagher", "David Vance", "Michael Knight", "Robert Chase", 
+                "Emma Stone", "Sophia Laurent", "Olivia Wilde", "Isabella Ross", "Ava Montgomery", 
+                "Mason Creed", "Logan Pierce", "Jacob Stryker", "Jack Dalton", "Sarah Miller"
+            ];
+            
+            const sampleVehicles = [
+                "2024 Ducati Panigale V4", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", 
+                "Honda CBR600RR", "BMW S1000RR", "2024 Yamaha R1", "Kawasaki Z900", "KTM 390 Duke"
+            ];
+
+            const sampleLocations = ["Houston, TX", "Austin, TX", "Dallas, TX", "San Antonio, TX", "Fort Worth, TX"];
+            const sampleReps = ["Umair", "Paul", "Steven", "Blake", "Mike"];
+
+            const customerMessages = [
+                "Hey, I saw this on your site. Do you take trade-ins?",
+                "Is this unit still available? I'd like to come by tomorrow to check it out.",
+                "What's your absolute best out-the-door price if I finance with you guys?",
+                "Can I get a quick video walkaround of this bike? I live about two hours away.",
+                "I have a 2019 model to trade in. How much would I need down to keep my payments under $300?"
+            ];
+
+            // Reconstruct the exact lead data based on the ID passed from the dashboard
+            const name = sampleNames[leadId - 1] || `Customer ${leadId}`;
+            const firstName = name.split(' ')[0];
+            const phone = `(555) 01${String(20 + leadId)}`;
+            const vehicle = sampleVehicles[(leadId * 3) % sampleVehicles.length];
+            const rep = sampleReps[(leadId * 7) % sampleReps.length];
+            const location = sampleLocations[leadId % sampleLocations.length];
+            const isStale = (leadId % 3 === 0);
+
+            const aiReplies = [
+                `Hi ${firstName}! Yes, we pay top dollar for trades. You can put as little as $0 down with approved credit. Are you free to bring your trade by today?`,
+                `Hello ${firstName}, yes it is still available! We have a test ride slot open tomorrow afternoon. Does 2 PM or 4 PM work better for you?`,
+                `Hey ${firstName}! Our finance team can secure rates as low as 4.9%. Let's get a quick credit app started so I can give you exact to-the-penny numbers.`,
+                `Hi ${firstName}, absolutely! I will head out to the showroom floor right now and text you a detailed video shortly.`,
+                `Hello ${firstName}! We'd love to appraise your trade. Generally, customers put down $1,500 to $2,500 to hit that payment goal. When can you drop by?`
+            ];
+
+            const msg = customerMessages[leadId % customerMessages.length];
+            const aiDraft = aiReplies[leadId % aiReplies.length];
+
+            // Inject the dynamic data into the User Interface
+            document.getElementById('ui-fname').innerText = name;
+            document.getElementById('ui-queue-name').innerText = name;
+            document.getElementById('ui-phone').innerText = phone;
+            document.getElementById('ui-address').innerHTML = `<i class="fa-solid fa-map-pin mr-1"></i> ${Math.floor(Math.random() * 900) + 100} Powersports Blvd, ${location}`;
+            document.getElementById('ui-queue-loc').innerText = location;
+            document.getElementById('ui-bike').innerText = vehicle;
+            
+            document.getElementById('ui-customer-msg').innerText = msg;
+            document.getElementById('ui-ai-msg').innerText = aiDraft;
+
+            const mockVin = `ZDM${1000000000 + (leadId * 777)}`;
+            const mockStock = `D24-${100 + leadId}`;
+            document.getElementById('ui-vin').innerText = mockVin;
+            document.getElementById('ui-stock').innerText = mockStock;
+
+            // Generate deterministic price based on vehicle name length
+            const price = 10000 + (vehicle.length * 400);
+            document.getElementById('ui-price').innerText = `$${price.toLocaleString()}`;
+
+            // Adjust status pill
+            if (isStale) {
+                const pill = document.getElementById('ui-status-pill');
+                pill.className = "bg-orange-900/40 text-orange-400 border border-orange-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest";
+                pill.innerHTML = `<i class="fa-solid fa-clock mr-1"></i> AI Score: Stale Lead`;
+            }
+        });
+
         function sendAndUnlock() {
             const input = document.getElementById('reply-input');
             const text = input.value.trim();
@@ -256,7 +324,6 @@
                 return;
             }
 
-            // 1. Create and Append the sent chat bubble
             const history = document.getElementById('chat-history');
             const newMsg = document.createElement('div');
             newMsg.className = "flex items-start justify-end mt-4";
@@ -273,12 +340,10 @@
             history.appendChild(newMsg);
             input.value = '';
 
-            // 2. Change Top Navbar status to Unlocked
             const topLock = document.getElementById('top-lock-warning');
             topLock.className = "text-green-400 font-bold flex items-center text-sm bg-green-950/30 px-3 py-1 rounded-full border border-green-900/50 transition-all";
             topLock.innerHTML = '<i class="fa-solid fa-unlock mr-2"></i> SYSTEM UNLOCKED';
 
-            // 3. Remove urgent pulsing red styling from Sidebar
             const queueCard = document.getElementById('urgent-queue-card');
             queueCard.classList.remove('pulse-urgent', 'border-2', 'border-apex');
             queueCard.classList.add('border', 'border-border');
@@ -289,13 +354,11 @@
 
             document.getElementById('urgent-message').style.display = 'none';
 
-            // 4. Update the actual send button to green
             const unlockBtn = document.getElementById('unlock-btn');
             unlockBtn.className = "absolute bottom-4 right-4 bg-green-600 text-white px-6 py-2 rounded-md text-sm font-bold transition shadow-lg shadow-green-900/50";
             unlockBtn.innerHTML = "Unlocked <i class='fa-solid fa-check ml-2'></i>";
         }
 
-        // Deal Structuring UI
         function setMethod(method) {
             document.getElementById('ui-method').value = method;
             const btnFinance = document.getElementById('btn-finance');
@@ -310,12 +373,13 @@
             }
         }
 
-        // Logic to instantly pull data from the inputs and push to the printable page layer
         function generatePrintout() {
             document.getElementById('print-fname').innerText = document.getElementById('ui-fname').innerText;
             document.getElementById('print-address').innerText = document.getElementById('ui-address').innerText.replace('📍 ', '');
+            document.getElementById('print-phone').innerText = document.getElementById('ui-phone').innerText;
             document.getElementById('print-bike').innerText = document.getElementById('ui-bike').innerText;
             document.getElementById('print-vin').innerText = document.getElementById('ui-vin').innerText;
+            document.getElementById('print-stock').innerText = document.getElementById('ui-stock').innerText;
             document.getElementById('print-method').innerText = document.getElementById('ui-method').value.toUpperCase();
             
             const dp = document.getElementById('ui-downpayment').value;
