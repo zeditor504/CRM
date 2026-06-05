@@ -23,21 +23,25 @@
             display: flex; flex-direction: column;
         }
 
+        /* * OVERPOWERED GOLDEN GLOW BLOB
+         * Width/Height expanded, Opacity cranked to 0.85 at the core, 
+         * Blur massively increased to 120px to keep it smooth.
+         */
         .golden-blob {
             position: fixed;
             top: 50%; left: 50%;
-            width: 950px; height: 950px; 
-            background: radial-gradient(circle, rgba(230, 185, 55, 0.28) 0%, transparent 70%);
+            width: 1200px; height: 1200px; 
+            background: radial-gradient(circle, rgba(255, 191, 0, 0.85) 0%, rgba(212, 175, 55, 0.4) 40%, transparent 70%);
             transform: translate(-50%, -50%);
             animation: breatheGold 5s ease-in-out infinite alternate;
-            filter: blur(75px);
+            filter: blur(120px);
             z-index: 0;
             pointer-events: none;
         }
 
         @keyframes breatheGold {
-            0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.85; }
-            100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+            0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.85; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
         }
 
         .import-card {
@@ -143,7 +147,7 @@
         </div>
     </main>
 
-    <footer class="w-full max-w-[1400px] mx-auto flex justify-between items-center py-4 px-6 shrink-0 relative z-20 mt-auto bg-transparent">
+    <footer class="w-full flex justify-between items-center py-4 px-6 shrink-0 mt-auto bg-transparent relative z-20">
         <div id="live-clock" class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-gray-500 text-[12px] font-semibold uppercase tracking-widest font-mono">Time: --:--:--</div>
         <div class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-widest text-[#39FF14]">All Systems Online</div>
         <div class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-gray-500 text-[12px] font-semibold uppercase tracking-widest">Central Time Zone (CT)</div>
