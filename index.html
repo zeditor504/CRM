@@ -7,10 +7,10 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* Force the Inter Tight font onto EVERY element, overriding browser defaults for buttons */
+        /* Force the Inter Tight font onto EVERY element, absolutely no exceptions */
         * {
             font-family: 'Inter Tight', sans-serif !important;
         }
@@ -22,17 +22,12 @@
             flex-direction: column; align-items: center; overflow-x: hidden;
         }
         
-        /* Container width restrictions */
         .header, .hero-counter, .table-container, .chart-footer {
             width: 95vw; max-width: 1400px;
         }
 
-        /* Header layout and typography */
-        .header { 
-            text-align: center; margin-bottom: 25px; margin-top: 10px;
-        }
+        .header { text-align: center; margin-bottom: 25px; margin-top: 10px; }
         
-        /* Shifting gradient text effect with ambient glow */
         .header h1 { 
             margin: 0; font-size: 2.5rem; font-weight: 600; letter-spacing: -0.5px;
             background: linear-gradient(120deg, #8E8E93, #FFFFFF, #8E8E93, #FFFFFF);
@@ -50,10 +45,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Leads Saved Counter */
-        .hero-counter {
-            text-align: center; margin-bottom: 30px;
-        }
+        .hero-counter { text-align: center; margin-bottom: 30px; }
         .hero-counter h2 {
             font-size: 2.5rem; color: #FFFFFF; margin: 0;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
@@ -64,7 +56,6 @@
             text-shadow: 0 0 20px rgba(87, 187, 138, 0.7), 0 0 40px rgba(87, 187, 138, 0.3); 
         }
 
-        /* Native Data Table Styling with Glow */
         .table-container {
             overflow-x: auto;
             border: 1px solid #1C1C1E;
@@ -93,13 +84,15 @@
 
         th:last-child, td:last-child { border-right: none; }
         
-        /* Row Formatting */
         td:first-child { font-weight: 700; } 
         td:nth-child(2) { font-weight: 700; color: #FFFFFF; } 
         td { color: #8E8E93; } 
-        tr:hover { background-color: #0a0a0c; }
+        
+        /* Make rows clickable to route to the Deal Desk */
+        tbody tr { cursor: pointer; transition: background-color 0.2s ease; }
+        tbody tr:hover { background-color: #161618; }
 
-        /* Conditional formatting custom classes with Glow */
+        /* Status Pills */
         .status-new { 
             background-color: rgba(87, 187, 138, 0.1) !important; 
             color: #57bb8a !important; 
@@ -108,6 +101,7 @@
             box-shadow: 0 0 15px rgba(87, 187, 138, 0.2); 
         }
 
+        /* Glowing Orange Stale Status */
         .status-stale { 
             background-color: rgba(249, 115, 22, 0.1) !important; 
             color: #f97316 !important; 
@@ -116,7 +110,7 @@
             box-shadow: 0 0 15px rgba(249, 115, 22, 0.2); 
         }
 
-        /* Import Button with Hover Glow */
+        /* Import Button */
         .import-btn {
             display: inline-block; margin-bottom: 40px; padding: 14px 28px;
             background-color: #1C1C1E; color: #8E8E93; border-radius: 100px;
@@ -124,62 +118,36 @@
             transition: all 0.3s ease; border: 1px solid transparent; cursor: pointer;
         }
         .import-btn:hover { 
-            color: #FFFFFF; 
-            background-color: #2C2C2E; 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15); 
+            color: #FFFFFF; background-color: #2C2C2E; 
+            transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15); 
         }
 
-        /* Footer alignment and tabular numeric layout */
         .chart-footer {
             display: flex; justify-content: space-between; align-items: center;
-            margin-top: auto; font-size: 0.85rem; color: #8E8E93; font-weight: 400;
-            padding-bottom: 10px;
+            margin-top: auto; font-size: 0.85rem; color: #8E8E93; font-weight: 400; padding-bottom: 10px;
         }
         .chart-footer > div { flex: 1; }
+        .chart-footer > div:nth-child(2) { text-align: center; } /* Forces absolute center */
+        .chart-footer > div:last-child { text-align: right; color: #FFFFFF; font-weight: 600; }
+        
         #live-clock { text-align: left; color: #FFFFFF; font-weight: 600; font-variant-numeric: tabular-nums; }
         
-        /* BREATHING ANIMATION FOR SYSTEM STATUS */
         #system-status { 
-            text-align: center; 
-            color: #57bb8a; 
-            font-weight: 600; 
-            display: inline-block;
+            color: #57bb8a; font-weight: 600; display: inline-block;
             animation: statusBreathe 3s ease-in-out infinite;
         }
 
-        /* Ensures the middle footer column content stays perfectly centered */
-        .chart-footer > div:nth-child(2) {
-            text-align: center;
-        }
-
         @keyframes statusBreathe {
-            0% {
-                transform: scale(1);
-                opacity: 0.8;
-                text-shadow: 0 0 8px rgba(87, 187, 138, 0.4);
-            }
-            50% {
-                transform: scale(1.03);
-                opacity: 1;
-                text-shadow: 0 0 18px rgba(87, 187, 138, 0.9), 0 0 30px rgba(87, 187, 138, 0.4);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0.8;
-                text-shadow: 0 0 8px rgba(87, 187, 138, 0.4);
-            }
+            0% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 8px rgba(87, 187, 138, 0.4); }
+            50% { transform: scale(1.03); opacity: 1; text-shadow: 0 0 18px rgba(87, 187, 138, 0.9), 0 0 30px rgba(87, 187, 138, 0.4); }
+            100% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 8px rgba(87, 187, 138, 0.4); }
         }
-        
-        .chart-footer > div:last-child { text-align: right; color: #FFFFFF; font-weight: 600; }
 
-        /* Custom UI Scrollbar */
         .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
         .table-container::-webkit-scrollbar-track { background: #000000; }
         .table-container::-webkit-scrollbar-thumb { background: #2C2C2E; border-radius: 4px; }
         .table-container::-webkit-scrollbar-thumb:hover { background: #3A3A3C; }
 
-        /* Mobile responsive adjustments */
         @media (max-width: 800px) {
             .chart-footer { flex-direction: column; gap: 8px; }
             .chart-footer > div { text-align: center !important; }
@@ -190,7 +158,7 @@
 
     <div class="header">
         <h1>Apex Dealer Systems</h1>
-        <p>Active Leads Dashboard</p>
+        <p>Active Leads Dashboard (Click a lead to open Deal Desk)</p>
     </div>
 
     <div class="hero-counter">
@@ -209,8 +177,7 @@
                     <th>Status</th>
                 </tr>
             </thead>
-            <tbody id="table-body">
-                </tbody>
+            <tbody id="table-body"></tbody>
         </table>
     </div>
 
@@ -223,52 +190,51 @@
     </div>
 
     <script>
-        // 1. Hyper-Fast Live Counter (25 updates per second)
+        // Fast Counter
         let currentCount = 10000;
-        const counterElement = document.getElementById('leadCounter');
-
         setInterval(() => {
             currentCount += 1;
-            counterElement.innerText = currentCount.toLocaleString();
+            document.getElementById('leadCounter').innerText = currentCount.toLocaleString();
         }, 40);
 
-        // 2. Programmatic Lead Generation Engine (25 Customers)
         const sampleNames = [
-            "Liam Vance", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", 
+            "Josh Stevenson", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", 
             "James Easton", "Benjamin Mercer", "Lucas Thorne", "Henry Blackwell", "Alexander Cross",
             "Mia Davenport", "Ethan Gallagher", "David Vance", "Michael Knight", "Robert Chase", 
             "Emma Stone", "Sophia Laurent", "Olivia Wilde", "Isabella Ross", "Ava Montgomery", 
-            "Mason Creed", "Logan Pierce", "Jacob Stryker", "Jack Dalton", "Luke Skywalker"
+            "Mason Creed", "Logan Pierce", "Jacob Stryker", "Jack Dalton", "Sarah Miller"
         ];
         
         const sampleVehicles = [
-            "2024 Yamaha R1", "Kawasaki Ninja 400", "Ducati Panigale V4 (Houston)", "Suzuki GSX-R750", 
-            "Honda CBR600RR", "BMW S1000RR", "Yamaha MT-07", "Kawasaki Z900", "KTM 390 Duke"
+            "2024 Ducati Panigale V4", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", 
+            "Honda CBR600RR", "BMW S1000RR", "2024 Yamaha R1", "Kawasaki Z900", "KTM 390 Duke"
         ];
 
         const sampleReps = ["Umair", "Paul", "Steven", "Blake", "Mike"];
-        const sampleStatuses = ["New", "Stale"];
 
         const leadsDatabase = [];
 
-        // Generate exactly 25 records starting at ID 1
         for (let i = 1; i <= 25; i++) {
-            const name = sampleNames[i - 1] || `Customer ${i}`;
+            const name = sampleNames[i - 1];
             const phone = `555-01${String(20 + i)}`;
             const vehicle = sampleVehicles[(i * 3) % sampleVehicles.length];
             const rep = sampleReps[(i * 7) % sampleReps.length];
-            const status = sampleStatuses[(i * 2) % sampleStatuses.length];
+            
+            // Exactly alternate between New and Stale to guarantee Stale shows up vividly
+            const status = (i % 3 === 0) ? "Stale" : "New"; 
 
             leadsDatabase.push({ id: i, name, phone, vehicle, rep, status });
         }
 
-        // 3. Table Rendering Engine
+        // Render Table
         function loadData() {
             const tbody = document.getElementById('table-body');
-            tbody.innerHTML = ''; 
-            
             leadsDatabase.forEach(lead => {
                 let tr = document.createElement('tr');
+                
+                // Routes to the Deal Desk when a row is clicked
+                tr.onclick = function() { window.location.href = 'deal-desk.html'; };
+
                 const statusClass = lead.status === "New" ? "status-new" : "status-stale";
                 
                 tr.innerHTML = `
@@ -284,7 +250,7 @@
         }
         loadData();
 
-        // 4. Live Clock
+        // Live Clock
         function updateClock() {
             const now = new Date();
             const timeOptions = { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
