@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Dealer Systems | Deal Desk</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { apex: '#e11d48', dark: '#0a0a0a', panel: '#171717', border: '#262626' } } }
+        }
+    </script>
+    
+    <style>
+        /* Force Inter Tight globally to override all defaults */
+        * { font-family: 'Inter Tight', sans-serif !important; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 10px; }
+        
+        /* Demanding UI Animation */
+        .pulse-urgent { animation: pulse 1.5s infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); border-color: #e11d48; }
+            70% { box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); border-color: #9f1239; }
+            100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); border-color: #e11d48; }
+        }
+
+        /* Orange Stale Style for the left panel */
+        .stale-badge {
+            background-color: rgba(249, 115, 22, 0.1) !important; 
+            color: #f97316 !important; 
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.2); 
+        }
+
+        /* PRINT STYLES - Hides the app and formats perfectly for 8.5x11 paper */
+        @media print {
+            body * { visibility: hidden; }
+            #print-deal-sheet, #print-deal-sheet * { visibility: visible; }
+            #print-deal-sheet { position: absolute; left: 0; top: 0; width: 100%; background: white; color: black; padding: 40px; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-dark text-gray-200 h-screen overflow-hidden flex flex-col">
+
+    <nav class="no-print bg-panel border-b border-border h-16 flex items-center justify-between px-6 shrink-0 shadow-md">
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-gray-400 hover:text-white transition flex items-center text-sm font-bold border-r border-border pr-4 mr-2">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Dashboard
+            </a>
+            
+            <i class="fa-solid fa-motorcycle text-apex text-2xl"></i>
+            <h1 class="text-xl font-black tracking-widest text-white uppercase">Apex<span class="text-apex">Dealer</span></h1>
+        </div>
+        <div class="flex items-center space-x-6">
+            <div id="top-lock-warning" class="text-apex font-bold animate-pulse flex items-center text-sm bg-red-950/30 px-3 py-1 rounded-full border border-red-900/50 transition-all">
+                <i class="fa-solid fa-lock mr-2"></i> SYSTEM LOCKED: 1 MANDATORY ACTION PENDING
+            </div>
+            <div class="h-8 w-8 bg-gray-800 rounded-full flex items-center justify-center border border-gray-600">
+                <i class="fa-solid fa-user text-sm"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="no-print flex-1 flex overflow-hidden">
+        
+        <div class="w-80 bg-panel border-r border-border flex flex-col z-10 shadow-xl">
+            <div class="p-4 border-b border-border">
+                <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Active Queue</h2>
+                <input type="text" placeholder="Search..." class="w-full bg-dark border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:border-apex text-white" disabled>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4 space-y-3">
+                <div id="urgent-queue-card" class="bg-dark border-2 rounded-lg p-4 pulse-urgent cursor-pointer relative overflow-hidden transition-all">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-white text-lg">Josh Stevenson</h3>
+                        <span id="urgent-timer" class="bg-apex text-white text-[10px] font-bold px-2 py-0.5 rounded animate-pulse">03:45 LEFT</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-2"><i class="fa-solid fa-location-dot mr-1"></i> Houston, TX</p>
+                    <p id="urgent-message" class="text-xs text-apex font-bold bg-red-950/50 p-2 rounded border border-red-900/50 transition-all"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Reply Required to Unlock CRM</p>
+                </div>
+
+                <div class="bg-dark border border-orange-500/30 rounded-lg p-4 cursor-pointer hover:bg-neutral-900 transition">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-300">Michael Knight</h3>
+                        <span class="stale-badge text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest">Stale</span>
+                    </div>
+                    <p class="text-xs text-gray-500">2024 Yamaha R1</p>
+                </div>
+
+                <div class="bg-dark border border-border rounded-lg p-4 opacity-40 cursor-not-allowed">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-500">Sarah Miller</h3>
+                        <i class="fa-solid fa-lock text-gray-600"></i>
+                    </div>
+                    <p class="text-xs text-gray-600">2023 Honda CBR600RR</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col bg-dark relative">
+            <div class="p-6 border-b border-border bg-panel flex justify-between items-start shrink-0">
+                <div>
+                    <div class="flex items-center gap-3 mb-1">
+                        <h2 class="text-3xl font-black text-white" id="ui-fname">Josh Stevenson</h2>
+                        <span class="bg-green-900/40 text-green-400 border border-green-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest"><i class="fa-solid fa-fire mr-1"></i> AI Score: Hot Lead</span>
+                    </div>
+                    <p class="text-sm text-gray-400" id="ui-address"><i class="fa-solid fa-map-pin mr-1"></i> 123 Powersports Lane, Houston, TX 77001</p>
+                </div>
+                <div class="flex space-x-3">
+                    <button class="bg-green-600 hover:bg-green-500 text-white px-5 py-2 rounded-md text-sm font-bold transition shadow-lg shadow-green-900/20">
+                        <i class="fa-solid fa-phone mr-2"></i> Call (Recorded)
+                    </button>
+                    <button onclick="generatePrintout()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-md text-sm font-bold transition shadow-lg shadow-blue-900/20 border border-blue-500">
+                        <i class="fa-solid fa-print mr-2"></i> Print Deal Sheet
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-1 p-6 overflow-y-auto flex flex-col justify-end space-y-4" id="chat-history">
+                <div class="text-center text-xs text-gray-600 mb-4 tracking-widest uppercase font-bold">Lead originated from Website Inventory Sync • Today 10:14 AM</div>
+                <div class="flex items-start">
+                    <div class="bg-panel border border-border p-4 rounded-xl rounded-tl-none max-w-lg shadow-md">
+                        <p class="text-sm text-gray-300">Hey, I saw the Ducati Panigale on your site. Do you guys take trade-ins? How much do I need to put down if I want to finance it?</p>
+                    </div>
+                </div>
+                <div class="flex items-start justify-end mt-4">
+                    <div class="max-w-lg w-full">
+                        <div class="text-[10px] text-purple-400 font-bold mb-1 flex items-center justify-end uppercase tracking-widest">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> AI Auto-Draft Suggestion
+                        </div>
+                        <div class="bg-purple-900/10 border border-purple-500/30 p-4 rounded-xl rounded-tr-none text-sm text-purple-100 shadow-inner">
+                            Hi Josh! Yes, we pay top dollar for trades. You can put as little as $0 down with approved credit, but most put around $1,500. Are you free to bring your trade by today?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 bg-panel border-t border-border shrink-0">
+                <div class="relative">
+                    <textarea id="reply-input" class="w-full bg-dark border border-apex rounded-lg p-4 text-sm focus:outline-none focus:ring-1 focus:ring-apex text-white placeholder-gray-600 resize-none h-24 shadow-inner" placeholder="Type your mandatory reply to Josh to clear the lockout..."></textarea>
+                    <button id="unlock-btn" onclick="sendAndUnlock()" class="absolute bottom-4 right-4 bg-apex hover:bg-red-600 text-white px-6 py-2 rounded-md text-sm font-bold transition shadow-lg shadow-red-900/50">Send & Unlock <i class="fa-solid fa-unlock ml-2"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-96 bg-panel border-l border-border flex flex-col shrink-0 overflow-y-auto shadow-2xl">
+            <div class="p-6 border-b border-border">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center"><i class="fa-solid fa-globe text-blue-500 mr-2"></i> Website Sync Data</h3>
+                <div class="bg-dark rounded-xl p-4 border border-border shadow-inner">
+                    <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full h-32 object-cover rounded-lg mb-4 opacity-90 border border-gray-800">
+                    <h4 class="font-black text-lg text-white mb-2" id="ui-bike">2024 Ducati Panigale V4</h4>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="text-gray-500">VIN:</div><div class="font-mono text-blue-400 font-bold" id="ui-vin">ZDM1234567890</div>
+                        <div class="text-gray-500">Stock #:</div><div class="text-gray-300">D24-101</div>
+                        <div class="text-gray-500">Retail Price:</div><div class="text-green-400 font-black text-sm">$24,495</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 flex-1 flex flex-col space-y-5">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest"><i class="fa-solid fa-file-invoice-dollar mr-2"></i> Deal Structure</h3>
+                
+                <div>
+                    <label class="text-xs text-gray-400 font-bold block mb-2">PURCHASE METHOD</label>
+                    <div class="flex space-x-2">
+                        <button id="btn-finance" onclick="setMethod('Finance')" class="flex-1 bg-blue-600 text-white py-2 rounded-md border border-blue-500 text-sm font-bold transition shadow-md">Finance</button>
+                        <button id="btn-cash" onclick="setMethod('Cash')" class="flex-1 bg-dark text-gray-400 py-2 rounded-md border border-border text-sm font-bold transition hover:bg-gray-800">Cash</button>
+                    </div>
+                    <input type="hidden" id="ui-method" value="Finance">
+                </div>
+
+                <div>
+                    <label class="text-xs text-gray-400 font-bold block mb-2">EXPECTED DOWN PAYMENT</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-2.5 text-gray-500 font-bold">$</span>
+                        <input type="number" id="ui-downpayment" value="2500" class="w-full bg-dark border border-border rounded-md p-2.5 pl-8 text-white font-bold focus:outline-none focus:border-blue-500 transition shadow-inner">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-xs text-gray-400 font-bold block mb-2">SALES AGENT NOTES (Prints on sheet)</label>
+                    <textarea id="ui-notes" class="w-full bg-dark border border-border rounded-md p-3 text-white text-sm focus:outline-none focus:border-blue-500 transition shadow-inner h-20 resize-none" placeholder="Customer has a trade-in. Excellent credit."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="print-deal-sheet" class="hidden">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid #000; padding-bottom: 15px; margin-bottom: 30px;">
+            <div>
+                <h1 style="font-size: 36px; margin: 0; text-transform: uppercase; font-weight: 900; letter-spacing: 2px;">Apex Dealer Systems</h1>
+                <p style="margin: 5px 0 0 0; color: #555; font-size: 16px; font-weight: bold;">Official Sales Desk Worksheet</p>
+            </div>
+            <div style="text-align: right; font-size: 14px;">
+                <p style="margin: 0 0 5px 0;"><strong>Date:</strong> <span id="print-date"></span></p>
+                <p style="margin: 0;"><strong>Sales Agent:</strong> APEX User</p>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 40px; margin-bottom: 30px;">
+            <div style="flex: 1;">
+                <h2 style="background: #e5e7eb; padding: 10px 15px; margin: 0 0 15px 0; font-size: 14px; text-transform: uppercase; border: 1px solid #d1d5db;">Customer Information</h2>
+                <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
+                    <tr><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; width: 30%;"><strong>Full Name:</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold; font-size: 20px;" id="print-fname"></td></tr>
+                    <tr><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; vertical-align: top;"><strong>Address:</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;" id="print-address"></td></tr>
+                    <tr><td style="padding: 10px 0;"><strong>Phone:</strong></td><td style="padding: 10px 0;">(555) 123-4567</td></tr>
+                </table>
+            </div>
+
+            <div style="flex: 1;">
+                <h2 style="background: #e5e7eb; padding: 10px 15px; margin: 0 0 15px 0; font-size: 14px; text-transform: uppercase; border: 1px solid #d1d5db;">Vehicle of Interest</h2>
+                <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
+                    <tr><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; width: 30%;"><strong>Unit:</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold; font-size: 18px;" id="print-bike"></td></tr>
+                    <tr><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;"><strong>VIN:</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-family: monospace; font-size: 18px;" id="print-vin"></td></tr>
+                    <tr><td style="padding: 10px 0;"><strong>Stock #:</strong></td><td style="padding: 10px 0;">D24-101</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <h2 style="background: #e5e7eb; padding: 10px 15px; margin: 0 0 15px 0; font-size: 14px; text-transform: uppercase; border: 1px solid #d1d5db;">Deal Structure</h2>
+        <div style="border: 2px solid #000; padding: 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div>
+                <span style="display: block; font-size: 12px; color: #555; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Payment Method</span>
+                <span style="font-size: 32px; font-weight: 900;" id="print-method">FINANCE</span>
+            </div>
+            <div style="text-align: right;">
+                <span style="display: block; font-size: 12px; color: #555; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Down Payment / Cash</span>
+                <span style="font-size: 32px; font-weight: 900;" id="print-downpayment">$2,500</span>
+            </div>
+        </div>
+
+        <h2 style="background: #e5e7eb; padding: 10px 15px; margin: 0 0 15px 0; font-size: 14px; text-transform: uppercase; border: 1px solid #d1d5db;">Sales Agent Notes</h2>
+        <div style="border: 1px solid #ccc; padding: 20px; min-height: 150px; font-size: 16px; font-style: italic; color: #333;" id="print-notes">
+            No notes provided.
+        </div>
+    </div>
+
+    <script>
+        // JS Sequence to organically unlock the Deal Desk
+        function sendAndUnlock() {
+            const input = document.getElementById('reply-input');
+            const text = input.value.trim();
+            if (!text) {
+                input.focus();
+                return;
+            }
+
+            // 1. Create and Append the sent chat bubble
+            const history = document.getElementById('chat-history');
+            const newMsg = document.createElement('div');
+            newMsg.className = "flex items-start justify-end mt-4";
+            newMsg.innerHTML = `
+                <div class="max-w-lg w-full">
+                    <div class="text-[10px] text-green-500 font-bold mb-1 flex items-center justify-end uppercase tracking-widest">
+                        <i class="fa-solid fa-check-double mr-1"></i> Sent Just Now
+                    </div>
+                    <div class="bg-dark border border-border p-4 rounded-xl rounded-tr-none text-sm text-white shadow-md">
+                        ${text}
+                    </div>
+                </div>
+            `;
+            history.appendChild(newMsg);
+            input.value = '';
+
+            // 2. Change Top Navbar status to Unlocked
+            const topLock = document.getElementById('top-lock-warning');
+            topLock.className = "text-green-400 font-bold flex items-center text-sm bg-green-950/30 px-3 py-1 rounded-full border border-green-900/50 transition-all";
+            topLock.innerHTML = '<i class="fa-solid fa-unlock mr-2"></i> SYSTEM UNLOCKED';
+
+            // 3. Remove urgent pulsing red styling from Sidebar
+            const queueCard = document.getElementById('urgent-queue-card');
+            queueCard.classList.remove('pulse-urgent', 'border-2', 'border-apex');
+            queueCard.classList.add('border', 'border-border');
+
+            const urgentTimer = document.getElementById('urgent-timer');
+            urgentTimer.className = "bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded";
+            urgentTimer.innerText = "REPLIED";
+
+            document.getElementById('urgent-message').style.display = 'none';
+
+            // 4. Update the actual send button to green
+            const unlockBtn = document.getElementById('unlock-btn');
+            unlockBtn.className = "absolute bottom-4 right-4 bg-green-600 text-white px-6 py-2 rounded-md text-sm font-bold transition shadow-lg shadow-green-900/50";
+            unlockBtn.innerHTML = "Unlocked <i class='fa-solid fa-check ml-2'></i>";
+        }
+
+        // Deal Structuring UI
+        function setMethod(method) {
+            document.getElementById('ui-method').value = method;
+            const btnFinance = document.getElementById('btn-finance');
+            const btnCash = document.getElementById('btn-cash');
+            
+            if(method === 'Finance') {
+                btnFinance.className = 'flex-1 bg-blue-600 text-white py-2 rounded-md border border-blue-500 text-sm font-bold transition shadow-md';
+                btnCash.className = 'flex-1 bg-dark text-gray-400 py-2 rounded-md border border-border text-sm font-bold transition hover:bg-gray-800';
+            } else {
+                btnCash.className = 'flex-1 bg-green-600 text-white py-2 rounded-md border border-green-500 text-sm font-bold transition shadow-md';
+                btnFinance.className = 'flex-1 bg-dark text-gray-400 py-2 rounded-md border border-border text-sm font-bold transition hover:bg-gray-800';
+            }
+        }
+
+        // Logic to instantly pull data from the inputs and push to the printable page layer
+        function generatePrintout() {
+            document.getElementById('print-fname').innerText = document.getElementById('ui-fname').innerText;
+            document.getElementById('print-address').innerText = document.getElementById('ui-address').innerText.replace('📍 ', '');
+            document.getElementById('print-bike').innerText = document.getElementById('ui-bike').innerText;
+            document.getElementById('print-vin').innerText = document.getElementById('ui-vin').innerText;
+            document.getElementById('print-method').innerText = document.getElementById('ui-method').value.toUpperCase();
+            
+            const dp = document.getElementById('ui-downpayment').value;
+            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 });
+            document.getElementById('print-downpayment').innerText = formatter.format(dp);
+            
+            const notes = document.getElementById('ui-notes').value;
+            document.getElementById('print-notes').innerText = notes ? notes : "No additional notes.";
+            
+            document.getElementById('print-date').innerText = new Date().toLocaleDateString();
+
+            window.print();
+        }
+    </script>
+</body>
+</html>
