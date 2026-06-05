@@ -18,22 +18,17 @@
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
         
         body { 
-            background-color: #050505; /* Deep rich black background */
+            background-color: #050505; 
             margin: 0; min-height: 100vh; overflow: hidden;
             display: flex; flex-direction: column;
-            /* Subtle grid pattern to enhance the tech feel behind the glass */
             background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
-        /* * CONFINED GOLDEN GLOW 
-         * Now absolute to the wrapper, no longer covering the top of the page.
-         * Toned down intensity to act as a backlight for the frosted glass.
-         */
         .golden-blob {
             position: absolute;
             top: 50%; left: 50%;
-            width: 105%; height: 105%; /* Hugs just outside the container */
+            width: 105%; height: 105%; 
             background: radial-gradient(circle, rgba(230, 185, 55, 0.45) 0%, transparent 65%);
             transform: translate(-50%, -50%);
             animation: breatheGold 6s ease-in-out infinite alternate;
@@ -47,26 +42,22 @@
             100% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
         }
 
-        /* * FROSTED GLASS CONTAINER 
-         * Complex CSS utilizing low-alpha gradients, heavy backdrop filtering, 
-         * saturation boosts, and directional light reflection borders.
-         */
         .import-card {
             background: linear-gradient(135deg, rgba(25, 25, 30, 0.35) 0%, rgba(5, 5, 8, 0.65) 100%);
             backdrop-filter: blur(28px) saturate(140%);
             -webkit-backdrop-filter: blur(28px) saturate(140%);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-top: 1px solid rgba(255, 255, 255, 0.15); /* Top glass reflection */
-            border-left: 1px solid rgba(255, 255, 255, 0.1);  /* Left glass reflection */
+            border-top: 1px solid rgba(255, 255, 255, 0.15); 
+            border-left: 1px solid rgba(255, 255, 255, 0.1);  
             z-index: 10;
             box-shadow: 
-                inset 0 0 20px rgba(255, 255, 255, 0.02), /* Inner light bounce */
-                0 30px 65px rgba(0, 0, 0, 0.8); /* Heavy drop shadow */
+                inset 0 0 20px rgba(255, 255, 255, 0.02), 
+                0 30px 65px rgba(0, 0, 0, 0.8); 
         }
 
         .crm-tab { 
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            background: rgba(9, 9, 11, 0.7); /* Slightly transparent buttons to let glow in */
+            background: rgba(9, 9, 11, 0.7); 
         }
         
         .crm-tab:hover {
@@ -74,8 +65,8 @@
             background-color: #18181b;
         }
 
-        /* Brand Specific Hover Glows */
-        .tab-dp360:hover { border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
+        /* Updated DP360 brand color to match their official Cyan */
+        .tab-dp360:hover { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
         .tab-lightspeed:hover { border-color: #00a4ef; box-shadow: 0 0 15px rgba(0, 164, 239, 0.15); }
         .tab-dx1:hover { border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.15); }
         .tab-dealerspike:hover { border-color: #ff9900; box-shadow: 0 0 15px rgba(255, 153, 0, 0.15); }
@@ -112,10 +103,15 @@
                     <button onclick="simulateImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                         <span>Import from Dealership Performance 360</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
-                            <svg width="85" height="24" viewBox="0 0 90 24" fill="none">
-                                <path d="M12 4 C16.4183 4 20 7.58172 20 12 C20 16.4183 16.4183 20 12 20" stroke="#8b5cf6" stroke-width="3" stroke-linecap="round"/>
-                                <circle cx="12" cy="12" r="3" fill="#8b5cf6"/>
-                                <text x="26" y="17" fill="#ffffff" font-family="Arial" font-weight="900" font-size="14" letter-spacing="0.5">DP360</text>
+                            <svg width="50" height="24" viewBox="0 0 50 24" fill="none">
+                                <path d="M 2 22 C 4 12 12 4 22 2" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M 12 11 L 16 7" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M 18 8 L 22 3" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M 26 5 L 29 2" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round"/>
+                                <path d="M 34 5 L 37 3" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
+                                <path d="M 43 7 L 46 5" stroke="#38bdf8" stroke-width="7.5" stroke-linecap="round"/>
+                                <path d="M 6 18 L 30 18" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round"/>
+                                <circle cx="14" cy="18" r="3" fill="#cbd5e1"/>
                             </svg>
                         </div>
                     </button>
@@ -180,7 +176,7 @@
         </div>
     </main>
 
-    <footer class="w-full max-w-[1400px] mx-auto flex justify-between items-center py-4 px-6 shrink-0 relative z-20 mt-auto bg-transparent">
+    <footer class="w-full max-w-[1400px] mx-auto flex justify-between items-center py-4 px-6 shrink-0 mt-auto bg-transparent relative z-20">
         <div id="live-clock" class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-gray-500 text-[12px] font-semibold uppercase tracking-widest font-mono">Time: --:--:--</div>
         <div class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-widest text-[#39FF14]">All Systems Online</div>
         <div class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-gray-500 text-[12px] font-semibold uppercase tracking-widest">Central Time Zone (CT)</div>
