@@ -40,7 +40,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: shimmerFlow 8s ease infinite;
-            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.2)); /* Header Text Glow */
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.2)); 
         }
         .header p { margin: 5px 0 0 0; color: #8E8E93; font-size: 1.1rem; }
 
@@ -59,9 +59,9 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
         .hero-counter .highlight {
-            color: #57bb8a; /* Soft green */
+            color: #57bb8a; 
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 20px rgba(87, 187, 138, 0.7), 0 0 40px rgba(87, 187, 138, 0.3); /* Deep Neon Green Glow */
+            text-shadow: 0 0 20px rgba(87, 187, 138, 0.7), 0 0 40px rgba(87, 187, 138, 0.3); 
         }
 
         /* Native Data Table Styling with Glow */
@@ -71,7 +71,8 @@
             border-radius: 8px;
             background-color: #000000;
             margin-bottom: 30px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.04); /* Subtle ambient border glow */
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.04); 
+            max-height: 65vh; /* Enables internal vertical scrolling for 25 items */
         }
         
         table {
@@ -94,7 +95,7 @@
         
         /* Row Formatting */
         td:first-child { font-weight: 700; } 
-        td:nth-child(2) { font-weight: 700; color: #FFFFFF; } /* Bold Customer Name */
+        td:nth-child(2) { font-weight: 700; color: #FFFFFF; } 
         td { color: #8E8E93; } 
         tr:hover { background-color: #0a0a0c; }
 
@@ -104,7 +105,15 @@
             color: #57bb8a !important; 
             font-weight: 600; padding: 4px 12px; border-radius: 100px;
             border: 1px solid rgba(87, 187, 138, 0.3);
-            box-shadow: 0 0 15px rgba(87, 187, 138, 0.2); /* Soft green pill glow */
+            box-shadow: 0 0 15px rgba(87, 187, 138, 0.2); 
+        }
+
+        .status-stale { 
+            background-color: rgba(249, 115, 22, 0.1) !important; 
+            color: #f97316 !important; 
+            font-weight: 600; padding: 4px 12px; border-radius: 100px;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.2); 
         }
 
         /* Import Button with Hover Glow */
@@ -117,8 +126,8 @@
         .import-btn:hover { 
             color: #FFFFFF; 
             background-color: #2C2C2E; 
-            transform: translateY(-2px); /* Slight 3D lift effect */
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15); /* Lifted White Glow */
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15); 
         }
 
         /* Footer alignment and tabular numeric layout */
@@ -130,12 +139,40 @@
         .chart-footer > div { flex: 1; }
         #live-clock { text-align: left; color: #FFFFFF; font-weight: 600; font-variant-numeric: tabular-nums; }
         
+        /* Breathing Animation for System Status */
         #system-status { 
-            text-align: center; color: #57bb8a; font-weight: 600; 
-            text-shadow: 0 0 10px rgba(87, 187, 138, 0.5); /* Glowing status text */
+            text-align: center; 
+            color: #57bb8a; 
+            font-weight: 600; 
+            display: inline-block;
+            animation: statusBreathe 3s ease-in-out infinite;
+        }
+
+        @keyframes statusBreathe {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+                text-shadow: 0 0 8px rgba(87, 187, 138, 0.4);
+            }
+            50% {
+                transform: scale(1.03);
+                opacity: 1;
+                text-shadow: 0 0 18px rgba(87, 187, 138, 0.9), 0 0 30px rgba(87, 187, 138, 0.4);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+                text-shadow: 0 0 8px rgba(87, 187, 138, 0.4);
+            }
         }
         
         .chart-footer > div:last-child { text-align: right; color: #FFFFFF; font-weight: 600; }
+
+        /* Custom UI Scrollbar */
+        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-container::-webkit-scrollbar-track { background: #000000; }
+        .table-container::-webkit-scrollbar-thumb { background: #2C2C2E; border-radius: 4px; }
+        .table-container::-webkit-scrollbar-thumb:hover { background: #3A3A3C; }
 
         /* Mobile responsive adjustments */
         @media (max-width: 800px) {
@@ -176,7 +213,7 @@
 
     <div class="chart-footer">
         <div id="live-clock">Time: --:--:-- -- Central Time</div>
-        <div id="system-status">System Status: Online</div>
+        <div><span id="system-status">System Status: Online</span></div>
         <div>Note: All times are in (CT - Central Time Zone).</div>
     </div>
 
@@ -185,19 +222,41 @@
         let currentCount = 10000;
         const counterElement = document.getElementById('leadCounter');
 
-        // 40ms interval = exactly 25 updates every second (1000 / 40 = 25). 
-        // We add exactly 1 per tick so the ones-place is in constant, blurry motion.
         setInterval(() => {
             currentCount += 1;
             counterElement.innerText = currentCount.toLocaleString();
         }, 40);
 
-        // 2. JavaScript Database Engine
-        const leadsDatabase = [
-            { id: 4, name: "John Doe", phone: "555-9999", vehicle: "2024 Yamaha R1", rep: "Umair", status: "New" },
-            { id: 5, name: "Jane Smith", phone: "555-8888", vehicle: "Kawasaki Ninja 400", rep: "Umair", status: "New" },
-            { id: 6, name: "Mike Johnson", phone: "555-7777", vehicle: "Ducati Panigale V4 (Houston)", rep: "Umair", status: "New" }
+        // 2. Programmatic Lead Generation Engine (25 Customers)
+        const sampleNames = [
+            "Liam Vance", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", 
+            "James Easton", "Benjamin Mercer", "Lucas Thorne", "Henry Blackwell", "Alexander Cross",
+            "Mia Davenport", "Ethan Gallagher", "David Vance", "Michael Knight", "Robert Chase", 
+            "Emma Stone", "Sophia Laurent", "Olivia Wilde", "Isabella Ross", "Ava Montgomery", 
+            "Mason Creed", "Logan Pierce", "Jacob Stryker", "Jack Dalton", "Luke Skywalker"
         ];
+        
+        const sampleVehicles = [
+            "2024 Yamaha R1", "Kawasaki Ninja 400", "Ducati Panigale V4 (Houston)", "Suzuki GSX-R750", 
+            "Honda CBR600RR", "BMW S1000RR", "Yamaha MT-07", "Kawasaki Z900", "KTM 390 Duke"
+        ];
+
+        const sampleReps = ["Umair", "Paul", "Steven", "Blake", "Mike"];
+        const sampleStatuses = ["New", "Stale"];
+
+        const leadsDatabase = [];
+
+        // Generate exactly 25 records starting at ID 1
+        for (let i = 1; i <= 25; i++) {
+            // Pick attributes pseudo-randomly based on index to keep the dataset fixed but realistic
+            const name = sampleNames[i - 1] || `Customer ${i}`;
+            const phone = `555-01${String(20 + i)}`;
+            const vehicle = sampleVehicles[(i * 3) % sampleVehicles.length];
+            const rep = sampleReps[(i * 7) % sampleReps.length];
+            const status = sampleStatuses[(i * 2) % sampleStatuses.length];
+
+            leadsDatabase.push({ id: i, name, phone, vehicle, rep, status });
+        }
 
         // 3. Table Rendering Engine
         function loadData() {
@@ -206,13 +265,15 @@
             
             leadsDatabase.forEach(lead => {
                 let tr = document.createElement('tr');
+                const statusClass = lead.status === "New" ? "status-new" : "status-stale";
+                
                 tr.innerHTML = `
                     <td>${lead.id}</td>
                     <td>${lead.name}</td>
                     <td>${lead.phone}</td>
                     <td>${lead.vehicle}</td>
                     <td style="color: #ffffff;">${lead.rep}</td>
-                    <td><span class="status-new">${lead.status}</span></td>
+                    <td><span class="${statusClass}">${lead.status}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
