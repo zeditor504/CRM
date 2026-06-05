@@ -25,7 +25,7 @@
 
     <nav class="bg-panel border-b border-border h-16 flex items-center justify-between px-6 shrink-0 shadow-sm">
         <div class="flex items-center space-x-4">
-            <a href="landingpage.html" class="text-zinc-400 hover:text-white transition flex items-center text-sm font-semibold border-r border-border pr-4 mr-2 uppercase tracking-widest">
+            <a href="index.html" class="text-zinc-400 hover:text-white transition flex items-center text-sm font-semibold border-r border-border pr-4 mr-2 uppercase tracking-widest">
                 Dashboard
             </a>
             <h1 class="text-xl font-black tracking-widest text-white uppercase">Apex Dealer Systems</h1>
@@ -136,14 +136,12 @@
             document.getElementById('ui-queue-loc').innerText = "Houston, TX";
             document.getElementById('ui-bike').innerText = vehicle;
             
-            // Generate the hyper-realistic AI text using closed-ended scheduling strategy
             const aiReply = `Hi ${firstName}! Thank you so much for reaching out. We still have the ${vehicle}—it's an absolutely beautiful bike and we have an amazing deal on it right now. What's a good day for you to come check it out, today or tomorrow?`;
             
             document.getElementById('ui-ai-msg').innerText = aiReply;
             document.getElementById('ui-price').innerText = `$${(10000 + (vehicle.length * 400)).toLocaleString()}`;
 
-            // Escalation Timer Logic
-            let time = 225; // 3m 45s
+            let time = 225;
             const timerEl = document.getElementById('urgent-timer');
             const timerInt = setInterval(() => {
                 time--;
@@ -171,7 +169,6 @@
             history.appendChild(newMsg);
             input.value = '';
 
-            // Unlock UI Elements
             document.getElementById('top-lock-warning').className = "text-emerald-400 font-bold flex items-center text-xs bg-emerald-950/20 px-3 py-1.5 rounded border border-emerald-900/40 tracking-wider";
             document.getElementById('top-lock-warning').innerHTML = "SYSTEM UNLOCKED";
             
