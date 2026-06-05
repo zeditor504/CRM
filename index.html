@@ -111,15 +111,36 @@
             letter-spacing: 0.02em;
         }
 
+        /* NEW FOOTER LAYOUT */
         footer {
             display: flex; justify-content: space-between; align-items: center;
-            margin-top: auto; font-size: 11.8pt; color: #a1a1aa; font-weight: 600; 
-            padding-bottom: 4px; border-top: 1px solid #27272a; padding-top: 15px;
-            text-transform: uppercase; letter-spacing: 0.05em;
+            margin-top: auto; padding-bottom: 5px; padding-top: 15px;
         }
-        .footer-left { flex: 1; text-align: left; color: #71717a; font-variant-numeric: tabular-nums; }
-        .footer-center { flex: 1; text-align: center; color: #39FF14; font-weight: 700; } 
-        .footer-right { flex: 1; text-align: right; color: #71717a; }
+        
+        .footer-pill {
+            background-color: rgba(24, 24, 27, 0.7); /* Subtle isolated background */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            padding: 6px 16px;
+            font-size: 12px !important; /* Strict 12px */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-left { color: #71717a; font-variant-numeric: tabular-nums; font-family: monospace, sans-serif; }
+        .footer-center { color: #39FF14; font-weight: 700; }
+        .footer-right { color: #71717a; }
+
+        #system-status { 
+            animation: statusFade 3s ease-in-out infinite;
+        }
+
+        @keyframes statusFade {
+            0% { opacity: 0.6; text-shadow: 0 0 8px rgba(57, 255, 20, 0.3); }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(57, 255, 20, 0.8), 0 0 25px rgba(57, 255, 20, 0.4); }
+            100% { opacity: 0.6; text-shadow: 0 0 8px rgba(57, 255, 20, 0.3); }
+        }
 
         .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
         .table-container::-webkit-scrollbar-track { background: #09090b; }
@@ -163,9 +184,9 @@
     </div>
 
     <footer>
-        <div class="footer-left" id="live-clock">Time: --:--:--</div>
-        <div class="footer-center">All Systems Online</div>
-        <div class="footer-right">Central Time Zone (CT)</div>
+        <div class="footer-pill footer-left" id="live-clock">Time: --:--:--</div>
+        <div class="footer-pill footer-center"><span id="system-status">All Systems Online</span></div>
+        <div class="footer-pill footer-right">Central Time Zone (CT)</div>
     </footer>
 
     <script>
