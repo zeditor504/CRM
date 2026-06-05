@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Dealer Systems | Import Leads</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { dark: '#09090b', panel: '#18181b', border: '#27272a', textm: '#a1a1aa' } } }
+        }
+    </script>
+    
+    <style>
+        * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
+        
+        body { 
+            background-color: #050505; 
+            margin: 0; min-height: 100vh; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+
+        .golden-blob {
+            position: fixed;
+            top: 50%; left: 50%;
+            width: 950px; height: 950px; 
+            background: radial-gradient(circle, rgba(230, 185, 55, 0.28) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: breatheGold 5s ease-in-out infinite alternate;
+            filter: blur(75px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes breatheGold {
+            0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.85; }
+            100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        .import-card {
+            background: rgba(9, 9, 11, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            z-index: 10;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        }
+
+        .crm-tab { transition: all 0.2s ease; }
+        .crm-tab:hover {
+            transform: translateY(-2px);
+            background-color: #18181b;
+        }
+
+        .tab-lightspeed:hover { border-color: #00a4ef; box-shadow: 0 0 15px rgba(0, 164, 239, 0.15); }
+        .tab-dx1:hover { border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.15); }
+        .tab-dealerspike:hover { border-color: #ff9900; box-shadow: 0 0 15px rgba(255, 153, 0, 0.15); }
+        .tab-elead:hover { border-color: #1e3a8a; box-shadow: 0 0 15px rgba(30, 58, 138, 0.3); }
+        .tab-vinsolutions:hover { border-color: #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.15); }
+    </style>
+</head>
+<body class="text-gray-200 relative">
+
+    <div class="golden-blob"></div>
+
+    <nav class="bg-panel border-b border-border h-16 flex items-center justify-between px-6 shrink-0 w-full relative z-20">
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-textm hover:text-white transition flex items-center text-sm font-semibold border-r border-border pr-4 mr-2 uppercase tracking-widest">
+                <svg class="w-4 h-4 mr-1 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Dashboard
+            </a>
+            <h1 class="text-lg font-bold text-white tracking-wide uppercase">Apex Dealer Systems</h1>
+        </div>
+    </nav>
+
+    <main class="flex-1 flex items-center justify-center p-6 relative z-10 w-full">
+        <div class="import-card rounded-2xl w-full max-w-2xl p-10 flex flex-col items-center">
+            
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-black text-white uppercase mb-3 tracking-[0.4em]">IMPORT PAST LEADS</h2>
+                <p class="text-sm text-textm">Select your previous software system to securely map data into Apex Dealer Systems.</p>
+            </div>
+
+            <div class="w-full space-y-3">
+                <button onclick="simulateImport('Lightspeed DMS')" class="crm-tab tab-lightspeed w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <span>Import from Lightspeed DMS</span>
+                    <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
+                        <svg width="100" height="24" viewBox="0 0 120 28" fill="none">
+                            <path d="M0 4H16L12 24H0L4 4Z" fill="#00a4ef"/>
+                            <text x="22" y="19" fill="#00a4ef" font-family="Arial" font-weight="900" font-size="13" letter-spacing="0.5">LIGHTSPEED</text>
+                        </svg>
+                    </div>
+                </button>
+
+                <button onclick="simulateImport('DX1 Platform')" class="crm-tab tab-dx1 w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <span>Import from DX1 Platform</span>
+                    <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
+                        <svg width="65" height="24" viewBox="0 0 70 24" fill="none">
+                            <rect width="20" height="20" y="2" rx="4" fill="#ff0000"/>
+                            <path d="M6 7L14 17M14 7L6 17" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                            <text x="26" y="18" fill="#ffffff" font-family="Arial" font-weight="900" font-size="16">DX1</text>
+                        </svg>
+                    </div>
+                </button>
+
+                <button onclick="simulateImport('DealerSpike CRM')" class="crm-tab tab-dealerspike w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <span>Import from DealerSpike CRM</span>
+                    <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
+                        <svg width="115" height="24" viewBox="0 0 130 24" fill="none">
+                            <path d="M2 19L11 3L20 19H2Z" fill="#ff9900"/>
+                            <path d="M11 19L18 7L25 19H11Z" fill="#ffb74d"/>
+                            <text x="30" y="16" fill="#ff9900" font-family="Arial" font-weight="900" font-size="12" letter-spacing="0.2">DEALERSPIKE</text>
+                        </svg>
+                    </div>
+                </button>
+
+                <button onclick="simulateImport('Elead CRM')" class="crm-tab tab-elead w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <span>Import from Elead CRM</span>
+                    <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
+                        <svg width="75" height="24" viewBox="0 0 80 24" fill="none">
+                            <circle cx="10" cy="12" r="8" fill="#1e3a8a"/>
+                            <path d="M8 8L14 12L8 16V8Z" fill="#ffffff"/>
+                            <text x="24" y="18" fill="#ffffff" font-family="Arial" font-weight="800" font-size="15" italic>elead</text>
+                        </svg>
+                    </div>
+                </button>
+
+                <button onclick="simulateImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full bg-dark border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <span>Import from VinSolutions</span>
+                    <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
+                        <svg width="110" height="24" viewBox="0 0 120 24" fill="none">
+                            <rect width="18" height="18" y="3" rx="3" fill="#22c55e"/>
+                            <path d="M5 11L8 14L13 8" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <text x="24" y="16" fill="#22c55e" font-family="Arial" font-weight="700" font-size="13">VinSolutions</text>
+                        </svg>
+                    </div>
+                </button>
+            </div>
+            
+            <div id="status-feedback" class="mt-8 text-sm font-bold text-zinc-500 min-h-[20px] transition-all tracking-widest uppercase"></div>
+        </div>
+    </main>
+
+    <footer class="w-full max-w-[1400px] mx-auto flex justify-between items-center py-4 px-6 shrink-0 relative z-20 mt-auto bg-transparent">
+        <div id="live-clock" class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-gray-500 text-[12px] font-semibold uppercase tracking-widest font-mono">Time: --:--:--</div>
+        <div class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-widest text-[#39FF14]">All Systems Online</div>
+        <div class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-gray-500 text-[12px] font-semibold uppercase tracking-widest">Central Time Zone (CT)</div>
+    </footer>
+
+    <script>
+        function simulateImport(crmName) {
+            const feedback = document.getElementById('status-feedback');
+            feedback.className = "mt-8 text-sm font-bold text-yellow-500 tracking-widest uppercase animate-pulse flex items-center justify-center";
+            feedback.innerHTML = `<svg class="w-4 h-4 mr-2 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> Establishing data link with ${crmName}...`;
+            
+            setTimeout(() => {
+                feedback.className = "mt-8 text-sm font-bold text-[#10b981] tracking-widest uppercase flex items-center justify-center";
+                feedback.innerHTML = `<svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Data mapping complete. 0 records failed integrity verification.`;
+            }, 1800);
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); 
+    </script>
+</body>
+</html>
