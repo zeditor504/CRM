@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Dealer Systems | Live Dashboard</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 20px 0; background-color: #09090B;
+            color: #FFFFFF; min-height: 100vh; display: flex; 
+            flex-direction: column; align-items: center; overflow-x: hidden;
+        }
+        
+        .container-wrapper { width: 95vw; max-width: 1400px; }
+
+        /* Top Nav Simulation */
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; margin-bottom: 30px;
+        }
+        
+        .header { text-align: center; }
+        .header h1 { margin: 0; font-size: 2.5rem; font-weight: 800; letter-spacing: -0.5px; color: #ffffff; }
+        .header h1 span { color: #dc2626; font-weight: 800; }
+        .header p { margin: 5px 0 0 0; color: #a1a1aa; font-size: 1rem; }
+
+        /* SMS Action Center */
+        .sms-alerts {
+            background-color: #18181b; border: 1px solid #27272a; border-radius: 8px;
+            padding: 15px 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .sms-badge { background-color: #3b82f6; color: white; padding: 4px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+        .sms-text { font-size: 0.9rem; color: #e4e4e7; font-weight: 600; flex-grow: 1; }
+        .sms-btn { background-color: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.05em; }
+        .sms-btn:hover { background-color: #1d4ed8; }
+
+        .queue-header {
+            font-size: 0.85rem; color: #10b981; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;
+        }
+
+        .table-container {
+            overflow-x: auto; border: 1px solid #27272a; border-radius: 8px; background-color: #18181b; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); max-height: 50vh; 
+        }
+        
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+        th, td { padding: 14px 20px; border-bottom: 1px solid #27272a; vertical-align: middle !important; }
+        th { border-bottom: 1px solid #3f3f46; color: #a1a1aa; font-weight: 600; background-color: #09090b; position: sticky; top: 0; z-index: 10; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+        td:first-child { font-weight: 600; color: #d4d4d8; } 
+        td:nth-child(2) { font-weight: 600; color: #FFFFFF; } 
+        td { color: #a1a1aa; } 
+        tbody tr { cursor: pointer; transition: background-color 0.15s ease; }
+        tbody tr:hover { background-color: #27272a; }
+
+        .status-new { background-color: rgba(16, 185, 129, 0.1) !important; color: #10b981 !important; font-weight: 700; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(16, 185, 129, 0.3); text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .action-container { display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; }
+        .import-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; background-color: #ffffff; color: #000000; border-radius: 100px; text-decoration: none; font-size: 0.85rem; font-weight: 800; transition: all 0.2s ease; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
+        .import-btn:hover { background-color: #e4e4e7; transform: translateY(-2px); }
+        .manager-btn { background-color: #18181b; color: #a1a1aa; border: 1px solid #3f3f46; }
+        .manager-btn:hover { background-color: #27272a; color: white; }
+
+        footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-bottom: 5px; padding-top: 15px; width: 95vw; max-width: 1400px; }
+        .footer-pill { background-color: rgba(24, 24, 27, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .footer-left { color: #71717a; font-variant-numeric: tabular-nums; font-family: monospace, sans-serif; }
+        .footer-center { color: #39FF14; font-weight: 700; }
+        .footer-right { color: #71717a; }
+
+        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-container::-webkit-scrollbar-track { background: #09090b; }
+        .table-container::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="container-wrapper">
+        <div class="top-nav">
+            <div style="width: 150px;"></div>
+            <div class="header">
+                <h1>Apex <span>Dealer Systems</span></h1>
+                <p>Active Leads Dashboard &mdash; Click a row to enter Deal Desk</p>
+            </div>
+            <div style="width: 150px; text-align: right; color: #a1a1aa; font-weight: 600; font-size: 0.85rem;">Logged in as: Rep</div>
+        </div>
+
+        <div class="sms-alerts">
+            <span class="sms-badge">SMS ALERT</span>
+            <span class="sms-text">Reminder: You have 1 unread message from Josh Stevenson regarding the Ducati V4.</span>
+            <button class="sms-btn" onclick="window.location.href='deal-desk.html?id=1'">Open Deal Desk</button>
+        </div>
+
+        <div class="queue-header">● Round-Robin Queue Active: 5 Leads Assigned to You</div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer Name</th>
+                        <th>Phone</th>
+                        <th>Vehicle Interest</th>
+                        <th>Source</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+
+        <div class="action-container">
+            <button class="import-btn" onclick="window.location.href='importleads.html'">
+                Import Past CRM Data
+            </button>
+            <button class="import-btn manager-btn" onclick="window.location.href='manager.html'">
+                Manager Hub Access
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-pill footer-left" id="live-clock">Time: --:--:--</div>
+        <div class="footer-pill footer-center">All Systems Online</div>
+        <div class="footer-pill footer-right">Central Time Zone (CT)</div>
+    </footer>
+
+    <script>
+        const sampleNames = ["Josh Stevenson", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes"];
+        const sampleVehicles = ["2024 Ducati Panigale V4", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", "Honda CBR600RR"];
+        const leadsDatabase = [];
+
+        for (let i = 1; i <= 5; i++) {
+            leadsDatabase.push({ 
+                id: i, 
+                name: sampleNames[i - 1], 
+                phone: `555-01${String(20 + i)}`, 
+                vehicle: sampleVehicles[i - 1], 
+                source: "Website Intake Form", 
+                status: "New" 
+            });
+        }
+
+        function loadData() {
+            const tbody = document.getElementById('table-body');
+            leadsDatabase.forEach(lead => {
+                let tr = document.createElement('tr');
+                tr.onclick = function() { window.location.href = 'deal-desk.html?id=' + lead.id; };
+                
+                tr.innerHTML = `
+                    <td>${lead.id}</td>
+                    <td>${lead.name}</td>
+                    <td>${lead.phone}</td>
+                    <td>${lead.vehicle}</td>
+                    <td style="color: #e5e7eb;">${lead.source}</td>
+                    <td><span class="status-new">${lead.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        loadData();
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); 
+    </script>
+</body>
+</html>
