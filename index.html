@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Dealer Systems | Live Dashboard</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base document properties matching your market terminal */
+        body {
+            margin: 0; padding: 20px 0; background-color: #000000;
+            font-family: 'Inter Tight', sans-serif; color: #FFFFFF;
+            min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; overflow-x: hidden;
+        }
+        
+        /* Container width restrictions */
+        .header, .hero-counter, .table-container, .chart-footer {
+            width: 95vw; max-width: 1400px;
+        }
+
+        /* Header layout and typography */
+        .header { 
+            text-align: center; margin-bottom: 25px; margin-top: 10px;
+        }
+        
+        /* Shifting gradient text effect */
+        .header h1 { 
+            margin: 0; font-size: 2.5rem; font-weight: 600; letter-spacing: -0.5px;
+            background: linear-gradient(120deg, #8E8E93, #FFFFFF, #8E8E93, #FFFFFF);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmerFlow 8s ease infinite;
+        }
+        .header p { margin: 5px 0 0 0; color: #8E8E93; font-size: 1.1rem; }
+
+        @keyframes shimmerFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Leads Saved Counter */
+        .hero-counter {
+            text-align: center; margin-bottom: 30px;
+        }
+        .hero-counter h2 {
+            font-size: 2.2rem; color: #FFFFFF; margin: 0;
+        }
+        .hero-counter .highlight {
+            color: #57bb8a; /* Soft green from your heatmap */
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Native Data Table Styling */
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #1C1C1E;
+            border-radius: 8px;
+            background-color: #000000;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%; border-collapse: collapse; text-align: center;
+            font-size: 0.95rem; white-space: nowrap; font-variant-numeric: tabular-nums;
+        }
+        
+        th, td {
+            padding: 13px 15px; border-bottom: 1px solid #1C1C1E; border-right: 1px solid #1C1C1E;
+            vertical-align: middle !important; text-align: center !important;
+        }
+        
+        th {
+            border-bottom: 2px solid #FFFFFF; border-right: 1px solid #2C2C2E;
+            color: #FFFFFF; font-weight: 700; background-color: #000000;
+            position: sticky; top: 0; z-index: 10;
+        }
+
+        th:last-child, td:last-child { border-right: none; }
+        
+        /* Row Formatting */
+        td:first-child { font-weight: 700; } 
+        td:nth-child(2) { font-weight: 700; color: #FFFFFF; } /* Bold Customer Name */
+        td { color: #8E8E93; } 
+        tr:hover { background-color: #0a0a0c; }
+
+        /* Conditional formatting custom classes */
+        .status-new { 
+            background-color: #c8e6c9 !important; color: #2e7d32 !important; 
+            font-weight: 600; padding: 4px 12px; border-radius: 100px;
+        }
+
+        /* Custom UI Scrollbar */
+        .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-container::-webkit-scrollbar-track { background: #000000; }
+        .table-container::-webkit-scrollbar-thumb { background: #2C2C2E; border-radius: 4px; }
+        .table-container::-webkit-scrollbar-thumb:hover { background: #3A3A3C; }
+
+        /* Import Button */
+        .import-btn {
+            display: inline-block; margin-bottom: 40px; padding: 12px 24px;
+            background-color: #1C1C1E; color: #8E8E93; border-radius: 100px;
+            text-decoration: none; font-size: 1rem; font-weight: 600;
+            transition: all 0.2s ease; border: 1px solid transparent; cursor: pointer;
+        }
+        .import-btn:hover { color: #FFFFFF; background-color: #3A3A3C; }
+
+        /* Footer alignment and tabular numeric layout */
+        .chart-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: auto; font-size: 0.85rem; color: #8E8E93; font-weight: 400;
+            padding-bottom: 10px;
+        }
+        .chart-footer > div { flex: 1; }
+        #live-clock { text-align: left; color: #FFFFFF; font-weight: 600; font-variant-numeric: tabular-nums; }
+        #system-status { text-align: center; color: #57bb8a; font-weight: 600; }
+        .chart-footer > div:last-child { text-align: right; color: #FFFFFF; font-weight: 600; }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 800px) {
+            .chart-footer { flex-direction: column; gap: 8px; }
+            .chart-footer > div { text-align: center !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Apex Dealer Systems</h1>
+        <p>Active Leads Dashboard</p>
+    </div>
+
+    <div class="hero-counter">
+        <h2>Leads Saved: <span class="highlight" id="leadCounter">10,000</span></h2>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Phone</th>
+                    <th>Vehicle Interest</th>
+                    <th>Assigned To</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                </tbody>
+        </table>
+    </div>
+
+    <button class="import-btn">Import Leads from your past CRM</button>
+
+    <div class="chart-footer">
+        <div id="live-clock">Time: --:--:-- -- Central Time</div>
+        <div id="system-status">System Status: Online</div>
+        <div>Note: All times are in (CT - Central Time Zone).</div>
+    </div>
+
+    <script>
+        // 1. Live Increasing Counter
+        let currentCount = 10000;
+        const counterElement = document.getElementById('leadCounter');
+
+        setInterval(() => {
+            const increment = Math.floor(Math.random() * 3) + 1;
+            currentCount += increment;
+            counterElement.innerText = currentCount.toLocaleString();
+        }, 2500);
+
+        // 2. JavaScript Database Engine
+        // Since GitHub Pages cannot run Python/SQLite, we store the mock data directly in the browser array.
+        // Later, you can easily hook this up to fetch() data from a Google Sheet CSV just like your Market Terminal!
+        const leadsDatabase = [
+            { id: 4, name: "John Doe", phone: "555-9999", vehicle: "2024 Yamaha R1", rep: "Umair", status: "New" },
+            { id: 5, name: "Jane Smith", phone: "555-8888", vehicle: "Kawasaki Ninja 400", rep: "Umair", status: "New" },
+            { id: 6, name: "Mike Johnson", phone: "555-7777", vehicle: "Ducati Panigale V4 (Houston)", rep: "Umair", status: "New" }
+        ];
+
+        // 3. Table Rendering Engine
+        function loadData() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = ''; 
+            
+            leadsDatabase.forEach(lead => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${lead.id}</td>
+                    <td>${lead.name}</td>
+                    <td>${lead.phone}</td>
+                    <td>${lead.vehicle}</td>
+                    <td style="color: #ffffff;">${lead.rep}</td>
+                    <td><span class="status-new">${lead.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        loadData();
+
+        // 4. Live Clock (From your Terminal code)
+        function updateClock() {
+            const now = new Date();
+            const timeOptions = { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', timeOptions)} Central Time`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); 
+    </script>
+</body>
+</html>
