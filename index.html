@@ -11,29 +11,31 @@
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
 
-        body {
-            margin: 0; padding: 0; 
-            background-color: #0b0f19;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05), transparent 25%);
-            background-attachment: fixed;
-            color: #f1f5f9; min-height: 100vh; display: flex; 
-            flex-direction: column; align-items: center; overflow-x: hidden;
+        /* STRICT DARK MODE ENFORCEMENT */
+        body { 
+            background-color: #0b0f19 !important; color: #f1f5f9 !important; 
+            margin: 0; padding: 0; min-height: 100vh; 
+            display: flex; flex-direction: column; align-items: center; overflow-x: hidden; 
         }
         
+        body::before {
+            content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        .bg-glows { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        .glow-blue { position: absolute; top: 20%; left: -10%; width: 40vw; height: 40vw; border-radius: 50%; background: rgba(59, 130, 246, 0.04); filter: blur(100px); }
+        .glow-emerald { position: absolute; bottom: -10%; right: -10%; width: 40vw; height: 40vw; border-radius: 50%; background: rgba(16, 185, 129, 0.04); filter: blur(100px); }
+
         .container-wrapper { width: 95vw; max-width: 1400px; z-index: 10; position: relative; padding-top: 30px; flex: 1; display: flex; flex-direction: column; }
 
-        /* Refined Frosted Glass */
+        /* Bulletproof Frosted Glass */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.02);
+            background-color: rgba(15, 23, 42, 0.6) !important;
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            border-left: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.1); border-left: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px; box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.4); transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .top-nav { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 30px; }
@@ -43,11 +45,7 @@
         .header h1 span { color: #38bdf8; font-weight: 700; }
         .header p { margin: 6px 0 0 0; color: #94a3b8; font-size: 0.95rem; font-weight: 400; }
 
-        .profile-btn {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 8px 16px; border-radius: 100px; display: flex; align-items: center; gap: 10px;
-            cursor: pointer; transition: 0.2s; color: #e4e4e7; font-weight: 600; font-size: 0.85rem;
-        }
+        .profile-btn { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); padding: 8px 16px; border-radius: 100px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; color: #e4e4e7; font-weight: 600; font-size: 0.85rem; }
         .profile-btn:hover { background: rgba(255,255,255,0.05); }
 
         .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 24px; }
@@ -56,10 +54,7 @@
         .stat-value { font-size: 2rem; font-weight: 800; color: #ffffff; }
         .stat-sub { font-size: 0.8rem; color: #34d399; font-weight: 500; margin-top: 4px; }
 
-        .sms-alerts {
-            padding: 16px 24px; display: flex; align-items: center; gap: 15px; margin-bottom: 24px;
-            background: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.1);
-        }
+        .sms-alerts { padding: 16px 24px; display: flex; align-items: center; gap: 15px; margin-bottom: 24px; background-color: rgba(30, 58, 138, 0.2) !important; border-color: rgba(59, 130, 246, 0.2); border-radius: 16px; }
         .sms-badge { background-color: #3b82f6; color: white; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; }
         .sms-text { font-size: 0.9rem; color: #e2e8f0; font-weight: 500; flex-grow: 1; }
         .sms-btn { background-color: #2563eb; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
@@ -67,37 +62,36 @@
 
         .queue-header { font-size: 0.85rem; color: #34d399; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 12px; display: flex; align-items: center; }
 
-        .table-container { overflow-x: auto; margin-bottom: 30px; flex-grow: 1; }
+        .table-container { overflow-x: auto; margin-bottom: 30px; flex-grow: 1; border-radius: 16px; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
         th, td { padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle !important; }
-        th { color: #94a3b8; font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; background: rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 10; }
-        td:first-child { font-weight: 600; color: #cbd5e1; } 
+        th { color: #94a3b8; font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; background: rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 10; }
+        td:first-child { font-weight: 600; color: #cbd5e1; font-family: monospace; } 
         td:nth-child(2) { font-weight: 600; color: #ffffff; } 
         td { color: #94a3b8; } 
         tbody tr { cursor: pointer; transition: background-color 0.2s ease; }
         tbody tr:hover { background-color: rgba(255,255,255,0.04); }
 
-        .status-new { background-color: rgba(52, 211, 153, 0.1); color: #34d399; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(52, 211, 153, 0.2); }
-        .status-stale { background-color: rgba(249, 115, 22, 0.1); color: #fbbf24; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(249, 115, 22, 0.2); }
+        .status-new { background-color: rgba(52, 211, 153, 0.15); color: #34d399; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(52, 211, 153, 0.3); text-transform: uppercase; letter-spacing: 0.05em; }
+        .status-stale { background-color: rgba(249, 115, 22, 0.15); color: #fbbf24; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(249, 115, 22, 0.3); text-transform: uppercase; letter-spacing: 0.05em; }
         
         .action-container { display: flex; gap: 16px; justify-content: center; margin-bottom: 30px; }
-        .action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 100px; font-size: 0.85rem; font-weight: 600; transition: all 0.2s ease; border: none; cursor: pointer; }
+        .action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 100px; font-size: 0.85rem; font-weight: 600; transition: all 0.2s ease; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
         .primary-btn { background-color: #ffffff; color: #0f172a; box-shadow: 0 4px 15px rgba(255,255,255,0.05); }
         .primary-btn:hover { background-color: #f8fafc; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,255,255,0.1); }
-        .secondary-btn { background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); }
-        .secondary-btn:hover { background: rgba(255,255,255,0.08); color: white; transform: translateY(-2px); }
+        .secondary-btn { background-color: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); }
+        .secondary-btn:hover { background-color: rgba(255,255,255,0.08); color: white; transform: translateY(-2px); }
 
         .footer-wrapper { width: 95vw; max-width: 1400px; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-        .footer-pill { background: rgba(255,255,255,0.02); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.04); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; }
+        .footer-pill { background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.04); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; }
         .footer-center { color: #34d399; font-weight: 600; display: flex; align-items: center; gap: 6px; }
 
-        /* Slide-out Sidebar Profile */
         #profile-sidebar {
             position: fixed; top: 0; right: -400px; width: 380px; height: 100vh;
-            background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(30px);
+            background-color: rgba(11, 15, 25, 0.95) !important; backdrop-filter: blur(30px);
             border-left: 1px solid rgba(255,255,255,0.08); z-index: 100;
             transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 30px;
-            box-shadow: -20px 0 50px rgba(0,0,0,0.5);
+            box-shadow: -20px 0 50px rgba(0,0,0,0.8);
         }
         #profile-sidebar.active { right: 0; }
 
@@ -109,6 +103,11 @@
 </head>
 <body>
 
+    <div class="bg-glows">
+        <div class="glow-blue"></div>
+        <div class="glow-emerald"></div>
+    </div>
+
     <div class="container-wrapper">
         <div class="top-nav">
             <div style="width: 150px;"></div>
@@ -118,7 +117,7 @@
             </div>
             <div style="width: 150px; text-align: right;">
                 <button class="profile-btn ml-auto" onclick="toggleSidebar()">
-                    <div class="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white font-bold">SR</div>
+                    <div class="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white font-bold border border-white/20">SR</div>
                     Sales Rep
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
@@ -151,7 +150,7 @@
 
         <div class="queue-header">
             <svg style="width: 16px; height: 16px; margin-right: 6px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            Round-Robin Queue Active • 5 Leads Assigned to You
+            Round-Robin Queue Active • 10 Leads Assigned to You
         </div>
 
         <div class="glass-panel table-container">
@@ -183,7 +182,7 @@
     </div>
 
     <footer class="footer-wrapper">
-        <div class="footer-pill" id="live-clock">Time: --:--:--</div>
+        <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
         <div class="footer-pill footer-center"><div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div> All Systems Online</div>
         <div class="footer-pill">Central Time Zone (CT)</div>
     </footer>
@@ -195,15 +194,15 @@
             </button>
         </div>
         <div class="flex items-center gap-5 mb-10">
-            <div class="w-14 h-14 rounded-full bg-slate-700 flex items-center justify-center text-xl text-white font-bold shadow-lg">SR</div>
+            <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center text-xl text-white font-bold shadow-lg border border-white/10">SR</div>
             <div>
                 <h2 class="text-xl font-bold text-white">Sales Rep</h2>
-                <p class="text-sm text-blue-400 font-medium mt-1">Active Status</p>
+                <p class="text-sm text-blue-400 font-medium mt-1 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span> Active Status</p>
             </div>
         </div>
         
         <div class="space-y-8">
-            <div class="glass-panel p-5">
+            <div class="glass-panel p-5 border-white/5 shadow-none">
                 <h3 class="text-xs text-slate-400 uppercase tracking-widest font-semibold mb-4">Monthly Quota</h3>
                 <div class="w-full bg-slate-800/50 rounded-full h-2.5 mb-3 overflow-hidden">
                     <div class="bg-blue-500 h-full rounded-full" style="width: 60%"></div>
@@ -226,18 +225,15 @@
     </div>
 
     <script>
-        const sampleNames = ["Josh Stevenson", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes"];
-        const sampleVehicles = ["2024 Ducati Panigale V4", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", "Honda CBR600RR"];
+        const sampleNames = ["Josh Stevenson", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", "James Easton", "Benjamin Mercer", "Lucas Thorne", "Henry Blackwell", "Alexander Cross"];
+        const sampleVehicles = ["2024 Ducati Panigale V4", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", "Honda CBR600RR", "BMW S1000RR", "2024 Yamaha R1", "Kawasaki Z900", "KTM 390 Duke", "Triumph Super 1200"];
         const leadsDatabase = [];
 
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 10; i++) {
             leadsDatabase.push({ 
-                id: `LD-${1000 + i}`, 
-                name: sampleNames[i - 1], 
-                phone: `(555) 01${String(20 + i)}`, 
-                vehicle: sampleVehicles[i - 1], 
-                source: "Website Intake Form", 
-                status: (i === 4) ? "Stale" : "New Lead" 
+                id: `LD-${1000 + i}`, name: sampleNames[i - 1], 
+                phone: `(555) 01${String(20 + i)}`, vehicle: sampleVehicles[i - 1], 
+                source: i % 3 === 0 ? "Facebook Ad" : "Website Intake Form", status: (i === 4 || i === 8) ? "Stale" : "New Lead" 
             });
         }
 
@@ -246,7 +242,6 @@
             leadsDatabase.forEach((lead, index) => {
                 let tr = document.createElement('tr');
                 tr.onclick = function() { window.location.href = 'deal-desk.html?id=' + (index + 1); };
-                
                 const statusClass = lead.status === "New Lead" ? "status-new" : "status-stale";
 
                 tr.innerHTML = `
@@ -255,24 +250,19 @@
                     <td class="tabular-nums">${lead.phone}</td>
                     <td>${lead.vehicle}</td>
                     <td style="color: #94a3b8;">${lead.source}</td>
-                    <td><span class="status-pill ${statusClass}">${lead.status}</span></td>
+                    <td><span class="${statusClass}">${lead.status}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
         loadData();
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('profile-sidebar');
-            sidebar.classList.toggle('active');
-        }
-
+        function toggleSidebar() { document.getElementById('profile-sidebar').classList.toggle('active'); }
         function updateClock() {
             const now = new Date();
             document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
         }
-        setInterval(updateClock, 1000);
-        updateClock(); 
+        setInterval(updateClock, 1000); updateClock(); 
     </script>
 </body>
 </html>
