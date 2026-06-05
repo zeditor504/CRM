@@ -65,13 +65,12 @@
             background-color: #18181b;
         }
 
-        /* Updated DP360 brand color to match their official Cyan */
         .tab-dp360:hover { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
         .tab-lightspeed:hover { border-color: #00a4ef; box-shadow: 0 0 15px rgba(0, 164, 239, 0.15); }
-        .tab-dx1:hover { border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.15); }
+        .tab-dx1:hover { border-color: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.15); }
         .tab-dealerspike:hover { border-color: #ff9900; box-shadow: 0 0 15px rgba(255, 153, 0, 0.15); }
-        .tab-elead:hover { border-color: #1e3a8a; box-shadow: 0 0 15px rgba(30, 58, 138, 0.3); }
-        .tab-vinsolutions:hover { border-color: #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.15); }
+        .tab-elead:hover { border-color: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
+        .tab-vinsolutions:hover { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.15); }
     </style>
 </head>
 <body class="text-gray-200 relative">
@@ -88,7 +87,6 @@
     <main class="flex-1 flex items-center justify-center p-6 relative z-10 w-full">
         
         <div class="relative w-full max-w-2xl">
-            
             <div class="golden-blob"></div>
 
             <div class="import-card rounded-2xl w-full p-10 flex flex-col items-center relative z-10">
@@ -103,15 +101,12 @@
                     <button onclick="simulateImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                         <span>Import from Dealership Performance 360</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
-                            <svg width="50" height="24" viewBox="0 0 50 24" fill="none">
-                                <path d="M 2 22 C 4 12 12 4 22 2" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
-                                <path d="M 12 11 L 16 7" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M 18 8 L 22 3" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
-                                <path d="M 26 5 L 29 2" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round"/>
-                                <path d="M 34 5 L 37 3" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-                                <path d="M 43 7 L 46 5" stroke="#38bdf8" stroke-width="7.5" stroke-linecap="round"/>
-                                <path d="M 6 18 L 30 18" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round"/>
-                                <circle cx="14" cy="18" r="3" fill="#cbd5e1"/>
+                            <svg width="105" height="24" viewBox="0 0 110 24" fill="none">
+                                <path d="M 2 20 C 2 8 10 2 20 2 C 26 2 31 5 35 10" stroke="#38bdf8" stroke-width="4" stroke-dasharray="6 4" stroke-linecap="round"/>
+                                <path d="M 12 18 L 19 10 L 21 19 Z" fill="#ffffff"/>
+                                <circle cx="16" cy="18" r="3.5" fill="#ffffff"/>
+                                <path d="M 4 18 L 16 18" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                                <text x="42" y="18" fill="#38bdf8" font-family="'Inter Tight', sans-serif" font-weight="900" font-size="16" letter-spacing="0.5">DP360</text>
                             </svg>
                         </div>
                     </button>
@@ -121,7 +116,7 @@
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
                             <svg width="100" height="24" viewBox="0 0 120 28" fill="none">
                                 <path d="M0 4H16L12 24H0L4 4Z" fill="#00a4ef"/>
-                                <text x="22" y="19" fill="#00a4ef" font-family="Arial" font-weight="900" font-size="13" letter-spacing="0.5">LIGHTSPEED</text>
+                                <text x="22" y="19" fill="#00a4ef" font-family="'Inter Tight', sans-serif" font-weight="900" font-size="14" letter-spacing="0.5">LIGHTSPEED</text>
                             </svg>
                         </div>
                     </button>
@@ -129,10 +124,15 @@
                     <button onclick="simulateImport('DX1 Platform')" class="crm-tab tab-dx1 w-full border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                         <span>Import from DX1 Platform</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
-                            <svg width="65" height="24" viewBox="0 0 70 24" fill="none">
-                                <rect width="20" height="20" y="2" rx="4" fill="#ff0000"/>
-                                <path d="M6 7L14 17M14 7L6 17" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-                                <text x="26" y="18" fill="#ffffff" font-family="Arial" font-weight="900" font-size="16">DX1</text>
+                            <svg width="75" height="24" viewBox="0 0 85 24" fill="none">
+                                <g transform="translate(0, 1) scale(0.95)">
+                                    <path d="M11,11 L3,6 L11,1 Z" fill="#84cc16" stroke="#ffffff" stroke-width="0.75" stroke-linejoin="round"/>
+                                    <path d="M11,11 L11,1 L19,6 Z" fill="#f97316" stroke="#ffffff" stroke-width="0.75" stroke-linejoin="round"/>
+                                    <path d="M11,11 L3,16 L3,6 Z" fill="#a855f7" stroke="#ffffff" stroke-width="0.75" stroke-linejoin="round"/>
+                                    <path d="M11,11 L11,21 L3,16 Z" fill="#06b6d4" stroke="#ffffff" stroke-width="0.75" stroke-linejoin="round"/>
+                                    <path d="M11,11 L19,6 L19,16 L11,21 Z" fill="#ef4444" stroke="#ffffff" stroke-width="0.75" stroke-linejoin="round"/>
+                                </g>
+                                <text x="26" y="18" fill="#ffffff" font-family="'Inter Tight', sans-serif" font-weight="900" font-size="16">DX1</text>
                             </svg>
                         </div>
                     </button>
@@ -143,7 +143,7 @@
                             <svg width="115" height="24" viewBox="0 0 130 24" fill="none">
                                 <path d="M2 19L11 3L20 19H2Z" fill="#ff9900"/>
                                 <path d="M11 19L18 7L25 19H11Z" fill="#ffb74d"/>
-                                <text x="30" y="16" fill="#ff9900" font-family="Arial" font-weight="900" font-size="12" letter-spacing="0.2">DEALERSPIKE</text>
+                                <text x="30" y="16" fill="#ff9900" font-family="'Inter Tight', sans-serif" font-weight="900" font-size="12" letter-spacing="0.2">DEALERSPIKE</text>
                             </svg>
                         </div>
                     </button>
@@ -152,9 +152,9 @@
                         <span>Import from Elead CRM</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
                             <svg width="75" height="24" viewBox="0 0 80 24" fill="none">
-                                <circle cx="10" cy="12" r="8" fill="#1e3a8a"/>
-                                <path d="M8 8L14 12L8 16V8Z" fill="#ffffff"/>
-                                <text x="24" y="18" fill="#ffffff" font-family="Arial" font-weight="800" font-size="15" italic>elead</text>
+                                <rect width="20" height="20" y="2" fill="#ef4444"/>
+                                <text x="10" y="18" fill="#ffffff" font-family="'Inter Tight', sans-serif" font-weight="600" font-size="18" text-anchor="middle">e</text>
+                                <text x="26" y="18" fill="#ffffff" font-family="'Inter Tight', sans-serif" font-weight="800" font-size="15">elead</text>
                             </svg>
                         </div>
                     </button>
@@ -163,12 +163,14 @@
                         <span>Import from VinSolutions</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
                             <svg width="110" height="24" viewBox="0 0 120 24" fill="none">
-                                <rect width="18" height="18" y="3" rx="3" fill="#22c55e"/>
-                                <path d="M5 11L8 14L13 8" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <text x="24" y="16" fill="#22c55e" font-family="Arial" font-weight="700" font-size="13">VinSolutions</text>
+                                <circle cx="12" cy="12" r="10" fill="#1e40af"/>
+                                <circle cx="12" cy="7.5" r="2.5" fill="#ffffff"/>
+                                <path d="M 8.5 11.5 L 15.5 11.5 L 12 18 Z" fill="#ffffff" stroke="#ffffff" stroke-width="1" stroke-linejoin="round"/>
+                                <text x="28" y="17" fill="#3b82f6" font-family="'Inter Tight', sans-serif" font-weight="700" font-size="14">VinSolutions</text>
                             </svg>
                         </div>
                     </button>
+
                 </div>
                 
                 <div id="status-feedback" class="mt-8 text-sm font-bold text-zinc-400 min-h-[20px] transition-all tracking-widest uppercase"></div>
@@ -176,7 +178,7 @@
         </div>
     </main>
 
-    <footer class="w-full max-w-[1400px] mx-auto flex justify-between items-center py-4 px-6 shrink-0 mt-auto bg-transparent relative z-20">
+    <footer class="w-full max-w-[1400px] mx-auto flex justify-between items-center py-4 px-6 shrink-0 relative z-20 mt-auto bg-transparent">
         <div id="live-clock" class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-gray-500 text-[12px] font-semibold uppercase tracking-widest font-mono">Time: --:--:--</div>
         <div class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-widest text-[#39FF14]">All Systems Online</div>
         <div class="bg-zinc-900/70 border border-zinc-800/60 px-4 py-1.5 rounded-full text-gray-500 text-[12px] font-semibold uppercase tracking-widest">Central Time Zone (CT)</div>
