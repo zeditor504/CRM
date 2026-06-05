@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Dealer Systems | Import Leads</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { apex: '#e11d48', dark: '#0a0a0a', panel: '#171717', border: '#262626' } } }
+        }
+    </script>
+    
+    <style>
+        /* Force Inter Tight globally across every piece of text */
+        * { font-family: 'Inter Tight', sans-serif !important; }
+        
+        body {
+            background-color: #000000;
+        }
+
+        /* Ambient glow for the central terminal window */
+        .import-card {
+            box-shadow: 0 0 40px rgba(225, 29, 72, 0.03), 0 0 80px rgba(255, 255, 255, 0.02);
+        }
+
+        /* Custom glow transitions for the individual CRM tabs */
+        .crm-tab {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .crm-tab:hover {
+            transform: translateY(-2px);
+            background-color: #262626;
+            color: #ffffff;
+        }
+        
+        /* Specialized neon glow colors per tab to maximize visual appeal */
+        .glow-lightspeed:hover { border-color: #00a4ef; box-shadow: 0 0 20px rgba(0, 164, 239, 0.2); }
+        .glow-dx1:hover { border-color: #e11d48; box-shadow: 0 0 20px rgba(225, 29, 72, 0.2); }
+        .glow-dealerspike:hover { border-color: #f59e0b; box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
+        .glow-elead:hover { border-color: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+        .glow-vinsolutions:hover { border-color: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+
+        /* Smooth pulsing animation for the active system indicator */
+        #system-status { 
+            color: #39FF14; font-weight: 600; display: inline-block;
+            animation: statusBreathe 3s ease-in-out infinite;
+        }
+        @keyframes statusBreathe {
+            0% { opacity: 0.6; text-shadow: 0 0 8px rgba(57, 255, 20, 0.3); }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(57, 255, 20, 0.8), 0 0 25px rgba(57, 255, 20, 0.4); }
+            100% { opacity: 0.6; text-shadow: 0 0 8px rgba(57, 255, 20, 0.3); }
+        }
+    </style>
+</head>
+<body class="text-gray-200 h-screen overflow-hidden flex flex-col justify-between">
+
+    <!-- Header Navigation Bar -->
+    <nav class="bg-panel border-b border-border h-16 flex items-center justify-between px-6 shrink-0 shadow-md w-full">
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-gray-400 hover:text-white transition flex items-center text-sm font-bold border-r border-border pr-4 mr-2">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Dashboard
+            </a>
+            <i class="fa-solid fa-motorcycle text-apex text-2xl"></i>
+            <h1 class="text-xl font-black tracking-widest text-white uppercase">Apex<span class="text-apex">Dealer</span></h1>
+        </div>
+        <div class="h-8 w-8 bg-gray-800 rounded-full flex items-center justify-center border border-gray-600">
+            <i class="fa-solid fa-user text-sm text-gray-300"></i>
+        </div>
+    </nav>
+
+    <!-- Perfectly Centered Work Area Box -->
+    <main class="flex-1 flex items-center justify-center p-6">
+        <div class="import-card bg-panel border border-border rounded-2xl w-full max-w-2xl p-8 flex flex-col items-center">
+            
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-black text-white tracking-tight uppercase mb-2">Legacy CRM Migration</h2>
+                <p class="text-sm text-gray-400">Select your previous software system to process data structures into Apex Dealer Systems.</p>
+            </div>
+
+            <!-- Vertical Stacking Content List -->
+            <div class="w-full space-y-4">
+                
+                <!-- Tab 1: Lightspeed -->
+                <button onclick="simulateImport('Lightspeed DMS')" class="crm-tab glow-lightspeed w-full bg-dark border border-border rounded-xl px-6 py-4 flex items-center justify-between font-bold text-gray-300 text-lg group">
+                    <span>Import from Lightspeed DMS</span>
+                    <svg class="h-6 w-24 text-gray-400 group-hover:text-white transition" viewBox="0 0 100 25" fill="currentColor">
+                        <path d="M10,5 L25,5 L20,20 L5,20 Z" fill="#00a4ef"/>
+                        <text x="32" y="17" font-family="sans-serif" font-weight="900" font-size="11" fill="currentColor">LIGHTSPEED</text>
+                    </svg>
+                </button>
+
+                <!-- Tab 2: DX1 -->
+                <button onclick="simulateImport('DX1 Platform')" class="crm-tab glow-dx1 w-full bg-dark border border-border rounded-xl px-6 py-4 flex items-center justify-between font-bold text-gray-300 text-lg group">
+                    <span>Import from DX1 Platform</span>
+                    <svg class="h-6 w-16 text-gray-400 group-hover:text-white transition" viewBox="0 0 80 25" fill="currentColor">
+                        <rect x="5" y="4" width="16" height="16" rx="4" fill="#e11d48"/>
+                        <text x="9" y="16" font-family="sans-serif" font-weight="900" font-size="12" fill="#fff">X</text>
+                        <text x="26" y="17" font-family="sans-serif" font-weight="900" font-size="13" fill="currentColor">DX1</text>
+                    </svg>
+                </button>
+
+                <!-- Tab 3: DealerSpike -->
+                <button onclick="simulateImport('DealerSpike CRM')" class="crm-tab glow-dealerspike w-full bg-dark border border-border rounded-xl px-6 py-4 flex items-center justify-between font-bold text-gray-300 text-lg group">
+                    <span>Import from DealerSpike CRM</span>
+                    <svg class="h-6 w-24 text-gray-400 group-hover:text-white transition" viewBox="0 0 100 25" fill="currentColor">
+                        <path d="M5,18 L12,4 L19,18 Z" fill="#f59e0b"/>
+                        <path d="M14,18 L19,8 L24,18 Z" fill="#d97706"/>
+                        <text x="28" y="16" font-family="sans-serif" font-weight="800" font-size="10" fill="currentColor">DEALERSPIKE</text>
+                    </svg>
+                </button>
+
+                <!-- Tab 4: Elead -->
+                <button onclick="simulateImport('Elead CRM')" class="crm-tab glow-elead w-full bg-dark border border-border rounded-xl px-6 py-4 flex items-center justify-between font-bold text-gray-300 text-lg group">
+                    <span>Import from Elead CRM</span>
+                    <svg class="h-6 w-20 text-gray-400 group-hover:text-white transition" viewBox="0 0 90 25" fill="currentColor">
+                        <circle cx="14" cy="12" r="8" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                        <path d="M14,7 L22,12 L14,17 Z" fill="#3b82f6"/>
+                        <text x="28" y="17" font-family="sans-serif" font-weight="900" font-size="13" fill="currentColor">elead</text>
+                    </svg>
+                </button>
+
+                <!-- Tab 5: VinSolutions -->
+                <button onclick="simulateImport('VinSolutions')" class="crm-tab glow-vinsolutions w-full bg-dark border border-border rounded-xl px-6 py-4 flex items-center justify-between font-bold text-gray-300 text-lg group">
+                    <span>Import from VinSolutions</span>
+                    <svg class="h-6 w-24 text-gray-400 group-hover:text-white transition" viewBox="0 0 100 25" fill="currentColor">
+                        <rect x="5" y="5" width="14" height="14" rx="2" fill="#10b981"/>
+                        <path d="M8,12 L11,15 L16,9" fill="none" stroke="#fff" stroke-width="2"/>
+                        <text x="24" y="16" font-family="sans-serif" font-weight="700" font-size="11" fill="currentColor">VinSolutions</text>
+                    </svg>
+                </button>
+
+            </div>
+            
+            <div id="status-feedback" class="mt-6 text-sm font-bold text-gray-500 min-h-[20px] transition-all"></div>
+        </div>
+    </main>
+
+    <!-- Standard Dashboard Alignment Footer -->
+    <footer class="w-full max-w-[1400px] mx-auto flex justify-between items-center text-xs color-[#8E8E93] font-normal pb-4 px-6 shrink-0">
+        <div id="live-clock" class="text-left text-white font-semibold tabular-nums flex-1">Time: --:--:-- -- Central Time</div>
+        <div class="text-center flex-1"><span id="system-status">All Systems Online</span></div>
+        <div class="text-right text-white font-semibold flex-1">Note: All times are in (CT - Central Time Zone).</div>
+    </footer>
+
+    <script>
+        // Interactive visual feedback configuration when clicking a migration path
+        function simulateImport(crmName) {
+            const feedback = document.getElementById('status-feedback');
+            feedback.className = "mt-6 text-sm font-bold text-amber-400 animate-pulse";
+            feedback.innerText = `Establishing data link with ${crmName} secure tables...`;
+            
+            setTimeout(() => {
+                feedback.className = "mt-6 text-sm font-bold text-green-400";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Data mapping complete. 0 records failed integrity verification.`;
+            }, 1800);
+        }
+
+        // Clock synchronization module
+        function updateClock() {
+            const now = new Date();
+            const timeOptions = { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', timeOptions)} Central Time`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); 
+    </script>
+</body>
+</html>
