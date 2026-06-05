@@ -10,48 +10,56 @@
     
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
+        
+        /* STRICT DARK MODE ENFORCEMENT */
         body { 
-            background: linear-gradient(135deg, #0b0f19 0%, #111827 100%);
-            color: #f1f5f9; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+            background-color: #0b0f19 !important;
+            color: #f1f5f9 !important; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        body::before {
+            content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
             background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
             background-size: 32px 32px;
         }
         
         .ambient-glow { position: absolute; top: -10%; left: 20%; width: 60vw; height: 30vw; background: radial-gradient(ellipse, rgba(244, 63, 94, 0.04) 0%, transparent 60%); filter: blur(100px); z-index: 0; pointer-events: none; }
 
+        /* Bulletproof Dark Frosted Glass */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
+            border-radius: 20px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
         }
 
-        .glass-nav { background: rgba(11, 15, 25, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-nav { background-color: rgba(11, 15, 25, 0.8) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
         .chart-bar { background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 4px 4px 0 0; width: 100%; transition: height 1s ease-out; }
         
         table { width: 100%; border-collapse: separate; border-spacing: 0 4px; text-align: left; font-size: 0.9rem; }
         th { padding: 16px 20px; color: #94a3b8; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border: none;}
-        td { padding: 16px 20px; background: rgba(255,255,255,0.015); border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.01); }
+        td { padding: 16px 20px; background-color: rgba(255,255,255,0.015); border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.01); }
         tr td:first-child { border-left: 1px solid rgba(255,255,255,0.02); border-top-left-radius: 12px; border-bottom-left-radius: 12px; font-weight: 600; }
         tr td:last-child { border-right: 1px solid rgba(255,255,255,0.02); border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
         tbody tr { cursor: pointer; transition: 0.2s; }
-        tbody tr:hover td { background: rgba(255,255,255,0.04); }
+        tbody tr:hover td { background-color: rgba(255,255,255,0.04); }
 
-        .btn-action { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.05em; color: #cbd5e1; }
-        .btn-action:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
-        .btn-danger { background: rgba(244, 63, 94, 0.1); border-color: rgba(244, 63, 94, 0.3); color: #f87171; }
-        .btn-danger:hover { background: rgba(244, 63, 94, 0.2); color: #fca5a5; }
+        .btn-action { background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.05em; color: #cbd5e1; }
+        .btn-action:hover { background-color: rgba(255, 255, 255, 0.1); color: #fff; }
+        .btn-danger { background-color: rgba(244, 63, 94, 0.15); border-color: rgba(244, 63, 94, 0.4); color: #fca5a5; }
+        .btn-danger:hover { background-color: rgba(244, 63, 94, 0.25); color: white; }
 
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.1); border-radius: 10px; }
 
         .sparkline { width: 80px; height: 30px; }
         .sparkline path { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 
         .footer-wrapper { width: 100%; max-width: 1500px; margin: 0 auto; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto; }
-        .footer-pill { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; backdrop-filter: blur(8px); }
+        .footer-pill { background-color: rgba(15, 23, 42, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; backdrop-filter: blur(8px); }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(12px); z-index: 50; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .modal-overlay { position: fixed; inset: 0; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(12px); z-index: 50; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
     </style>
 </head>
@@ -68,11 +76,11 @@
             <h1 class="text-lg font-bold tracking-wide text-white uppercase">Apex <span class="text-rose-400">Manager Hub</span></h1>
         </div>
         <div class="flex items-center space-x-5">
-            <div class="bg-rose-500/10 text-rose-400 border border-rose-500/20 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center">
+            <div class="bg-rose-500/10 text-rose-400 border border-rose-500/30 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center shadow-[0_0_15px_rgba(244,63,94,0.15)]">
                 <span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-2 animate-pulse"></span>
                 1 Escalation Pending
             </div>
-            <div class="h-8 w-8 bg-zinc-800 rounded-full flex items-center justify-center border border-white/10 text-xs font-bold text-white shadow-sm">GM</div>
+            <div class="h-8 w-8 bg-zinc-800 rounded-full flex items-center justify-center border border-white/20 text-xs font-bold text-white shadow-sm">GM</div>
         </div>
     </nav>
 
@@ -107,7 +115,7 @@
                     <div class="text-xs text-zinc-400 font-medium mt-2">Awaiting signatures</div>
                     <svg class="sparkline absolute bottom-5 right-5 opacity-50" viewBox="0 0 100 30"><path d="M0 15 L20 15 L40 15 L60 15 L80 15 L100 15" stroke="#71717a" stroke-dasharray="4 4"/></svg>
                 </div>
-                <div class="glass-panel p-6 relative overflow-hidden bg-rose-500/5 border-rose-500/20">
+                <div class="glass-panel p-6 relative overflow-hidden border-rose-500/30" style="background-color: rgba(244, 63, 94, 0.05) !important;">
                     <h3 class="text-[10px] font-bold text-rose-400 uppercase tracking-widest mb-2">Missed Mandatory Replies</h3>
                     <div class="text-4xl font-bold text-rose-400 mb-1">1</div>
                     <div class="text-xs text-rose-400/80 font-medium mt-2">Action required immediately</div>
@@ -119,7 +127,7 @@
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-sm font-bold text-white uppercase tracking-widest">Active Sales Team</h2>
                     <div class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest flex items-center gap-2">
-                        Round-Robin Dist: <span class="bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">Active</span>
+                        Round-Robin Dist: <span class="bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/30 shadow-[0_0_8px_rgba(52,211,153,0.1)]">Active</span>
                     </div>
                 </div>
                 <div class="overflow-x-auto">
@@ -149,7 +157,7 @@
                 <div class="absolute left-[39px] top-8 bottom-8 w-px bg-white/10 z-0"></div>
                 
                 <div class="flex gap-4 relative z-10">
-                    <div class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-[#0b0f19] border border-emerald-500/50 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(52,211,153,0.2)]">
                         <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </div>
                     <div>
@@ -160,7 +168,7 @@
                 </div>
 
                 <div class="flex gap-4 relative z-10">
-                    <div class="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-[#0b0f19] border border-blue-500/50 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
                         <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     </div>
                     <div>
@@ -171,7 +179,7 @@
                 </div>
 
                 <div class="flex gap-4 relative z-10">
-                    <div class="w-8 h-8 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-[#0b0f19] border border-rose-500/50 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(244,63,94,0.3)]">
                         <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     </div>
                     <div>
@@ -192,16 +200,16 @@
                 <div class="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center text-xl font-bold text-white border border-zinc-700" id="modal-initial">U</div>
                 <div>
                     <h2 class="text-2xl font-bold text-white" id="modal-name">Umair</h2>
-                    <p class="text-xs font-semibold uppercase tracking-widest mt-1 text-emerald-400 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Online</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest mt-1 text-emerald-400 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Online</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4 mb-8">
-                <div class="bg-black/20 p-5 rounded-xl border border-white/5 text-center">
+                <div class="bg-black/30 p-5 rounded-xl border border-white/5 text-center">
                     <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Conversion Rate</p>
                     <p class="text-2xl font-bold text-white">24.5%</p>
                 </div>
-                <div class="bg-black/20 p-5 rounded-xl border border-white/5 text-center">
+                <div class="bg-black/30 p-5 rounded-xl border border-white/5 text-center">
                     <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Avg Response</p>
                     <p class="text-2xl font-bold text-white">4m 12s</p>
                 </div>
@@ -221,7 +229,7 @@
         const reps = [
             { name: "Umair", status: "Online", statusColor: "emerald-400", leads: 5, closed: 12, appts: 3, alert: false },
             { name: "Paul", status: "Online", statusColor: "emerald-400", leads: 5, closed: 8, appts: 1, alert: true },
-            { name: "Steven", status: "Offline", statusColor: "zinc-500", leads: "0 (Paused)", closed: 15, appts: 4, alert: false },
+            { name: "Steven", status: "Offline", statusColor: "slate-500", leads: "0 (Paused)", closed: 15, appts: 4, alert: false },
             { name: "Blake", status: "Online", statusColor: "emerald-400", leads: 5, closed: 6, appts: 2, alert: false },
             { name: "Mike", status: "Online", statusColor: "emerald-400", leads: 5, closed: 9, appts: 2, alert: false },
             { name: "Sarah", status: "Online", statusColor: "emerald-400", leads: 5, closed: 11, appts: 1, alert: false },
@@ -233,18 +241,18 @@
             reps.forEach(rep => {
                 let tr = document.createElement('tr');
                 tr.onclick = () => openModal(rep.name);
-                if (rep.alert) tr.className = "bg-rose-500/5";
+                if (rep.alert) tr.style.backgroundColor = "rgba(244, 63, 94, 0.05)";
                 
                 let actionCell = rep.alert 
                     ? `<button class="btn-action btn-danger" onclick="event.stopPropagation();">Reassign Lead</button>`
                     : `<button class="btn-action" onclick="event.stopPropagation(); openModal('${rep.name}')">View Stats</button>`;
 
                 tr.innerHTML = `
-                    <td class="text-white"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-black/20 flex items-center justify-center text-xs font-bold text-zinc-300 border border-white/5">${rep.name.charAt(0)}</div>${rep.name}</div></td>
+                    <td class="text-white"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-black/30 flex items-center justify-center text-xs font-bold text-slate-300 border border-white/10">${rep.name.charAt(0)}</div>${rep.name}</div></td>
                     <td><span class="text-${rep.statusColor} text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-${rep.statusColor}"></span>${rep.status}</span></td>
-                    <td class="${rep.alert ? 'text-rose-400 font-semibold' : 'text-zinc-300'}">${rep.leads} ${rep.alert ? '(1 Overdue)' : ''}</td>
+                    <td class="${rep.alert ? 'text-rose-400 font-semibold' : 'text-slate-300'}">${rep.leads} ${rep.alert ? '(1 Overdue)' : ''}</td>
                     <td class="text-white font-bold">${rep.closed}</td>
-                    <td class="text-zinc-300">${rep.appts}</td>
+                    <td class="text-slate-300">${rep.appts}</td>
                     <td class="text-right">${actionCell}</td>
                 `;
                 tbody.appendChild(tr);
