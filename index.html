@@ -10,8 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* Force the Inter Tight font onto EVERY element, absolutely no exceptions */
-        * {
+        /* Force the Inter Tight font onto EVERY element EXCEPT icon tags */
+        *:not(i) {
             font-family: 'Inter Tight', sans-serif !important;
         }
 
@@ -192,7 +192,8 @@
         </table>
     </div>
 
-    <button class="import-btn">Import Leads from your past CRM</button>
+    <!-- Corrected routing URL to importleads.html -->
+    <button class="import-btn" onclick="window.location.href='importleads.html'">Import Leads from your past CRM</button>
     <div class="pricing-text">Plans start at $500 a month, for dealers of all sizes.</div>
 
     <div class="chart-footer">
