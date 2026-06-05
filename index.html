@@ -72,7 +72,7 @@
             background-color: #000000;
             margin-bottom: 30px;
             box-shadow: 0 0 30px rgba(255, 255, 255, 0.04); 
-            max-height: 65vh; /* Enables internal vertical scrolling for 25 items */
+            max-height: 65vh; 
         }
         
         table {
@@ -139,13 +139,18 @@
         .chart-footer > div { flex: 1; }
         #live-clock { text-align: left; color: #FFFFFF; font-weight: 600; font-variant-numeric: tabular-nums; }
         
-        /* Breathing Animation for System Status */
+        /* BREATHING ANIMATION FOR SYSTEM STATUS */
         #system-status { 
             text-align: center; 
             color: #57bb8a; 
             font-weight: 600; 
             display: inline-block;
             animation: statusBreathe 3s ease-in-out infinite;
+        }
+
+        /* Ensures the middle footer column content stays perfectly centered */
+        .chart-footer > div:nth-child(2) {
+            text-align: center;
         }
 
         @keyframes statusBreathe {
@@ -248,7 +253,6 @@
 
         // Generate exactly 25 records starting at ID 1
         for (let i = 1; i <= 25; i++) {
-            // Pick attributes pseudo-randomly based on index to keep the dataset fixed but realistic
             const name = sampleNames[i - 1] || `Customer ${i}`;
             const phone = `555-01${String(20 + i)}`;
             const vehicle = sampleVehicles[(i * 3) % sampleVehicles.length];
