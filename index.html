@@ -112,7 +112,7 @@
 
         /* Import Button */
         .import-btn {
-            display: inline-block; margin-bottom: 40px; padding: 14px 28px;
+            display: inline-block; margin-bottom: 10px; padding: 14px 28px;
             background-color: #1C1C1E; color: #8E8E93; border-radius: 100px;
             text-decoration: none; font-size: 1.05rem; font-weight: 600;
             transition: all 0.3s ease; border: 1px solid transparent; cursor: pointer;
@@ -120,6 +120,16 @@
         .import-btn:hover { 
             color: #FFFFFF; background-color: #2C2C2E; 
             transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15); 
+        }
+
+        /* Blue Glowing Pricing Text */
+        .pricing-text {
+            color: #3b82f6; 
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            letter-spacing: 0.02em;
         }
 
         .chart-footer {
@@ -133,14 +143,15 @@
         #live-clock { text-align: left; color: #FFFFFF; font-weight: 600; font-variant-numeric: tabular-nums; }
         
         #system-status { 
-            color: #57bb8a; font-weight: 600; display: inline-block;
+            color: #39FF14; font-weight: 600; display: inline-block;
             animation: statusBreathe 3s ease-in-out infinite;
         }
 
+        /* Breathing opacity animation only (no scaling) */
         @keyframes statusBreathe {
-            0% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 8px rgba(87, 187, 138, 0.4); }
-            50% { transform: scale(1.03); opacity: 1; text-shadow: 0 0 18px rgba(87, 187, 138, 0.9), 0 0 30px rgba(87, 187, 138, 0.4); }
-            100% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 8px rgba(87, 187, 138, 0.4); }
+            0% { opacity: 0.6; text-shadow: 0 0 8px rgba(57, 255, 20, 0.3); }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(57, 255, 20, 0.8), 0 0 25px rgba(57, 255, 20, 0.4); }
+            100% { opacity: 0.6; text-shadow: 0 0 8px rgba(57, 255, 20, 0.3); }
         }
 
         .table-container::-webkit-scrollbar { height: 8px; width: 8px; }
@@ -182,10 +193,11 @@
     </div>
 
     <button class="import-btn">Import Leads from your past CRM</button>
+    <div class="pricing-text">Plans start at $500 a month, for dealers of all sizes.</div>
 
     <div class="chart-footer">
         <div id="live-clock">Time: --:--:-- -- Central Time</div>
-        <div><span id="system-status">System Status: Online</span></div>
+        <div><span id="system-status">All Systems Online</span></div>
         <div>Note: All times are in (CT - Central Time Zone).</div>
     </div>
 
