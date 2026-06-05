@@ -11,32 +11,41 @@
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
         
+        /* Strictly Enforced Dark Mode */
         body { 
-            background: linear-gradient(135deg, #0b0f19 0%, #111827 100%);
-            color: #f1f5f9; margin: 0; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+            background-color: #0b0f19 !important;
+            color: #f1f5f9 !important; margin: 0; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+        }
+
+        body::before {
+            content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 32px 32px;
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
-        .glass-nav { background: rgba(11, 15, 25, 0.6); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-nav { background-color: rgba(11, 15, 25, 0.8) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
-        .chat-bubble-customer { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px 16px 16px 4px; padding: 14px 20px; color: #f8fafc; max-width: 80%; line-height: 1.5; }
-        .chat-bubble-ai { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 16px 16px 4px 16px; padding: 14px 20px; color: #e0e7ff; max-width: 80%; line-height: 1.5; }
-        .chat-bubble-send { background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.2); border-radius: 16px 16px 4px 16px; padding: 14px 20px; color: #d1fae5; max-width: 80%; line-height: 1.5; }
+        .chat-bubble-customer { background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px 16px 16px 4px; padding: 14px 20px; color: #f8fafc; max-width: 80%; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .chat-bubble-ai { background-color: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 16px 16px 4px 16px; padding: 14px 20px; color: #e0e7ff; max-width: 80%; line-height: 1.5; }
+        .chat-bubble-send { background-color: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.2); border-radius: 16px 16px 4px 16px; padding: 14px 20px; color: #d1fae5; max-width: 80%; line-height: 1.5; }
 
-        .minimal-input { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.08); color: white; border-radius: 12px; padding: 14px; width: 100%; font-size: 0.9rem; transition: border-color 0.2s; }
+        .minimal-input { background-color: rgba(0, 0, 0, 0.3) !important; border: 1px solid rgba(255, 255, 255, 0.08); color: white; border-radius: 12px; padding: 14px; width: 100%; font-size: 0.9rem; transition: border-color 0.2s; }
         .minimal-input:focus { outline: none; border-color: rgba(59, 130, 246, 0.5); }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.15); border-radius: 10px; }
 
         .footer-wrapper { width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); z-index: 20; }
-        .footer-pill { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; }
+        .footer-pill { background-color: rgba(0, 0, 0, 0.4) !important; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; }
 
         @media print { body * { visibility: hidden; } #print-deal-sheet, #print-deal-sheet * { visibility: visible; } #print-deal-sheet { position: absolute; left: 0; top: 0; width: 100%; background: white; color: black; padding: 40px; } .no-print { display: none !important; } }
     </style>
@@ -52,7 +61,7 @@
             <h1 class="text-lg font-bold text-white tracking-wide uppercase">Apex Deal Desk</h1>
         </div>
         <div class="flex items-center space-x-6">
-            <div id="top-lock-warning" class="text-amber-400 font-semibold flex items-center text-xs bg-amber-500/10 px-4 py-1.5 rounded-full border border-amber-500/20 transition-all uppercase tracking-widest">
+            <div id="top-lock-warning" class="text-amber-400 font-semibold flex items-center text-xs bg-amber-500/10 px-4 py-1.5 rounded-full border border-amber-500/20 transition-all uppercase tracking-widest shadow-[0_0_15px_rgba(245,158,11,0.2)]">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Action Required: Please Respond
             </div>
@@ -64,20 +73,20 @@
         <div class="w-80 flex flex-col z-10 overflow-hidden space-y-5 shrink-0">
             <div class="glass-panel p-5">
                 <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Assigned Queue</h2>
-                <input type="text" placeholder="Search leads..." class="minimal-input py-2" disabled>
+                <input type="text" placeholder="Search leads..." class="minimal-input py-2 text-sm" disabled>
             </div>
             
             <div class="flex-1 overflow-y-auto space-y-3 pb-4">
-                <div id="urgent-queue-card" class="glass-panel p-5 relative border-amber-500/30 bg-amber-500/5 transition-all">
+                <div id="urgent-queue-card" class="glass-panel p-5 relative border-amber-500/40 bg-amber-500/10 transition-all">
                     <div class="flex justify-between items-center mb-3">
                         <h3 class="font-bold text-white text-base" id="ui-queue-name">Loading...</h3>
-                        <span id="urgent-timer" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-bold px-2 py-1 rounded-full tabular-nums">03:45 LEFT</span>
+                        <span id="urgent-timer" class="bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-bold px-2 py-1 rounded-full tabular-nums">03:45 LEFT</span>
                     </div>
-                    <p class="text-xs text-slate-400 mb-4 flex items-center gap-1.5">
+                    <p class="text-xs text-slate-300 mb-4 flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         <span id="ui-queue-loc">Loading...</span>
                     </p>
-                    <p id="urgent-message" class="text-[10px] text-amber-400 font-semibold uppercase tracking-widest text-center">
+                    <p id="urgent-message" class="text-[10px] text-amber-400 font-bold uppercase tracking-widest text-center bg-black/30 p-2 rounded-lg border border-amber-500/20">
                         Take over AI chat to prevent escalation.
                     </p>
                 </div>
@@ -85,12 +94,12 @@
         </div>
 
         <div class="flex-[2] flex flex-col glass-panel relative overflow-hidden">
-            <div class="p-6 border-b border-white/5 flex justify-between items-start shrink-0 bg-white/[0.02]">
+            <div class="p-6 border-b border-white/10 flex justify-between items-start shrink-0 bg-white/[0.02]">
                 <div>
                     <div class="flex items-center gap-3 mb-1">
                         <h2 class="text-2xl font-bold text-white tracking-tight" id="ui-fname">Loading Name...</h2>
-                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span> Hot Lead
+                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_5px_#34d399]"></span> Hot Lead
                         </span>
                     </div>
                     <p class="text-sm text-slate-400 font-medium" id="ui-address">Loading Details...</p>
@@ -101,12 +110,12 @@
                 <div class="text-center text-xs text-slate-500 font-medium tracking-wide">Lead originated from Website Form • Today 07:00 AM</div>
                 
                 <div class="flex flex-col items-start gap-1">
-                    <div class="text-[10px] text-slate-500 ml-2 uppercase tracking-widest font-semibold">Customer</div>
+                    <div class="text-[10px] text-slate-400 ml-2 uppercase tracking-widest font-bold" id="ui-chat-customer-name">Customer</div>
                     <div class="chat-bubble-customer" id="ui-customer-msg">Hey, I saw the Ducati V4 on your site. Do you guys take trade-ins?</div>
                 </div>
 
                 <div class="flex flex-col items-end gap-1 mt-4">
-                    <div class="text-[10px] text-indigo-400 mr-2 flex items-center uppercase tracking-widest font-semibold">
+                    <div class="text-[10px] text-indigo-400 mr-2 flex items-center uppercase tracking-widest font-bold">
                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Apex AI Assistant • 07:01 AM
                     </div>
@@ -114,10 +123,10 @@
                 </div>
             </div>
 
-            <div class="p-6 border-t border-white/5 shrink-0 bg-black/10">
+            <div class="p-6 border-t border-white/10 shrink-0 bg-black/30">
                 <div class="relative flex items-end gap-3">
-                    <textarea id="reply-input" class="minimal-input h-20 resize-none transition-colors border-rose-500/30 focus:border-rose-500/60" placeholder="Type your response to engage the client..."></textarea>
-                    <button id="unlock-btn" onclick="sendAndUnlock()" class="bg-blue-600 text-white hover:bg-blue-500 px-6 h-20 rounded-xl text-sm font-bold uppercase tracking-widest transition flex items-center justify-center shrink-0">
+                    <textarea id="reply-input" class="minimal-input h-20 resize-none transition-colors border-rose-500/40 focus:border-rose-500/70" placeholder="Type your response to engage the client..."></textarea>
+                    <button id="unlock-btn" onclick="sendAndUnlock()" class="bg-blue-600 text-white hover:bg-blue-500 px-8 h-20 rounded-xl text-sm font-bold uppercase tracking-widest transition flex items-center justify-center shrink-0 shadow-lg">
                         Send
                     </button>
                 </div>
@@ -125,47 +134,61 @@
         </div>
         
         <div class="w-80 flex flex-col shrink-0 space-y-5 z-10">
-            <div class="glass-panel p-6">
+            <div class="glass-panel p-6 shadow-none border-white/5">
                 <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Customer Insights</h3>
                 <div class="space-y-4">
                     <div>
-                        <div class="text-xs text-slate-500 mb-1.5 font-medium">Auto-Tags</div>
+                        <div class="text-xs text-slate-400 mb-2 font-medium">Auto-Tags</div>
                         <div class="flex flex-wrap gap-2">
-                            <span class="bg-blue-500/10 border border-blue-500/20 text-blue-300 text-[10px] px-2 py-1 rounded uppercase tracking-wider font-semibold">Financing</span>
-                            <span class="bg-purple-500/10 border border-purple-500/20 text-purple-300 text-[10px] px-2 py-1 rounded uppercase tracking-wider font-semibold">Has Trade</span>
+                            <span class="bg-blue-500/10 border border-blue-500/30 text-blue-300 text-[10px] px-2 py-1 rounded uppercase tracking-wider font-bold">Financing</span>
+                            <span class="bg-purple-500/10 border border-purple-500/30 text-purple-300 text-[10px] px-2 py-1 rounded uppercase tracking-wider font-bold">Has Trade</span>
                         </div>
                     </div>
                     <div>
-                        <div class="text-xs text-slate-500 mb-1 font-medium">AI Inferred Intent</div>
+                        <div class="text-xs text-slate-400 mb-1.5 font-medium">AI Inferred Intent</div>
                         <p class="text-sm text-slate-300 leading-relaxed">Customer is highly motivated but price-sensitive regarding their trade value.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="glass-panel p-6 flex-1 flex flex-col">
+            <div class="glass-panel p-6 flex-1 flex flex-col shadow-none border-white/5 overflow-y-auto">
                 <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Deal Structure</h3>
-                <h4 class="font-bold text-sm text-white mb-4 leading-tight" id="ui-bike">Loading Vehicle...</h4>
+                <h4 class="font-bold text-sm text-white mb-5 leading-tight border-b border-white/10 pb-4" id="ui-bike">Loading Vehicle...</h4>
                 
                 <div class="space-y-4 mb-6">
                     <div>
-                        <label class="text-xs text-zinc-400 font-medium block mb-2">Purchase Method</label>
-                        <select id="ui-method" class="minimal-input appearance-none py-2 cursor-pointer">
+                        <label class="text-xs text-zinc-300 font-medium block mb-1.5">Purchase Method</label>
+                        <select id="ui-method" class="minimal-input appearance-none py-2 cursor-pointer text-sm">
                             <option value="Finance">Finance</option>
                             <option value="Cash">Cash</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs text-zinc-400 font-medium block mb-2">Down Payment ($)</label>
-                        <input type="number" id="ui-downpayment" class="minimal-input py-2" value="2500">
+                        <label class="text-xs text-zinc-300 font-medium block mb-1.5">Down Payment ($)</label>
+                        <input type="number" id="ui-downpayment" class="minimal-input py-2 text-sm" value="2500">
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-300 font-medium block mb-1.5">Estimated Trade Value ($)</label>
+                        <input type="number" id="ui-trade" class="minimal-input py-2 text-sm" value="4000">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-zinc-300 font-medium block mb-1.5">Term (Mo)</label>
+                            <input type="number" class="minimal-input py-2 text-sm" value="60">
+                        </div>
+                        <div>
+                            <label class="text-xs text-zinc-300 font-medium block mb-1.5">APR (%)</label>
+                            <input type="number" class="minimal-input py-2 text-sm" value="6.99">
+                        </div>
                     </div>
                 </div>
 
-                <div class="mt-auto border-t border-white/5 pt-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-slate-500 text-sm font-medium">Retail Price</span>
-                        <span class="text-emerald-400 font-bold text-lg" id="ui-price">$0</span>
+                <div class="mt-auto border-t border-white/10 pt-5">
+                    <div class="flex justify-between items-center mb-5">
+                        <span class="text-slate-400 text-sm font-medium">Retail Price</span>
+                        <span class="text-emerald-400 font-black text-xl" id="ui-price">$0</span>
                     </div>
-                    <button onclick="generatePrintout()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition flex items-center justify-center">
+                    <button onclick="generatePrintout()" class="w-full bg-white/5 hover:bg-white/10 border border-white/20 text-white py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest transition flex items-center justify-center">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                         Print Deal Sheet
                     </button>
@@ -225,14 +248,18 @@
             const urlParams = new URLSearchParams(window.location.search);
             const leadId = parseInt(urlParams.get('id')) || 1;
 
-            const sampleNames = ["Josh Stevenson", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes"];
-            const vehicles = ["2024 Ducati Panigale V4", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", "Honda CBR600RR"];
+            const sampleNames = ["Josh Stevenson", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", "James Easton", "Benjamin Mercer", "Lucas Thorne", "Henry Blackwell", "Alexander Cross"];
+            const vehicles = ["2024 Ducati Panigale V4", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", "Honda CBR600RR", "BMW S1000RR", "2024 Yamaha R1", "Kawasaki Z900", "KTM 390 Duke", "Triumph Super 1200"];
             
             const name = sampleNames[leadId - 1] || `Customer ${leadId}`;
             const firstName = name.split(' ')[0];
             const vehicle = vehicles[leadId - 1] || vehicles[0];
 
             document.getElementById('ui-fname').innerText = name;
+            
+            // DYNAMIC CUSTOMER NAME UPDATED HERE
+            document.getElementById('ui-chat-customer-name').innerText = `${name} • 07:00 AM`;
+            
             document.getElementById('ui-queue-name').innerText = name;
             document.getElementById('ui-address').innerText = `Source: Website Direct`;
             document.getElementById('ui-queue-loc').innerText = "Houston, TX";
@@ -254,7 +281,7 @@
                     clearInterval(timerInt);
                     timerEl.innerText = "ESCALATED";
                     document.getElementById('top-lock-warning').innerHTML = "Escalated to Management";
-                    document.getElementById('top-lock-warning').className = "text-rose-400 font-semibold flex items-center text-xs bg-rose-500/10 px-4 py-1.5 rounded-full border border-rose-500/20 transition-all uppercase tracking-widest";
+                    document.getElementById('top-lock-warning').className = "text-rose-400 font-semibold flex items-center text-xs bg-rose-500/10 px-4 py-1.5 rounded-full border border-rose-500/30 transition-all uppercase tracking-widest shadow-[0_0_15px_rgba(244,63,94,0.3)]";
                     document.getElementById('reply-input').disabled = true;
                     document.getElementById('reply-input').placeholder = "Time expired. Lead routed to Manager Hub.";
                 }
@@ -269,23 +296,23 @@
             const history = document.getElementById('chat-history');
             const newMsg = document.createElement('div');
             newMsg.className = "flex flex-col items-end gap-1 mt-4";
-            newMsg.innerHTML = `<div class="text-[10px] text-slate-500 mr-2 uppercase tracking-widest font-semibold">You • Just Now</div><div class="chat-bubble-send">${text}</div>`;
+            newMsg.innerHTML = `<div class="text-[10px] text-emerald-400 mr-2 uppercase tracking-widest font-bold">You • Just Now</div><div class="chat-bubble-send">${text}</div>`;
             history.appendChild(newMsg);
             input.value = '';
 
             const lockWarning = document.getElementById('top-lock-warning');
-            lockWarning.className = "text-emerald-400 font-semibold flex items-center text-xs bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/20 transition-all uppercase tracking-widest";
+            lockWarning.className = "text-emerald-400 font-semibold flex items-center text-xs bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/30 transition-all uppercase tracking-widest";
             lockWarning.innerHTML = "SYSTEM UNLOCKED";
             
             input.className = "w-full minimal-input h-20 border-white/5 focus:border-white/20 resize-none transition-colors";
             input.placeholder = "Message sent. Continue conversation...";
             
-            document.getElementById('urgent-queue-card').className = "glass-panel p-5 relative transition-all opacity-50";
+            document.getElementById('urgent-queue-card').className = "glass-panel p-5 relative transition-all opacity-50 shadow-none border-white/5";
             document.getElementById('urgent-timer').style.display = 'none';
             document.getElementById('urgent-message').style.display = 'none';
 
             const btn = document.getElementById('unlock-btn');
-            btn.className = "bg-white/5 text-slate-500 cursor-not-allowed px-6 h-20 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center shrink-0";
+            btn.className = "bg-white/10 text-slate-400 cursor-not-allowed px-8 h-20 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center shrink-0";
             btn.innerHTML = "Sent";
             btn.disabled = true;
         }
