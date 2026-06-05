@@ -10,12 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* Force the Inter Tight font onto EVERY element EXCEPT icon tags */
-        *:not(i) {
-            font-family: 'Inter Tight', sans-serif !important;
-        }
+        * { font-family: 'Inter Tight', sans-serif !important; }
 
-        /* Base document properties */
         body {
             margin: 0; padding: 20px 0; background-color: #000000;
             color: #FFFFFF; min-height: 100vh; display: flex; 
@@ -88,11 +84,9 @@
         td:nth-child(2) { font-weight: 700; color: #FFFFFF; } 
         td { color: #8E8E93; } 
         
-        /* Make rows clickable to route to the Deal Desk */
         tbody tr { cursor: pointer; transition: background-color 0.2s ease; }
         tbody tr:hover { background-color: #161618; }
 
-        /* Status Pills */
         .status-new { 
             background-color: rgba(87, 187, 138, 0.1) !important; 
             color: #57bb8a !important; 
@@ -101,7 +95,6 @@
             box-shadow: 0 0 15px rgba(87, 187, 138, 0.2); 
         }
 
-        /* Glowing Orange Stale Status */
         .status-stale { 
             background-color: rgba(249, 115, 22, 0.1) !important; 
             color: #f97316 !important; 
@@ -110,7 +103,6 @@
             box-shadow: 0 0 15px rgba(249, 115, 22, 0.2); 
         }
 
-        /* Import Button */
         .import-btn {
             display: inline-block; margin-bottom: 10px; padding: 14px 28px;
             background-color: #1C1C1E; color: #8E8E93; border-radius: 100px;
@@ -122,7 +114,6 @@
             transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15); 
         }
 
-        /* Blue Glowing Pricing Text */
         .pricing-text {
             color: #3b82f6; 
             font-size: 1rem;
@@ -137,7 +128,7 @@
             margin-top: auto; font-size: 0.85rem; color: #8E8E93; font-weight: 400; padding-bottom: 10px;
         }
         .chart-footer > div { flex: 1; }
-        .chart-footer > div:nth-child(2) { text-align: center; } /* Forces absolute center */
+        .chart-footer > div:nth-child(2) { text-align: center; } 
         .chart-footer > div:last-child { text-align: right; color: #FFFFFF; font-weight: 600; }
         
         #live-clock { text-align: left; color: #FFFFFF; font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -147,7 +138,6 @@
             animation: statusBreathe 3s ease-in-out infinite;
         }
 
-        /* Breathing opacity animation only (no scaling) */
         @keyframes statusBreathe {
             0% { opacity: 0.6; text-shadow: 0 0 8px rgba(57, 255, 20, 0.3); }
             50% { opacity: 1; text-shadow: 0 0 15px rgba(57, 255, 20, 0.8), 0 0 25px rgba(57, 255, 20, 0.4); }
@@ -192,7 +182,6 @@
         </table>
     </div>
 
-    <!-- Corrected routing URL to importleads.html -->
     <button class="import-btn" onclick="window.location.href='importleads.html'">Import Leads from your past CRM</button>
     <div class="pricing-text">Plans start at $500 a month, for dealers of all sizes.</div>
 
@@ -232,21 +221,18 @@
             const phone = `555-01${String(20 + i)}`;
             const vehicle = sampleVehicles[(i * 3) % sampleVehicles.length];
             const rep = sampleReps[(i * 7) % sampleReps.length];
-            
-            // Exactly alternate between New and Stale to guarantee Stale shows up vividly
             const status = (i % 3 === 0) ? "Stale" : "New"; 
 
             leadsDatabase.push({ id: i, name, phone, vehicle, rep, status });
         }
 
-        // Render Table
         function loadData() {
             const tbody = document.getElementById('table-body');
             leadsDatabase.forEach(lead => {
                 let tr = document.createElement('tr');
                 
-                // Routes to the Deal Desk when a row is clicked
-                tr.onclick = function() { window.location.href = 'deal-desk.html'; };
+                // Passes the unique ID into the URL when clicked
+                tr.onclick = function() { window.location.href = 'deal-desk.html?id=' + lead.id; };
 
                 const statusClass = lead.status === "New" ? "status-new" : "status-stale";
                 
@@ -263,7 +249,6 @@
         }
         loadData();
 
-        // Live Clock
         function updateClock() {
             const now = new Date();
             const timeOptions = { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
