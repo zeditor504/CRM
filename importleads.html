@@ -8,33 +8,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
-    <script>
-        tailwind.config = {
-            theme: { extend: { colors: { dark: '#09090b', panel: '#18181b', border: '#27272a', textm: '#a1a1aa' } } }
-        }
-    </script>
-    
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
         
         body { 
-            background-color: #050505; 
-            margin: 0; min-height: 100vh; overflow: hidden;
+            background-color: #050505; margin: 0; min-height: 100vh; overflow-x: hidden;
             display: flex; flex-direction: column;
             background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
         .golden-blob {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 105%; height: 105%; 
+            position: absolute; top: 50%; left: 50%; width: 105%; height: 105%; 
             background: radial-gradient(circle, rgba(230, 185, 55, 0.45) 0%, transparent 65%);
-            transform: translate(-50%, -50%);
-            animation: breatheGold 6s ease-in-out infinite alternate;
-            filter: blur(65px);
-            z-index: 0;
-            pointer-events: none;
+            transform: translate(-50%, -50%); animation: breatheGold 6s ease-in-out infinite alternate;
+            filter: blur(65px); z-index: 0; pointer-events: none;
         }
 
         @keyframes breatheGold {
@@ -44,28 +32,15 @@
 
         .import-card {
             background: linear-gradient(135deg, rgba(25, 25, 30, 0.35) 0%, rgba(5, 5, 8, 0.65) 100%);
-            backdrop-filter: blur(28px) saturate(140%);
-            -webkit-backdrop-filter: blur(28px) saturate(140%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-top: 1px solid rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(28px) saturate(140%); -webkit-backdrop-filter: blur(28px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.15); 
             border-left: 1px solid rgba(255, 255, 255, 0.1);  
-            z-index: 10;
-            box-shadow: 
-                inset 0 0 20px rgba(255, 255, 255, 0.02), 
-                0 30px 65px rgba(0, 0, 0, 0.8); 
+            z-index: 10; box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 30px 65px rgba(0, 0, 0, 0.8); 
         }
 
-        .crm-tab { 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            background: rgba(9, 9, 11, 0.7); 
-        }
-        
-        .crm-tab:hover {
-            transform: translateY(-2px);
-            background-color: #18181b;
-        }
+        .crm-tab { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(9, 9, 11, 0.7); }
+        .crm-tab:hover { transform: translateY(-2px); background-color: #18181b; }
 
-        /* Updated Lightspeed glow color to match the new orange logo */
         .tab-dp360:hover { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
         .tab-lightspeed:hover { border-color: #f97316; box-shadow: 0 0 15px rgba(249, 115, 22, 0.15); }
         .tab-dx1:hover { border-color: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.15); }
@@ -76,31 +51,26 @@
 </head>
 <body class="text-gray-200 relative">
 
-    <nav class="bg-panel/80 backdrop-blur-md border-b border-border h-16 flex items-center justify-between px-6 shrink-0 w-full relative z-20">
+    <nav class="bg-[#18181b]/80 backdrop-blur-md border-b border-[#27272a] h-16 flex items-center justify-between px-6 shrink-0 w-full relative z-20">
         <div class="flex items-center space-x-4">
-            <a href="index.html" class="text-textm hover:text-white transition flex items-center text-sm font-semibold border-r border-border pr-4 mr-2 uppercase tracking-widest">
-                <svg class="w-4 h-4 mr-1 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Dashboard
+            <a href="index.html" class="text-[#a1a1aa] hover:text-white transition flex items-center text-sm font-semibold border-r border-[#27272a] pr-4 mr-2 uppercase tracking-widest">
+                Dashboard
             </a>
             <h1 class="text-lg font-bold text-white tracking-wide uppercase">Apex Dealer Systems</h1>
         </div>
     </nav>
 
     <main class="flex-1 flex items-center justify-center p-6 relative z-10 w-full">
-        
         <div class="relative w-full max-w-2xl mt-8 mb-8">
             <div class="golden-blob"></div>
-
             <div class="import-card rounded-2xl w-full p-10 flex flex-col items-center relative z-10">
-                
                 <div class="text-center mb-10">
                     <h2 class="text-2xl font-black text-white uppercase mb-3 tracking-[0.4em]">IMPORT PAST LEADS</h2>
                     <p class="text-sm text-zinc-300 font-medium">Select your previous software system to securely map data into Apex Dealer Systems.</p>
                 </div>
 
                 <div class="w-full space-y-3">
-                    
-                    <!-- DP360 Tab with Text Restored -->
-                    <button onclick="simulateImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <button onclick="simulateImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full border border-[#27272a] rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                         <span>Import from Dealership Performance 360</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
                             <svg width="105" height="24" viewBox="0 0 110 24" fill="none">
@@ -113,8 +83,7 @@
                         </div>
                     </button>
 
-                    <!-- Lightspeed Tab with New LS Logo -->
-                    <button onclick="simulateImport('Lightspeed DMS')" class="crm-tab tab-lightspeed w-full border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <button onclick="simulateImport('Lightspeed DMS')" class="crm-tab tab-lightspeed w-full border border-[#27272a] rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                         <span>Import from Lightspeed DMS</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
                             <svg width="135" height="24" viewBox="0 0 145 28" fill="none">
@@ -129,8 +98,7 @@
                         </div>
                     </button>
 
-                    <!-- DX1 Tab -->
-                    <button onclick="simulateImport('DX1 Platform')" class="crm-tab tab-dx1 w-full border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <button onclick="simulateImport('DX1 Platform')" class="crm-tab tab-dx1 w-full border border-[#27272a] rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                         <span>Import from DX1 Platform</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
                             <svg width="75" height="24" viewBox="0 0 85 24" fill="none">
@@ -146,8 +114,7 @@
                         </div>
                     </button>
 
-                    <!-- DealerSpike Tab with Text Restored -->
-                    <button onclick="simulateImport('DealerSpike CRM')" class="crm-tab tab-dealerspike w-full border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <button onclick="simulateImport('DealerSpike CRM')" class="crm-tab tab-dealerspike w-full border border-[#27272a] rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                         <span>Import from DealerSpike CRM</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
                             <svg width="140" height="26" viewBox="0 0 150 26" fill="none">
@@ -160,8 +127,7 @@
                         </div>
                     </button>
 
-                    <!-- Elead Tab (Forced Uppercase) -->
-                    <button onclick="simulateImport('Elead CRM')" class="crm-tab tab-elead w-full border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <button onclick="simulateImport('Elead CRM')" class="crm-tab tab-elead w-full border border-[#27272a] rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                         <span>Import from Elead CRM</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
                             <svg width="90" height="24" viewBox="0 0 90 24" fill="none">
@@ -172,8 +138,7 @@
                         </div>
                     </button>
 
-                    <!-- VinSolutions Tab (Forced Uppercase) -->
-                    <button onclick="simulateImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full border border-border rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
+                    <button onclick="simulateImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full border border-[#27272a] rounded-lg px-6 py-4 flex items-center justify-between font-bold text-zinc-300 text-sm group">
                         <span>Import from VinSolutions</span>
                         <div class="flex items-center space-x-2 opacity-80 group-hover:opacity-100 transition">
                             <svg width="150" height="24" viewBox="0 0 150 24" fill="none">
@@ -184,7 +149,6 @@
                             </svg>
                         </div>
                     </button>
-
                 </div>
                 
                 <div id="status-feedback" class="mt-8 text-sm font-bold text-zinc-400 min-h-[20px] transition-all tracking-widest uppercase"></div>
@@ -202,11 +166,10 @@
         function simulateImport(crmName) {
             const feedback = document.getElementById('status-feedback');
             feedback.className = "mt-8 text-sm font-bold text-yellow-500 tracking-widest uppercase animate-pulse flex items-center justify-center";
-            feedback.innerHTML = `<svg class="w-4 h-4 mr-2 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> Establishing data link with ${crmName}...`;
-            
+            feedback.innerHTML = `Establishing data link with ${crmName}...`;
             setTimeout(() => {
                 feedback.className = "mt-8 text-sm font-bold text-[#10b981] tracking-widest uppercase flex items-center justify-center";
-                feedback.innerHTML = `<svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Data mapping complete. 0 records failed integrity verification.`;
+                feedback.innerHTML = `Data mapping complete. 0 records failed integrity verification.`;
             }, 1800);
         }
 
