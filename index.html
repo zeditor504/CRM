@@ -11,6 +11,7 @@
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
 
+        /* PERFECT MATTE BLACK ENFORCEMENT */
         body { 
             background-color: #141414 !important; color: #f1f5f9 !important; 
             margin: 0; padding: 0; min-height: 100vh; 
@@ -25,12 +26,13 @@
 
         .bg-glows { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
         .glow-neutral { position: absolute; top: 20%; left: -10%; width: 40vw; height: 40vw; border-radius: 50%; background: rgba(255, 255, 255, 0.02); filter: blur(100px); }
-        .glow-emerald { position: absolute; bottom: -10%; right: -10%; width: 40vw; height: 40vw; border-radius: 50%; background: rgba(16, 185, 129, 0.03); filter: blur(100px); }
+        .glow-emerald { position: absolute; bottom: -10%; right: -10%; width: 40vw; height: 40vw; border-radius: 50%; background: rgba(16, 185, 129, 0.02); filter: blur(100px); }
 
         .container-wrapper { width: 95vw; max-width: 1400px; z-index: 10; position: relative; padding-top: 30px; flex: 1; display: flex; flex-direction: column; }
 
+        /* Neutral Frosted Glass */
         .glass-panel {
-            background-color: rgba(30, 30, 30, 0.5) !important;
+            background-color: rgba(30, 30, 30, 0.4) !important;
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.08); border-left: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 20px; box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5); transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -80,8 +82,7 @@
         .secondary-btn { background-color: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); }
         .secondary-btn:hover { background-color: rgba(255,255,255,0.1); color: white; transform: translateY(-2px); }
 
-        /* ISOLATED FOOTER LAYOUT */
-        .footer-wrapper { width: 95vw; max-width: 1400px; padding: 20px 0; display: flex; align-items: center; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .footer-wrapper { width: 95vw; max-width: 1400px; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.05); }
         .footer-section { flex: 1; display: flex; }
         .footer-section.left { justify-content: flex-start; }
         .footer-section.center { justify-content: center; }
