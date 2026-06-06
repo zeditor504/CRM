@@ -13,7 +13,7 @@
         
         /* STRICT DARK MODE ENFORCEMENT */
         body { 
-            background-color: #0b0f19 !important;
+            background-color: #141414 !important;
             color: #f1f5f9 !important;
             margin: 0; min-height: 100vh; overflow-x: hidden;
             display: flex; flex-direction: column; 
@@ -35,16 +35,16 @@
         }
         @keyframes pulseGlow { 0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.95); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); } }
 
-        /* Bulletproof Dark Frosted Glass */
+        /* Neutral Dark Frosted Glass */
         .glass-panel {
-            background-color: rgba(15, 23, 42, 0.7) !important;
+            background-color: rgba(30, 30, 30, 0.4) !important;
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(255, 255, 255, 0.08);  
             z-index: 10; box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 30px 65px rgba(0, 0, 0, 0.8); border-radius: 24px;
         }
 
         .glass-nav {
-            background-color: rgba(11, 15, 25, 0.8) !important; backdrop-filter: blur(20px);
+            background-color: rgba(20, 20, 20, 0.8) !important; backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -54,15 +54,25 @@
         }
         .crm-tab:hover { transform: translateY(-2px); background-color: rgba(255, 255, 255, 0.06) !important; }
 
-        /* Hover Glows for the Tabs */
-        .tab-dp360:hover { border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15); }
-        .tab-lightspeed:hover { border-color: rgba(249, 115, 22, 0.4); box-shadow: 0 4px 20px rgba(249, 115, 22, 0.15); }
-        .tab-dx1:hover { border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15); }
-        .tab-elead:hover { border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2); } 
-        .tab-vinsolutions:hover { border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15); }
+        /* Custom Colors & Glows */
+        .tab-dp360:hover { border-color: #16485c; box-shadow: 0 4px 20px rgba(22, 72, 92, 0.25); }
+        .tab-dx1:hover { border-color: #f5862a; box-shadow: 0 4px 20px rgba(245, 134, 42, 0.2); }
+        .tab-elead:hover { border-color: #e03c32; box-shadow: 0 4px 20px rgba(224, 60, 50, 0.2); } 
+        .tab-vinsolutions:hover { border-color: #1d3e74; box-shadow: 0 4px 20px rgba(29, 62, 116, 0.25); }
+
+        /* Pure Black Container for Custom Logos */
+        .logo-box {
+            background-color: #000000;
+            width: 48px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 6px; padding: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+        .brand-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
 
         .footer-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); }
-        .footer-pill { background-color: rgba(15, 23, 42, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; backdrop-filter: blur(8px); }
+        .footer-pill { background-color: rgba(20, 20, 20, 0.8) !important; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; backdrop-filter: blur(8px); }
 
         .modal-overlay {
             position: fixed; inset: 0; background-color: rgba(0,0,0,0.85) !important; backdrop-filter: blur(12px);
@@ -73,8 +83,6 @@
         .progress-box { width: 100%; max-width: 450px; padding: 40px; text-align: center; }
         .progress-bar-container { width: 100%; height: 6px; background-color: rgba(255,255,255,0.1) !important; border-radius: 100px; overflow: hidden; margin: 24px 0; }
         .progress-bar { height: 100%; background-color: #34d399 !important; width: 0%; transition: width 0.4s ease; }
-        
-        .brand-logo { height: 24px; width: auto; object-fit: contain; border-radius: 4px; }
     </style>
 </head>
 <body class="relative flex flex-col items-center">
@@ -100,43 +108,43 @@
 
                 <div class="w-full space-y-3">
                     
-                    <button onclick="startImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full rounded-xl px-6 py-4 flex items-center justify-between font-medium text-slate-300 text-sm group">
-                        <span>Import from Dealership Performance 360</span>
+                    <button onclick="startImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                        <span class="font-medium text-slate-300 text-sm">Import from Dealership Performance 360</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <img src="assets/dp360.png" alt="DP360 Logo" class="brand-logo">
-                            <span class="text-[#38bdf8]" style="font-weight: 900; font-size: 15px; letter-spacing: 0.5px;">DP360</span>
+                            <div class="logo-box">
+                                <img src="assets/dp360.png" alt="DP360 Logo" class="brand-logo">
+                            </div>
+                            <span style="color: #16485c; font-weight: 900; font-size: 15px; letter-spacing: 0.5px;">DP360</span>
                         </div>
                     </button>
 
-                    <button onclick="startImport('Lightspeed DMS')" class="crm-tab tab-lightspeed w-full rounded-xl px-6 py-4 flex items-center justify-between font-medium text-slate-300 text-sm group">
-                        <span>Import from Lightspeed DMS</span>
+                    <button onclick="startImport('DX1 Platform')" class="crm-tab tab-dx1 w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                        <span class="font-medium text-slate-300 text-sm">Import from DX1 Platform</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <img src="assets/lightspeed.png" alt="Lightspeed Logo" class="brand-logo">
-                            <span class="text-[#f97316]" style="font-weight: 900; font-size: 13px; letter-spacing: 0.5px;">LIGHTSPEED</span>
+                            <div class="logo-box">
+                                <img src="assets/dx1.png" alt="DX1 Logo" class="brand-logo">
+                            </div>
+                            <span style="color: #f5862a; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">DX1</span>
                         </div>
                     </button>
 
-                    <button onclick="startImport('DX1 Platform')" class="crm-tab tab-dx1 w-full rounded-xl px-6 py-4 flex items-center justify-between font-medium text-slate-300 text-sm group">
-                        <span>Import from DX1 Platform</span>
+                    <button onclick="startImport('Elead CRM')" class="crm-tab tab-elead w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                        <span class="font-medium text-slate-300 text-sm">Import from Elead CRM</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <img src="assets/dx1.png" alt="DX1 Logo" class="brand-logo">
-                            <span class="text-white" style="font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">DX1</span>
+                            <div class="logo-box">
+                                <img src="assets/elead.png" alt="Elead Logo" class="brand-logo">
+                            </div>
+                            <span style="color: #e03c32; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">ELEAD</span>
                         </div>
                     </button>
 
-                    <button onclick="startImport('Elead CRM')" class="crm-tab tab-elead w-full rounded-xl px-6 py-4 flex items-center justify-between font-medium text-slate-300 text-sm group">
-                        <span>Import from Elead CRM</span>
+                    <button onclick="startImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                        <span class="font-medium text-slate-300 text-sm">Import from VinSolutions</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <img src="assets/elead.png" alt="Elead Logo" class="brand-logo">
-                            <span class="text-[#ef4444]" style="font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">ELEAD</span>
-                        </div>
-                    </button>
-
-                    <button onclick="startImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full rounded-xl px-6 py-4 flex items-center justify-between font-medium text-slate-300 text-sm group">
-                        <span>Import from VinSolutions</span>
-                        <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <img src="assets/vinsolutions.png" alt="VinSolutions Logo" class="brand-logo">
-                            <span class="text-[#3b82f6]" style="font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">VINSOLUTIONS</span>
+                            <div class="logo-box">
+                                <img src="assets/vinsolutions.png" alt="VinSolutions Logo" class="brand-logo">
+                            </div>
+                            <span style="color: #1d3e74; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">VINSOLUTIONS</span>
                         </div>
                     </button>
                     
