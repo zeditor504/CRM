@@ -52,7 +52,6 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.1); border-radius: 10px; }
 
-        .sparkline { width: 80px; height: 30px; }
         .sparkline path { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 
         .footer-wrapper { width: 100%; max-width: 1500px; margin: 0 auto; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto; }
@@ -95,30 +94,39 @@
 
             <div class="grid grid-cols-4 gap-6 shrink-0">
                 <div class="glass-panel p-6 relative overflow-hidden">
-                    <h3 class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Web Leads Today</h3>
-                    <div class="text-4xl font-bold text-white mb-1">35</div>
-                    <div class="text-xs text-emerald-400 font-medium flex items-center mt-2">
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 12% vs yesterday
+                    <div class="pr-24">
+                        <h3 class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Web Leads Today</h3>
+                        <div class="text-4xl font-bold text-white mb-1">35</div>
+                        <div class="text-xs text-emerald-400 font-medium flex items-center mt-2">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 12% vs yesterday
+                        </div>
                     </div>
-                    <svg class="sparkline absolute bottom-5 right-5 opacity-80" viewBox="0 0 100 30"><path d="M0 25 L20 20 L40 28 L60 15 L80 18 L100 5" stroke="#34d399"/></svg>
+                    <!-- PERFECTLY CENTERED VERTICALLY ON THE RIGHT -->
+                    <svg class="sparkline absolute top-1/2 -translate-y-1/2 right-6 opacity-80 w-20 h-8" viewBox="0 0 100 30"><path d="M0 25 L20 20 L40 28 L60 15 L80 18 L100 5" stroke="#34d399"/></svg>
                 </div>
                 <div class="glass-panel p-6 relative overflow-hidden">
-                    <h3 class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Appointments Set</h3>
-                    <div class="text-4xl font-bold text-white mb-1">14</div>
-                    <div class="text-xs text-zinc-400 font-medium mt-2">82% Historic Show Rate</div>
-                    <svg class="sparkline absolute bottom-5 right-5 opacity-80" viewBox="0 0 100 30"><path d="M0 20 L20 25 L40 15 L60 20 L80 10 L100 5" stroke="#ffffff"/></svg>
+                    <div class="pr-24">
+                        <h3 class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Appointments Set</h3>
+                        <div class="text-4xl font-bold text-white mb-1">14</div>
+                        <div class="text-xs text-zinc-400 font-medium mt-2">82% Historic Show Rate</div>
+                    </div>
+                    <svg class="sparkline absolute top-1/2 -translate-y-1/2 right-6 opacity-80 w-20 h-8" viewBox="0 0 100 30"><path d="M0 20 L20 25 L40 15 L60 20 L80 10 L100 5" stroke="#ffffff"/></svg>
                 </div>
                 <div class="glass-panel p-6 relative overflow-hidden">
-                    <h3 class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Documents Sent</h3>
-                    <div class="text-4xl font-bold text-white mb-1">8</div>
-                    <div class="text-xs text-zinc-400 font-medium mt-2">Awaiting signatures</div>
-                    <svg class="sparkline absolute bottom-5 right-5 opacity-50" viewBox="0 0 100 30"><path d="M0 15 L20 15 L40 15 L60 15 L80 15 L100 15" stroke="#71717a" stroke-dasharray="4 4"/></svg>
+                    <div class="pr-24">
+                        <h3 class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Documents Sent</h3>
+                        <div class="text-4xl font-bold text-white mb-1">8</div>
+                        <div class="text-xs text-zinc-400 font-medium mt-2">Awaiting signatures</div>
+                    </div>
+                    <svg class="sparkline absolute top-1/2 -translate-y-1/2 right-6 opacity-50 w-20 h-8" viewBox="0 0 100 30"><path d="M0 15 L20 15 L40 15 L60 15 L80 15 L100 15" stroke="#71717a" stroke-dasharray="4 4"/></svg>
                 </div>
                 <div class="glass-panel p-6 relative overflow-hidden border-rose-500/30" style="background-color: rgba(244, 63, 94, 0.05) !important;">
-                    <h3 class="text-[10px] font-bold text-rose-400 uppercase tracking-widest mb-2">Missed Mandatory Replies</h3>
-                    <div class="text-4xl font-bold text-rose-400 mb-1">1</div>
-                    <div class="text-xs text-rose-400/80 font-medium mt-2">Action required immediately</div>
-                    <svg class="sparkline absolute bottom-5 right-5 opacity-80" viewBox="0 0 100 30"><path d="M0 5 L20 10 L40 8 L60 20 L80 15 L100 28" stroke="#f43f5e"/></svg>
+                    <div class="pr-24">
+                        <h3 class="text-[10px] font-bold text-rose-400 uppercase tracking-widest mb-2">Missed Mandatory Replies</h3>
+                        <div class="text-4xl font-bold text-rose-400 mb-1">1</div>
+                        <div class="text-xs text-rose-400/80 font-medium mt-2">Action required immediately</div>
+                    </div>
+                    <svg class="sparkline absolute top-1/2 -translate-y-1/2 right-6 opacity-80 w-20 h-8" viewBox="0 0 100 30"><path d="M0 5 L20 10 L40 8 L60 20 L80 15 L100 28" stroke="#f43f5e"/></svg>
                 </div>
             </div>
 
