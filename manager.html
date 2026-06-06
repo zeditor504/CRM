@@ -11,10 +11,15 @@
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
         
-        /* STRICT DARK MODE ENFORCEMENT */
+        /* STRICT DARK MODE ENFORCEMENT & SCROLL FIX */
         body { 
             background-color: #0b0f19 !important;
-            color: #f1f5f9 !important; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+            color: #f1f5f9 !important; 
+            margin: 0; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow-x: hidden; /* FIXED: Enables natural vertical scrolling */
         }
 
         body::before {
@@ -35,8 +40,6 @@
 
         .glass-nav { background-color: rgba(11, 15, 25, 0.8) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
-        .chart-bar { background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 4px 4px 0 0; width: 100%; transition: height 1s ease-out; }
-        
         table { width: 100%; border-collapse: separate; border-spacing: 0 4px; text-align: left; font-size: 0.9rem; }
         th { padding: 16px 20px; color: #94a3b8; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border: none;}
         td { padding: 16px 20px; background-color: rgba(255,255,255,0.015); border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.01); }
@@ -84,9 +87,9 @@
         </div>
     </nav>
 
-    <main class="flex-1 overflow-y-auto p-8 max-w-[1500px] mx-auto w-full relative z-10 flex gap-8">
+    <main class="flex-1 p-8 max-w-[1500px] mx-auto w-full relative z-10 flex gap-8 items-start mb-8">
         
-        <div class="flex-[3] flex flex-col gap-8">
+        <div class="flex-[3] flex flex-col gap-8 w-full">
             <div class="flex justify-between items-end">
                 <div>
                     <h2 class="text-3xl font-bold text-white mb-1 tracking-tight">Performance Overview</h2>
@@ -130,7 +133,7 @@
                         Round-Robin Dist: <span class="bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/30 shadow-[0_0_8px_rgba(52,211,153,0.1)]">Active</span>
                     </div>
                 </div>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto w-full">
                     <table>
                         <thead>
                             <tr>
@@ -149,7 +152,7 @@
             </div>
         </div>
 
-        <div class="w-80 glass-panel flex flex-col shrink-0 overflow-hidden">
+        <div class="w-80 glass-panel flex flex-col shrink-0 overflow-hidden sticky top-24 max-h-[calc(100vh-8rem)]">
             <div class="p-6 border-b border-white/5 bg-white/[0.01]">
                 <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Live Activity Log</h3>
             </div>
@@ -219,7 +222,7 @@
         </div>
     </div>
 
-    <footer class="footer-wrapper">
+    <footer class="footer-wrapper px-8">
         <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
         <div class="footer-pill text-[#34d399] font-semibold">All Systems Online</div>
         <div class="footer-pill">Central Time Zone (CT)</div>
@@ -233,7 +236,10 @@
             { name: "Blake", status: "Online", statusColor: "emerald-400", leads: 5, closed: 6, appts: 2, alert: false },
             { name: "Mike", status: "Online", statusColor: "emerald-400", leads: 5, closed: 9, appts: 2, alert: false },
             { name: "Sarah", status: "Online", statusColor: "emerald-400", leads: 5, closed: 11, appts: 1, alert: false },
-            { name: "David", status: "Online", statusColor: "emerald-400", leads: 5, closed: 7, appts: 1, alert: false }
+            { name: "David", status: "Online", statusColor: "emerald-400", leads: 5, closed: 7, appts: 1, alert: false },
+            { name: "Jessica", status: "Offline", statusColor: "slate-500", leads: "0", closed: 14, appts: 5, alert: false },
+            { name: "Ryan", status: "Online", statusColor: "emerald-400", leads: 5, closed: 5, appts: 0, alert: false },
+            { name: "Samantha", status: "Online", statusColor: "emerald-400", leads: 5, closed: 10, appts: 2, alert: false }
         ];
 
         function loadReps() {
