@@ -80,9 +80,13 @@
         .secondary-btn { background-color: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); }
         .secondary-btn:hover { background-color: rgba(255,255,255,0.1); color: white; transform: translateY(-2px); }
 
-        .footer-wrapper { width: 95vw; max-width: 1400px; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-        .footer-pill { background-color: rgba(20, 20, 20, 0.8); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.04); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; }
-        .footer-center { color: #34d399; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        /* ISOLATED FOOTER LAYOUT */
+        .footer-wrapper { width: 95vw; max-width: 1400px; padding: 20px 0; display: flex; align-items: center; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .footer-section { flex: 1; display: flex; }
+        .footer-section.left { justify-content: flex-start; }
+        .footer-section.center { justify-content: center; }
+        .footer-section.right { justify-content: flex-end; }
+        .footer-pill { background-color: rgba(20, 20, 20, 0.8) !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; }
 
         #profile-sidebar {
             position: fixed; top: 0; right: -400px; width: 380px; height: 100vh;
@@ -180,9 +184,17 @@
     </div>
 
     <footer class="footer-wrapper">
-        <div class="footer-pill" id="live-clock">Time: --:--:--</div>
-        <div class="footer-pill footer-center"><div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div> All Systems Online</div>
-        <div class="footer-pill">Central Time Zone (CT)</div>
+        <div class="footer-section left">
+            <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
+        </div>
+        <div class="footer-section center">
+            <div class="footer-pill flex items-center gap-2 text-[#34d399] font-semibold">
+                <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div> All Systems Online
+            </div>
+        </div>
+        <div class="footer-section right">
+            <div class="footer-pill">Central Time Zone (CT)</div>
+        </div>
     </footer>
 
     <div id="profile-sidebar">
