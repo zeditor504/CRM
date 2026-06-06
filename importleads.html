@@ -62,8 +62,13 @@
 
         .brand-logo { height: 28px; width: auto; object-fit: contain; }
 
-        .footer-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); }
-        .footer-pill { background-color: rgba(20, 20, 20, 0.8) !important; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; backdrop-filter: blur(8px); }
+        /* ISOLATED FOOTER LAYOUT */
+        .footer-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px 0; display: flex; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto; }
+        .footer-section { flex: 1; display: flex; }
+        .footer-section.left { justify-content: flex-start; }
+        .footer-section.center { justify-content: center; }
+        .footer-section.right { justify-content: flex-end; }
+        .footer-pill { background-color: rgba(20, 20, 20, 0.8) !important; border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; backdrop-filter: blur(8px); }
 
         .modal-overlay {
             position: fixed; inset: 0; background-color: rgba(0,0,0,0.85) !important; backdrop-filter: blur(12px);
@@ -103,7 +108,7 @@
                         <span class="font-medium text-slate-300 text-sm">Import from Dealership Performance 360</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
                             <img src="assets/dp360.png" alt="DP360 Logo" class="brand-logo">
-                            <span style="color: #38bdf8; font-weight: 900; font-size: 15px; letter-spacing: 0.5px;">DP360</span>
+                            <span style="color: #16485c; font-weight: 900; font-size: 15px; letter-spacing: 0.5px;">DP360</span>
                         </div>
                     </button>
 
@@ -111,7 +116,7 @@
                         <span class="font-medium text-slate-300 text-sm">Import from DX1 Platform</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
                             <img src="assets/dx1.png" alt="DX1 Logo" class="brand-logo">
-                            <span style="color: #fb923c; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">DX1</span>
+                            <span style="color: #f5862a; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">DX1</span>
                         </div>
                     </button>
 
@@ -119,7 +124,7 @@
                         <span class="font-medium text-slate-300 text-sm">Import from Elead CRM</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
                             <img src="assets/elead.png" alt="Elead Logo" class="brand-logo">
-                            <span style="color: #ef4444; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">ELEAD</span>
+                            <span style="color: #e03c32; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">ELEAD</span>
                         </div>
                     </button>
 
@@ -127,7 +132,7 @@
                         <span class="font-medium text-slate-300 text-sm">Import from VinSolutions</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
                             <img src="assets/vinsolutions.png" alt="VinSolutions Logo" class="brand-logo">
-                            <span style="color: #60a5fa; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">VINSOLUTIONS</span>
+                            <span style="color: #1d3e74; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">VINSOLUTIONS</span>
                         </div>
                     </button>
                     
@@ -150,10 +155,18 @@
         </div>
     </div>
 
-    <footer class="footer-wrapper px-6 w-full">
-        <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
-        <div class="footer-pill text-[#34d399] font-semibold">All Systems Online</div>
-        <div class="footer-pill">Central Time Zone (CT)</div>
+    <footer class="footer-wrapper px-6">
+        <div class="footer-section left">
+            <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
+        </div>
+        <div class="footer-section center">
+            <div class="footer-pill flex items-center gap-2 text-[#34d399] font-semibold">
+                <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div> All Systems Online
+            </div>
+        </div>
+        <div class="footer-section right">
+            <div class="footer-pill">Central Time Zone (CT)</div>
+        </div>
     </footer>
 
     <script>
