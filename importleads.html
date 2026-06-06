@@ -99,11 +99,11 @@
         }
         .crm-tab:hover { transform: translateY(-2px); background-color: rgba(255, 255, 255, 0.06) !important; }
 
-        /* Exact Brand Hex Glows */
-        .tab-dp360:hover { border-color: rgba(22, 72, 92, 0.8); box-shadow: 0 4px 20px rgba(22, 72, 92, 0.3); }
-        .tab-dx1:hover { border-color: rgba(245, 134, 42, 0.8); box-shadow: 0 4px 20px rgba(245, 134, 42, 0.3); }
-        .tab-elead:hover { border-color: rgba(224, 60, 50, 0.8); box-shadow: 0 4px 20px rgba(224, 60, 50, 0.3); } 
-        .tab-vinsolutions:hover { border-color: rgba(29, 62, 116, 0.8); box-shadow: 0 4px 20px rgba(29, 62, 116, 0.4); }
+        /* Exact Brand Hex Glows - Brightened for Dark Mode */
+        .tab-dp360:hover { border-color: rgba(56, 189, 248, 0.8); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3); }
+        .tab-dx1:hover { border-color: rgba(249, 115, 22, 0.8); box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); }
+        .tab-elead:hover { border-color: rgba(239, 68, 68, 0.8); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3); } 
+        .tab-vinsolutions:hover { border-color: rgba(59, 130, 246, 0.8); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); }
 
         .brand-text { font-weight: 900; font-size: 14px; letter-spacing: 0.5px; }
         .logo-box { width: 48px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -159,7 +159,7 @@
                             <div class="logo-box">
                                 <img src="assets/dp360.png" alt="DP360 Logo" class="brand-logo">
                             </div>
-                            <span class="brand-text" style="color: #16485c; text-shadow: 0 0 10px rgba(22, 72, 92, 0.5);">DP360</span>
+                            <span class="brand-text" style="color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);">DP360</span>
                         </div>
                     </button>
 
@@ -169,7 +169,7 @@
                             <div class="logo-box">
                                 <img src="assets/dx1.png" alt="DX1 Logo" class="brand-logo">
                             </div>
-                            <span class="brand-text" style="color: #f5862a; text-shadow: 0 0 10px rgba(245, 134, 42, 0.5);">DX1</span>
+                            <span class="brand-text" style="color: #f97316; text-shadow: 0 0 10px rgba(249, 115, 22, 0.4);">DX1</span>
                         </div>
                     </button>
 
@@ -179,7 +179,7 @@
                             <div class="logo-box">
                                 <img src="assets/elead.png" alt="Elead Logo" class="brand-logo">
                             </div>
-                            <span class="brand-text" style="color: #e03c32; text-shadow: 0 0 10px rgba(224, 60, 50, 0.5);">ELEAD</span>
+                            <span class="brand-text" style="color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.4);">ELEAD</span>
                         </div>
                     </button>
 
@@ -189,7 +189,7 @@
                             <div class="logo-box">
                                 <img src="assets/vinsolutions.png" alt="VinSolutions Logo" class="brand-logo">
                             </div>
-                            <span class="brand-text" style="color: #1d3e74; text-shadow: 0 0 10px rgba(29, 62, 116, 0.5);">VINSOLUTIONS</span>
+                            <span class="brand-text" style="color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.4);">VINSOLUTIONS</span>
                         </div>
                     </button>
                     
@@ -212,7 +212,7 @@
         </div>
     </div>
 
-    <footer class="footer-wrapper px-6 w-full">
+    <footer class="footer-wrapper px-6">
         <div class="footer-section left">
             <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
         </div>
@@ -336,7 +336,7 @@
                 fill.style.width = '100%'; 
                 title.innerText = "Import Complete"; 
                 title.classList.add('text-[#34d399]');
-                sub.innerText = "All records passed integrity verification!"; 
+                sub.innerText = "0 records failed integrity verification."; 
                 btn.classList.remove('hidden');
             }, 3500);
         }
