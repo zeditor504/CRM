@@ -12,8 +12,8 @@
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
         
         body { 
-            background-color: #141414 !important;
-            color: #f1f5f9 !important; margin: 0; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+            background-color: #141414 !important; color: #f1f5f9 !important; 
+            margin: 0; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column;
         }
 
         body::before {
@@ -25,8 +25,7 @@
         .glass-panel {
             background-color: rgba(30, 30, 30, 0.4) !important;
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(255, 255, 255, 0.08);
-            border-left: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(255, 255, 255, 0.08); border-left: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
@@ -43,7 +42,12 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.15); border-radius: 10px; }
 
-        .footer-wrapper { width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); z-index: 20; }
+        /* ISOLATED FOOTER LAYOUT */
+        .footer-wrapper { width: 100%; padding: 15px 30px; display: flex; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); z-index: 20; }
+        .footer-section { flex: 1; display: flex; }
+        .footer-section.left { justify-content: flex-start; }
+        .footer-section.center { justify-content: center; }
+        .footer-section.right { justify-content: flex-end; }
         .footer-pill { background-color: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; }
 
         @media print { body * { visibility: hidden; } #print-deal-sheet, #print-deal-sheet * { visibility: visible; } #print-deal-sheet { position: absolute; left: 0; top: 0; width: 100%; background: white; color: black; padding: 40px; } .no-print { display: none !important; } }
@@ -237,9 +241,17 @@
     </div>
 
     <footer class="no-print footer-wrapper">
-        <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
-        <div class="footer-pill text-emerald-400">All Systems Online</div>
-        <div class="footer-pill">Central Time Zone (CT)</div>
+        <div class="footer-section left">
+            <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
+        </div>
+        <div class="footer-section center">
+            <div class="footer-pill flex items-center gap-2 text-[#34d399] font-semibold">
+                <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div> All Systems Online
+            </div>
+        </div>
+        <div class="footer-section right">
+            <div class="footer-pill">Central Time Zone (CT)</div>
+        </div>
     </footer>
 
     <script>
@@ -255,8 +267,6 @@
             const vehicle = vehicles[leadId - 1] || vehicles[0];
 
             document.getElementById('ui-fname').innerText = name;
-            
-            // DYNAMIC CUSTOMER NAME IN CHAT
             document.getElementById('ui-chat-customer-name').innerText = `${name} • 07:00 AM`;
             
             document.getElementById('ui-queue-name').innerText = name;
