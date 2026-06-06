@@ -47,37 +47,35 @@
         }
         
         @keyframes moveY {
-            0% { transform: translateY(var(--start-y)); animation-timing-function: ease-in; } 
-            40% { transform: translateY(var(--mid-y)); animation-timing-function: linear; } 
-            60% { transform: translateY(var(--mid-y)); animation-timing-function: ease-out; } 
+            0% { transform: translateY(var(--start-y)); animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1); } 
+            35% { transform: translateY(var(--mid-y)); animation-timing-function: linear; } 
+            65% { transform: translateY(var(--mid-y)); animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1); } 
             100% { transform: translateY(var(--end-y)); }
         }
 
-        /* Document randomly rotated and fades out right before hitting the center container */
+        /* Document strictly rotated, fades out right before hitting the center container at 1:1 scale */
         .doc-icon { animation: docFade var(--duration) linear forwards; }
         @keyframes docFade {
             0%, 35% { opacity: 0.85; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); }
-            45%, 100% { opacity: 0; transform: translate(-50%, -50%) rotate(0deg) scale(0.5); display: none; }
+            45%, 100% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); display: none; }
         }
 
-        /* Checkmark fades in right after leaving the center container */
+        /* Checkmark fades in right after the document fades out at 1:1 scale */
         .check-icon { opacity: 0; animation: checkFade var(--duration) linear forwards; }
         @keyframes checkFade {
-            0%, 55% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            65% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
-            70%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            0%, 45% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+            55%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* Particles fire exactly as the checkmark emerges */
+        /* Particles pop alongside the checkmark emergence */
         .pop-particle { 
             position: absolute; width: 6px; height: 6px; background-color: #34d399; 
             border-radius: 50%; box-shadow: 0 0 10px #34d399; opacity: 0; pointer-events: none; 
-            animation: particlePop var(--duration) linear forwards; 
+            animation: particlePop 1s cubic-bezier(0.2, 1, 0.3, 1) forwards; 
         }
         @keyframes particlePop {
-            0%, 60% { opacity: 0; transform: translate(0, 0) scale(0); }
-            65% { opacity: 1; transform: translate(calc(var(--px) * 0.4), calc(var(--py) * 0.4)) scale(1.5); }
-            85%, 100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
+            0% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
         }
 
         .glow-wrapper { position: relative; width: 100%; max-width: 42rem; margin: 2rem auto; z-index: 10; flex: 1; display: flex; align-items: center;}
@@ -105,7 +103,7 @@
         .tab-dp360:hover { border-color: rgba(22, 72, 92, 0.8); box-shadow: 0 4px 20px rgba(22, 72, 92, 0.3); }
         .tab-dx1:hover { border-color: rgba(245, 134, 42, 0.8); box-shadow: 0 4px 20px rgba(245, 134, 42, 0.3); }
         .tab-elead:hover { border-color: rgba(224, 60, 50, 0.8); box-shadow: 0 4px 20px rgba(224, 60, 50, 0.3); } 
-        .tab-vinsolutions:hover { border-color: rgba(29, 62, 116, 0.8); box-shadow: 0 4px 20px rgba(29, 62, 116, 0.3); }
+        .tab-vinsolutions:hover { border-color: rgba(29, 62, 116, 0.8); box-shadow: 0 4px 20px rgba(29, 62, 116, 0.4); }
 
         .brand-text { font-weight: 900; font-size: 14px; letter-spacing: 0.5px; }
         .logo-box { width: 48px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -229,7 +227,7 @@
     </footer>
 
     <script>
-        // --- SOPHISTICATED FUNNEL ANIMATION SYSTEM ---
+        // Wave Animation Logic
         function createDataWave() {
             const layer = document.getElementById('wave-layer');
             const item = document.createElement('div');
@@ -266,16 +264,19 @@
                 particlesHTML += `<div class="pop-particle" style="--px: ${px}; --py: ${py};"></div>`;
             }
 
-            // CSS-Synchronized HTML Payload
+            // CSS-Synchronized HTML Payload 
+            // Both icons are perfectly circumscribed in identical 40x40 (w-10 h-10) circular bounding boxes.
             item.innerHTML = `
                 <div class="data-item-x">
                     <div class="data-item-y">
                         <div class="doc-icon">
-                            <svg class="text-rose-500 w-8 h-8 drop-shadow-[0_0_8px_rgba(244,63,94,0.4)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <div class="w-10 h-10 rounded-full border border-rose-500/40 bg-rose-500/10 flex items-center justify-center shadow-[0_0_15px_rgba(244,63,94,0.3)]">
+                                <svg class="text-rose-500 w-5 h-5 drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            </div>
                         </div>
                         <div class="check-icon">
                             <div class="w-10 h-10 rounded-full border border-emerald-400 bg-emerald-500/10 flex items-center justify-center shadow-[0_0_15px_rgba(52,211,153,0.3)]">
-                                <svg class="text-emerald-400 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                <svg class="text-emerald-400 w-6 h-6 drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                             ${particlesHTML}
                         </div>
@@ -285,6 +286,26 @@
             
             layer.appendChild(item);
 
+            // Pop particles when reaching the middle (50% of the animation duration)
+            setTimeout(() => {
+                const targetCheck = item.querySelector('.check-icon');
+                if(!targetCheck) return;
+                
+                const numParticles = 12 + Math.floor(Math.random() * 8); 
+                for(let i=0; i<numParticles; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'pop-particle';
+                    const angle = Math.random() * Math.PI * 2;
+                    const dist = 30 + Math.random() * 50; 
+                    const px = (Math.cos(angle) * dist).toFixed(2) + 'px';
+                    const py = (Math.sin(angle) * dist).toFixed(2) + 'px';
+                    p.style.setProperty('--px', px);
+                    p.style.setProperty('--py', py);
+                    p.style.animationDuration = `${duration}s`;
+                    targetCheck.appendChild(p);
+                }
+            }, (duration * 1000) / 2);
+
             // Seamless DOM cleanup exactly 100ms after the CSS duration finishes
             setTimeout(() => {
                 if(item.parentNode) item.remove();
@@ -292,11 +313,11 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Volume increased by 25%: Spawning every 600ms
-            setInterval(createDataWave, 600);
+            // Volume increased by 25%: Spawning every 480ms
+            setInterval(createDataWave, 480);
             
             // Immediate heavy burst to flood the screen on page load
-            for(let i=0; i<8; i++) {
+            for(let i=0; i<10; i++) {
                 setTimeout(createDataWave, i * 150);
             }
         });
