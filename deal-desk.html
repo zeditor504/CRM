@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Dealer Systems | Deal Desk</title>
+    <title>Apex Dealer Systems | Deal Desk (MRS Active)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -38,12 +38,12 @@
 
         .minimal-input { background-color: rgba(0, 0, 0, 0.4) !important; border: 1px solid rgba(255, 255, 255, 0.08); color: white; border-radius: 12px; padding: 14px; width: 100%; font-size: 0.9rem; transition: border-color 0.2s; }
         .minimal-input:focus { outline: none; border-color: rgba(255, 255, 255, 0.3); }
+        .mrs-error { border-color: #f43f5e !important; box-shadow: 0 0 10px rgba(244, 63, 94, 0.2); }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.15); border-radius: 10px; }
 
-        /* ISOLATED FOOTER LAYOUT */
         .footer-wrapper { width: 100%; padding: 15px 30px; display: flex; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); z-index: 20; }
         .footer-section { flex: 1; display: flex; }
         .footer-section.left { justify-content: flex-start; }
@@ -67,7 +67,7 @@
         <div class="flex items-center space-x-6">
             <div id="top-lock-warning" class="text-amber-400 font-semibold flex items-center text-xs bg-amber-500/10 px-4 py-1.5 rounded-full border border-amber-500/20 transition-all uppercase tracking-widest shadow-[0_0_15px_rgba(245,158,11,0.2)]">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Action Required: Please Respond
+                MRS ACTIVE: Action Required
             </div>
         </div>
     </nav>
@@ -83,15 +83,15 @@
             <div class="flex-1 overflow-y-auto space-y-3 pb-4">
                 <div id="urgent-queue-card" class="glass-panel p-5 relative border-amber-500/40 bg-amber-500/10 transition-all">
                     <div class="flex justify-between items-center mb-3">
-                        <h3 class="font-bold text-white text-base" id="ui-queue-name">Loading...</h3>
-                        <span id="urgent-timer" class="bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-bold px-2 py-1 rounded-full tabular-nums">03:45 LEFT</span>
+                        <h3 class="font-bold text-white text-base" id="ui-queue-name">Carl</h3>
+                        <span id="urgent-timer" class="bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-bold px-2 py-1 rounded-full tabular-nums">14:59 LEFT</span>
                     </div>
                     <p class="text-xs text-zinc-300 mb-4 flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        <span id="ui-queue-loc">Loading...</span>
+                        <span id="ui-queue-loc">Website SMS Lead</span>
                     </p>
                     <p id="urgent-message" class="text-[10px] text-amber-400 font-bold uppercase tracking-widest text-center bg-black/40 p-2 rounded-lg border border-amber-500/20">
-                        Take over AI chat to prevent escalation.
+                        AI Secured Number. Call & Take Notes.
                     </p>
                 </div>
             </div>
@@ -101,63 +101,69 @@
             <div class="p-6 border-b border-white/10 flex justify-between items-start shrink-0 bg-white/[0.02]">
                 <div>
                     <div class="flex items-center gap-3 mb-1">
-                        <h2 class="text-2xl font-bold text-white tracking-tight" id="ui-fname">Loading Name...</h2>
+                        <h2 class="text-2xl font-bold text-white tracking-tight" id="ui-fname">Carl</h2>
                         <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_5px_#34d399]"></span> Hot Lead
+                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_5px_#34d399]"></span> Number Secured
                         </span>
                     </div>
-                    <p class="text-sm text-zinc-400 font-medium" id="ui-address">Loading Details...</p>
+                    <p class="text-sm text-zinc-400 font-medium" id="ui-address">555-019-8822 • Honda CBR Inquiry</p>
                 </div>
             </div>
 
             <div class="flex-1 p-6 overflow-y-auto flex flex-col space-y-6" id="chat-history">
-                <div class="text-center text-xs text-zinc-500 font-medium tracking-wide">Lead originated from Website Form • Today 07:00 AM</div>
+                <div class="text-center text-xs text-zinc-500 font-medium tracking-wide">Lead originated from SMS Automation • Today 09:15 AM</div>
                 
                 <div class="flex flex-col items-start gap-1">
-                    <div class="text-[10px] text-zinc-400 ml-2 uppercase tracking-widest font-bold" id="ui-chat-customer-name">Customer</div>
-                    <div class="chat-bubble-customer" id="ui-customer-msg">Hey, I saw the Ducati V4 on your site. Do you guys take trade-ins?</div>
+                    <div class="text-[10px] text-zinc-400 ml-2 uppercase tracking-widest font-bold">Carl • 09:15 AM</div>
+                    <div class="chat-bubble-customer">Hey, I saw the Honda CBR on your site. Do you still have it?</div>
                 </div>
 
                 <div class="flex flex-col items-end gap-1 mt-4">
                     <div class="text-[10px] text-zinc-400 mr-2 flex items-center uppercase tracking-widest font-bold">
                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        Apex AI Assistant • 07:01 AM
+                        Apex AI Assistant • 09:16 AM
                     </div>
-                    <div class="chat-bubble-ai" id="ui-ai-msg">Loading AI response...</div>
+                    <div class="chat-bubble-ai">Thank you so much for texting us! We appreciate you. We actually have a bunch of Honda CBR's in stock right now and they are moving fast. What is the best phone number to reach you at so our team can get you exact details?</div>
+                </div>
+
+                <div class="flex flex-col items-start gap-1 mt-4">
+                    <div class="text-[10px] text-zinc-400 ml-2 uppercase tracking-widest font-bold">Carl • 09:18 AM</div>
+                    <div class="chat-bubble-customer">Sure, it's 555-019-8822.</div>
+                </div>
+
+                 <div class="flex flex-col items-end gap-1 mt-4">
+                    <div class="text-[10px] text-zinc-400 mr-2 flex items-center uppercase tracking-widest font-bold">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        Apex AI Assistant • 09:18 AM
+                    </div>
+                    <div class="chat-bubble-ai">Perfect! I've secured your number. I am notifying our sales team right now and a specialist will call you shortly.</div>
                 </div>
             </div>
 
             <div class="p-6 border-t border-white/10 shrink-0 bg-black/40">
                 <div class="relative flex items-end gap-3">
-                    <textarea id="reply-input" class="minimal-input h-20 resize-none transition-colors border-rose-500/40 focus:border-rose-500/70" placeholder="Type your response to engage the client..."></textarea>
+                    <textarea id="reply-input" class="minimal-input h-20 resize-none transition-colors border-amber-500/40 focus:border-amber-500/70" placeholder="Type your follow-up response after calling Carl..."></textarea>
                     <button id="unlock-btn" onclick="sendAndUnlock()" class="bg-white text-black hover:bg-gray-200 px-8 h-20 rounded-xl text-sm font-bold uppercase tracking-widest transition flex items-center justify-center shrink-0 shadow-lg">
-                        Send
+                        Submit
                     </button>
                 </div>
             </div>
         </div>
         
         <div class="w-80 flex flex-col shrink-0 space-y-5 z-10">
-            <div class="glass-panel p-6 shadow-none border-white/5">
-                <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">Customer Insights</h3>
-                <div class="space-y-4">
-                    <div>
-                        <div class="text-xs text-zinc-400 mb-2 font-medium">Auto-Tags</div>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="bg-white/10 border border-white/20 text-white text-[10px] px-2 py-1 rounded uppercase tracking-wider font-bold">Financing</span>
-                            <span class="bg-white/10 border border-white/20 text-white text-[10px] px-2 py-1 rounded uppercase tracking-wider font-bold">Has Trade</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-xs text-zinc-400 mb-1.5 font-medium">AI Inferred Intent</div>
-                        <p class="text-sm text-zinc-300 leading-relaxed">Customer is highly motivated but price-sensitive regarding their trade value.</p>
-                    </div>
-                </div>
+            <div class="glass-panel p-6 shadow-none border-amber-500/30 bg-amber-500/5">
+                <h3 class="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    MRS: Mandatory Notes
+                </h3>
+                <p class="text-[10px] text-zinc-400 mb-3 leading-relaxed">Per company policy, you must log notes regarding your call with this lead before unlocking the system.</p>
+                <textarea id="mrs-notes" class="minimal-input h-24 resize-none text-sm placeholder:text-zinc-600" placeholder="Log call notes, intent, and next steps here..."></textarea>
+                <p id="mrs-error-text" class="text-rose-400 text-[10px] font-bold mt-2 hidden uppercase tracking-widest">Error: Notes cannot be empty.</p>
             </div>
 
             <div class="glass-panel p-6 flex-1 flex flex-col shadow-none border-white/5 overflow-y-auto">
                 <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">Deal Structure</h3>
-                <h4 class="font-bold text-sm text-white mb-5 leading-tight border-b border-white/10 pb-4" id="ui-bike">Loading Vehicle...</h4>
+                <h4 class="font-bold text-sm text-white mb-5 leading-tight border-b border-white/10 pb-4" id="ui-bike">Honda CBR600RR</h4>
                 
                 <div class="space-y-4 mb-6">
                     <div>
@@ -173,70 +179,20 @@
                     </div>
                     <div>
                         <label class="text-xs text-zinc-300 font-medium block mb-1.5">Estimated Trade Value ($)</label>
-                        <input type="number" id="ui-trade" class="minimal-input py-2 text-sm" value="4000">
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="text-xs text-zinc-300 font-medium block mb-1.5">Term (Mo)</label>
-                            <input type="number" class="minimal-input py-2 text-sm" value="60">
-                        </div>
-                        <div>
-                            <label class="text-xs text-zinc-300 font-medium block mb-1.5">APR (%)</label>
-                            <input type="number" class="minimal-input py-2 text-sm" value="6.99">
-                        </div>
+                        <input type="number" id="ui-trade" class="minimal-input py-2 text-sm" value="0">
                     </div>
                 </div>
 
                 <div class="mt-auto border-t border-white/10 pt-5">
                     <div class="flex justify-between items-center mb-5">
                         <span class="text-zinc-400 text-sm font-medium">Retail Price</span>
-                        <span class="text-emerald-400 font-black text-xl" id="ui-price">$0</span>
+                        <span class="text-emerald-400 font-black text-xl" id="ui-price">$12,199</span>
                     </div>
                     <button onclick="generatePrintout()" class="w-full bg-white/5 hover:bg-white/10 border border-white/20 text-white py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest transition flex items-center justify-center">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                         Print Deal Sheet
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="print-deal-sheet" class="hidden">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 30px;">
-            <div>
-                <h1 style="font-size: 30px; margin: 0; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">Apex Dealer Systems</h1>
-                <p style="margin: 5px 0 0 0; color: #555; font-size: 14px; font-weight: bold;">Official Sales Desk Worksheet</p>
-            </div>
-            <div style="text-align: right; font-size: 12px;">
-                <p style="margin: 0 0 5px 0;"><strong>Date:</strong> <span id="print-date"></span></p>
-                <p style="margin: 0;"><strong>Sales Agent:</strong> APEX User</p>
-            </div>
-        </div>
-        <div style="display: flex; gap: 40px; margin-bottom: 30px;">
-            <div style="flex: 1;">
-                <h2 style="background: #f4f4f5; padding: 8px 12px; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase; border: 1px solid #e4e4e7;">Customer Information</h2>
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <tr><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; width: 30%;"><strong>Full Name:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; font-weight: bold; font-size: 16px;" id="print-fname"></td></tr>
-                    <tr><td style="padding: 8px 0;"><strong>Phone:</strong></td><td style="padding: 8px 0;" id="print-phone"></td></tr>
-                </table>
-            </div>
-            <div style="flex: 1;">
-                <h2 style="background: #f4f4f5; padding: 8px 12px; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase; border: 1px solid #e4e4e7;">Vehicle of Interest</h2>
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <tr><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; width: 30%;"><strong>Unit:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; font-weight: bold;" id="print-bike"></td></tr>
-                    <tr><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5;"><strong>VIN:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; font-family: monospace;">ZDM1000000777</td></tr>
-                </table>
-            </div>
-        </div>
-        <h2 style="background: #f4f4f5; padding: 8px 12px; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase; border: 1px solid #e4e4e7;">Deal Structure</h2>
-        <div style="border: 2px solid #000; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <div>
-                <span style="display: block; font-size: 10px; color: #555; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Payment Method</span>
-                <span style="font-size: 24px; font-weight: 800;" id="print-method">FINANCE</span>
-            </div>
-            <div style="text-align: right;">
-                <span style="display: block; font-size: 10px; color: #555; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Down Payment / Cash</span>
-                <span style="font-size: 24px; font-weight: 800;" id="print-downpayment">$2,500</span>
             </div>
         </div>
     </div>
@@ -257,42 +213,20 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const leadId = parseInt(urlParams.get('id')) || 1;
-
-            const sampleNames = ["Josh Stevenson", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", "James Easton", "Benjamin Mercer", "Lucas Thorne", "Henry Blackwell", "Alexander Cross"];
-            const vehicles = ["2024 Ducati Panigale V4", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", "Honda CBR600RR", "BMW S1000RR", "2024 Yamaha R1", "Kawasaki Z900", "KTM 390 Duke", "Triumph Super 1200"];
-            
-            const name = sampleNames[leadId - 1] || `Customer ${leadId}`;
-            const firstName = name.split(' ')[0];
-            const vehicle = vehicles[leadId - 1] || vehicles[0];
-
-            document.getElementById('ui-fname').innerText = name;
-            document.getElementById('ui-chat-customer-name').innerText = `${name} • 07:00 AM`;
-            
-            document.getElementById('ui-queue-name').innerText = name;
-            document.getElementById('ui-address').innerText = `Source: Website Direct`;
-            document.getElementById('ui-queue-loc').innerText = "Houston, TX";
-            document.getElementById('ui-bike').innerText = vehicle;
-            
-            const aiReply = `Hi ${firstName}! Thank you so much for reaching out. We still have the ${vehicle}. It is an absolutely beautiful bike and we have an amazing deal on it right now. What is a good day for you to come check it out, today or tomorrow?`;
-            
-            document.getElementById('ui-ai-msg').innerText = aiReply;
-            document.getElementById('ui-price').innerText = `$${(10000 + (vehicle.length * 400)).toLocaleString()}`;
-
-            let time = 225;
+            let time = 900; // 15 minutes for MRS standard follow up
             const timerEl = document.getElementById('urgent-timer');
             const timerInt = setInterval(() => {
                 time--;
                 const m = Math.floor(time / 60);
                 const s = time % 60;
-                timerEl.innerText = `0${m}:${s < 10 ? '0' : ''}${s}`;
+                timerEl.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
                 if(time <= 0) {
                     clearInterval(timerInt);
                     timerEl.innerText = "ESCALATED";
-                    document.getElementById('top-lock-warning').innerHTML = "Escalated to Management";
+                    document.getElementById('top-lock-warning').innerHTML = "MRS Failed: Escalated to Management";
                     document.getElementById('top-lock-warning').className = "text-rose-400 font-semibold flex items-center text-xs bg-rose-500/10 px-4 py-1.5 rounded-full border border-rose-500/30 transition-all uppercase tracking-widest shadow-[0_0_15px_rgba(244,63,94,0.3)]";
                     document.getElementById('reply-input').disabled = true;
+                    document.getElementById('mrs-notes').disabled = true;
                     document.getElementById('reply-input').placeholder = "Time expired. Lead routed to Manager Hub.";
                 }
             }, 1000);
@@ -300,7 +234,22 @@
 
         function sendAndUnlock() {
             const input = document.getElementById('reply-input');
+            const notes = document.getElementById('mrs-notes');
+            const errorText = document.getElementById('mrs-error-text');
             const text = input.value.trim();
+            const notesText = notes.value.trim();
+            
+            // MRS LOGIC: Force notes before unlock
+            if (!notesText) {
+                notes.classList.add('mrs-error');
+                errorText.classList.remove('hidden');
+                notes.focus();
+                return;
+            } else {
+                notes.classList.remove('mrs-error');
+                errorText.classList.add('hidden');
+            }
+
             if (!text) return input.focus();
 
             const history = document.getElementById('chat-history');
@@ -309,10 +258,14 @@
             newMsg.innerHTML = `<div class="text-[10px] text-zinc-400 mr-2 uppercase tracking-widest font-bold">You • Just Now</div><div class="chat-bubble-send">${text}</div>`;
             history.appendChild(newMsg);
             input.value = '';
+            
+            // Disable notes to lock them in
+            notes.disabled = true;
+            notes.className = "minimal-input h-24 resize-none text-sm text-zinc-500 bg-white/5 border-white/5";
 
             const lockWarning = document.getElementById('top-lock-warning');
             lockWarning.className = "text-emerald-400 font-semibold flex items-center text-xs bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/30 transition-all uppercase tracking-widest";
-            lockWarning.innerHTML = "SYSTEM UNLOCKED";
+            lockWarning.innerHTML = "MRS FULFILLED: SYSTEM UNLOCKED";
             
             input.className = "w-full minimal-input h-20 border-white/5 focus:border-white/20 resize-none transition-colors";
             input.placeholder = "Message sent. Continue conversation...";
@@ -323,22 +276,8 @@
 
             const btn = document.getElementById('unlock-btn');
             btn.className = "bg-white/10 text-slate-400 cursor-not-allowed px-8 h-20 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center shrink-0";
-            btn.innerHTML = "Sent";
+            btn.innerHTML = "Logged";
             btn.disabled = true;
-        }
-
-        function generatePrintout() {
-            document.getElementById('print-fname').innerText = document.getElementById('ui-fname').innerText;
-            document.getElementById('print-phone').innerText = "(555) 012-3456";
-            document.getElementById('print-bike').innerText = document.getElementById('ui-bike').innerText;
-            document.getElementById('print-method').innerText = document.getElementById('ui-method').value.toUpperCase();
-            
-            const dp = document.getElementById('ui-downpayment').value;
-            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 });
-            document.getElementById('print-downpayment').innerText = formatter.format(dp);
-            
-            document.getElementById('print-date').innerText = new Date().toLocaleDateString();
-            window.print();
         }
 
         function updateClock() {
