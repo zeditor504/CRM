@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex OS | Showroom Status</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
+        body { background-color: #141414 !important; color: #f1f5f9 !important; margin: 0; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        body::before { content: ''; position: fixed; inset: 0; z-index: -2; background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
+        
+        .ambient-glow { position: fixed; top: 50%; left: 50%; width: 100vw; height: 100vh; border-radius: 50%; background: radial-gradient(circle at center, rgba(52, 211, 153, 0.05) 0%, transparent 65%); filter: blur(120px); z-index: -1; animation: ambientBreathe 10s ease-in-out infinite; transform: translate(-50%, -50%); pointer-events: none; }
+        @keyframes ambientBreathe { 0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
+
+        .glass-panel { background-color: rgba(30, 30, 30, 0.4) !important; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .glass-nav { background-color: rgba(20, 20, 20, 0.8) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+        .status-col { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .customer-card { padding: 24px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); transition: 0.3s ease; }
+        .pulse-card { border-color: rgba(52, 211, 153, 0.4); box-shadow: 0 0 20px rgba(52, 211, 153, 0.1); animation: cardPulse 2s infinite; }
+        @keyframes cardPulse { 0%, 100% { box-shadow: 0 0 15px rgba(52, 211, 153, 0.1); } 50% { box-shadow: 0 0 30px rgba(52, 211, 153, 0.3); } }
+    </style>
+</head>
+<body class="flex flex-col">
+    <div class="ambient-glow"></div>
+
+    <nav class="glass-nav h-24 flex items-center justify-between px-10 shrink-0 z-20">
+        <div class="flex items-center space-x-6">
+            <h1 class="text-3xl font-black text-white tracking-widest uppercase">Apex Dealer Group <span class="text-zinc-500 font-medium ml-3">Showroom Status</span></h1>
+        </div>
+        <div class="text-emerald-400 font-bold tracking-widest uppercase text-lg flex items-center gap-3">
+            <span class="w-3 h-3 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_#34d399]"></span> Live Updates
+        </div>
+    </nav>
+
+    <main class="flex-1 p-10 flex gap-8 z-10 w-full max-w-[1920px] mx-auto">
+        
+        <div class="glass-panel p-8 status-col">
+            <h2 class="text-xl font-bold text-zinc-400 uppercase tracking-widest border-b border-white/10 pb-4 mb-2">1. In Finance (F&I)</h2>
+            <div class="customer-card">
+                <h3 class="text-3xl font-black text-white mb-2">Carl S.</h3>
+                <p class="text-lg text-zinc-400 font-medium">Honda CBR600RR • Rep: Umair</p>
+            </div>
+            <div class="customer-card">
+                <h3 class="text-3xl font-black text-white mb-2">Sophia L.</h3>
+                <p class="text-lg text-zinc-400 font-medium">Yamaha MT-07 • Rep: Mike</p>
+            </div>
+        </div>
+
+        <div class="glass-panel p-8 status-col">
+            <h2 class="text-xl font-bold text-amber-400 uppercase tracking-widest border-b border-amber-500/20 pb-4 mb-2">2. Detail & Prep</h2>
+            <div class="customer-card pulse-card" style="border-color: rgba(245, 158, 11, 0.4); animation: none; box-shadow: 0 0 20px rgba(245, 158, 11, 0.1);">
+                <h3 class="text-3xl font-black text-white mb-2">Elijah C.</h3>
+                <p class="text-lg text-amber-400 font-bold mb-2">Installing Accessories</p>
+                <p class="text-sm text-zinc-400 font-medium">Kawasaki Ninja 400 • Rep: Sarah</p>
+            </div>
+        </div>
+
+        <div class="glass-panel p-8 status-col">
+            <h2 class="text-xl font-bold text-emerald-400 uppercase tracking-widest border-b border-emerald-500/20 pb-4 mb-2">3. Ready for Delivery</h2>
+            <div class="customer-card pulse-card">
+                <h3 class="text-4xl font-black text-white mb-2">Noah A.</h3>
+                <p class="text-xl text-emerald-400 font-bold mb-2">Please see the front desk!</p>
+                <p class="text-sm text-zinc-400 font-medium">2024 Ducati Panigale V4 • Rep: Paul</p>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Reload page every 5 minutes to simulate active API polling
+        setTimeout(() => { window.location.reload(); }, 300000);
+    </script>
+</body>
+</html>
