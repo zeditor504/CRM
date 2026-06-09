@@ -33,7 +33,15 @@
             border-radius: 20px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
         }
 
-        .glass-nav { background-color: rgba(20, 20, 20, 0.8) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        /* --- PREMIUM GLOBAL APP BAR --- */
+        .glass-nav { 
+            background: linear-gradient(to bottom, rgba(20, 20, 20, 0.95) 0%, rgba(14, 14, 14, 0.85) 100%) !important; 
+            background-color: rgba(20, 20, 20, 0.8) !important;
+            backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            transition: border-bottom-color 0.4s ease, box-shadow 0.4s ease; 
+        }
 
         .metric-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #a1a1aa; font-weight: 700; margin-bottom: 8px; }
         .metric-value { font-size: 2.5rem; font-weight: 900; color: #ffffff; letter-spacing: -1px; }
@@ -190,13 +198,19 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const sessionData = sessionStorage.getItem('apex_session');
+            if (!sessionData) return;
 
-            const session = JSON.parse(sessionData);
+            let session;
+            try {
+                session = JSON.parse(sessionData);
+            } catch (error) {
+                return;
+            }
             
             // White-labeling Header
             const brandHeader = document.getElementById('dealer-brand-name');
             if (brandHeader) {
-                brandHeader.innerHTML = `${session.dealer} <span class="text-zinc-600 text-sm ml-2 font-medium tracking-normal capitalize">Owner Hub</span>`;
+                brandHeader.innerHTML = `${session.dealer || 'Apex Dealer Group'} <span class="text-zinc-600 text-sm ml-2 font-medium tracking-normal capitalize">Owner Hub</span>`;
             }
 
             // 3. High-Fidelity Canvas Engine (Replaces CSS Glow)
@@ -252,6 +266,12 @@
                     requestAnimationFrame(animate);
                 }
                 animate();
+                // 4. Premium Header Brand Glow
+                const navBar = document.querySelector('.glass-nav');
+                if (navBar) {
+                    navBar.style.borderBottom = `1px solid rgba(${rgb}, 0.4)`;
+                    navBar.style.boxShadow = `0 10px 40px rgba(0,0,0,0.8), 0 1px 20px rgba(${rgb}, 0.2)`;
+                }
             }   
 
             setInterval(() => {

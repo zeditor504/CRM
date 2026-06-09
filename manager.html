@@ -33,7 +33,15 @@
             border-radius: 20px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
         }
 
-        .glass-nav { background-color: rgba(20, 20, 20, 0.8) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        /* --- PREMIUM GLOBAL APP BAR --- */
+        .glass-nav { 
+            background: linear-gradient(to bottom, rgba(20, 20, 20, 0.95) 0%, rgba(14, 14, 14, 0.85) 100%) !important; 
+            background-color: rgba(20, 20, 20, 0.8) !important;
+            backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            transition: border-bottom-color 0.4s ease, box-shadow 0.4s ease; 
+        }
 
         table { width: 100%; border-collapse: separate; border-spacing: 0 4px; text-align: left; font-size: 0.9rem; }
         th { padding: 16px 20px; color: #a1a1aa; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border: none;}
@@ -323,36 +331,17 @@
         });
     </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // 1. Enforce Authentication
-            const sessionData = sessionStorage.getItem('apex_session');
-            
-            const session = JSON.parse(sessionData);
-            
-            // 2. Dynamic Dealership Branding (White-Labeling)
-            const mainHeader = document.querySelector('h1');
-            if (mainHeader && mainHeader.innerText.toUpperCase().includes('APEX')) {
-                mainHeader.innerHTML = `${session.dealer} <span class="text-zinc-500 text-sm ml-2 font-medium tracking-normal capitalize">Powered by Apex OS</span>`;
-            }
-
-            // 3. Dynamic Brand Color Injection (Ambient Environment)
-            if (session.color) {
-                const bgGlow = document.querySelector('.ambient-glow');
-                if (bgGlow) {
-                    bgGlow.style.background = `radial-gradient(circle at center, ${session.color}15 0%, ${session.color}05 35%, transparent 70%)`;
-                }
-            }
-        });
-    </script>
-
-    <script>
         document.addEventListener("DOMContentLoaded", () => {
             // 1. Enforce Authentication Failsafe
             const sessionData = sessionStorage.getItem('apex_session');
             if (!sessionData) return;
             
-            const session = JSON.parse(sessionData);
+            let session;
+            try {
+                session = JSON.parse(sessionData);
+            } catch (error) {
+                return;
+            }
             
             // 2. Dynamic Dealership Branding (White-Labeling)
             const mainHeader = document.querySelector('h1');
@@ -413,6 +402,12 @@
                     requestAnimationFrame(animate);
                 }
                 animate();
+                // 4. Premium Header Brand Glow
+                const navBar = document.querySelector('.glass-nav');
+                if (navBar) {
+                    navBar.style.borderBottom = `1px solid rgba(${rgb}, 0.4)`;
+                    navBar.style.boxShadow = `0 10px 40px rgba(0,0,0,0.8), 0 1px 20px rgba(${rgb}, 0.2)`;
+                }
             }
         });
     </script>

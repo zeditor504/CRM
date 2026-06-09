@@ -36,14 +36,9 @@
             border-radius: 20px; box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5); transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .top-nav { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 30px; }
-        
         .header { text-align: center; }
         .header h1 { margin: 0; font-size: 2.2rem; font-weight: 700; letter-spacing: -0.5px; color: #ffffff; }
         .header p { margin: 6px 0 0 0; color: #a1a1aa; font-size: 0.95rem; font-weight: 400; }
-
-        .profile-btn { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); padding: 8px 16px; border-radius: 100px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; color: #e4e4e7; font-weight: 600; font-size: 0.85rem; }
-        .profile-btn:hover { background: rgba(255,255,255,0.05); }
 
         .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 24px; }
         .stat-card { padding: 20px 24px; }
@@ -107,21 +102,33 @@
 
     <canvas id="ambient-canvas" class="fixed inset-0 z-[-1] pointer-events-none w-full h-full"></canvas>
 
-    <div class="container-wrapper">
-        <div class="top-nav">
-            <div style="width: 150px;"></div>
-            <div class="header">
-                <h1>Apex Dealer Systems</h1>
-                <p>Active Leads Dashboard • Click a row to enter Deal Desk</p>
+    <nav class="glass-nav h-20 flex items-center justify-between px-8 w-full z-50 sticky top-0">
+        <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 bg-black border border-white/10 rounded-xl flex items-center justify-center shadow-lg">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             </div>
-            <div style="width: 150px; text-align: right;">
-                <button class="profile-btn ml-auto">
-                    <div class="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs text-white font-bold border border-white/20">SR</div>
-                    Sales Rep
-                </button>
+            <div>
+                <h1 class="text-lg font-black tracking-widest text-white uppercase">Apex OS</h1>
+                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5">Active Leads Dashboard</p>
             </div>
         </div>
+        <div class="flex items-center space-x-6">
+            <div class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center shadow-[0_0_15px_rgba(52,211,153,0.15)]">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+                Receiving Leads
+            </div>
+            <div class="h-8 w-px bg-white/10 mx-2"></div>
+            <button class="flex items-center gap-3 hover:opacity-80 transition cursor-pointer bg-transparent border-none" onclick="toggleSidebar()">
+                <div class="text-right hidden sm:block">
+                    <div class="text-xs font-bold text-white uppercase tracking-widest">Sales Rep</div>
+                    <div class="text-[10px] text-zinc-500 font-semibold uppercase tracking-widest mt-0.5">Online</div>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-zinc-800 to-zinc-600 flex items-center justify-center text-sm text-white font-bold border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.05)]">SR</div>
+            </button>
+        </div>
+    </nav>
 
+    <div class="container-wrapper">
         <div class="stats-row">
             <div class="glass-panel stat-card">
                 <div class="stat-title flex items-center w-max" data-tooltip="The Required Response System (RRS) tracks the percentage of leads where the sales agent successfully logged notes and contacted the customer within the designated timeframe.">RRS Compliance <svg class="w-3 h-3 ml-1 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
@@ -383,6 +390,12 @@
                     requestAnimationFrame(animate);
                 }
                 animate();
+                // 4. Premium Header Brand Glow
+                const navBar = document.querySelector('.glass-nav');
+                if (navBar) {
+                    navBar.style.borderBottom = `1px solid rgba(${rgb}, 0.4)`;
+                    navBar.style.boxShadow = `0 10px 40px rgba(0,0,0,0.8), 0 1px 20px rgba(${rgb}, 0.2)`;
+                }
             }
         });
     </script>

@@ -34,7 +34,15 @@
             border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .glass-nav { background-color: rgba(20, 20, 20, 0.8) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        /* --- PREMIUM GLOBAL APP BAR --- */
+        .glass-nav { 
+            background: linear-gradient(to bottom, rgba(20, 20, 20, 0.95) 0%, rgba(14, 14, 14, 0.85) 100%) !important; 
+            background-color: rgba(20, 20, 20, 0.8) !important;
+            backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            transition: border-bottom-color 0.4s ease, box-shadow 0.4s ease; 
+        }
 
         .chat-bubble-customer { background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px 16px 16px 4px; padding: 14px 20px; color: #f8fafc; max-width: 80%; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .chat-bubble-ai { background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px 16px 4px 16px; padding: 14px 20px; color: #e4e4e7; max-width: 80%; line-height: 1.5; }
@@ -292,167 +300,35 @@
         <div class="footer-section right">
             <div class="footer-pill">Central Time Zone (CT)</div>
         </div>
-    </footer>
-
-    <script>
+    </footer>    <script>
         document.addEventListener("DOMContentLoaded", () => {
-            let time = 900; 
-            const timerEl = document.getElementById('urgent-timer');
-            const timerInt = setInterval(() => {
-                time--;
-                const m = Math.floor(time / 60);
-                const s = time % 60;
-                timerEl.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-                if(time <= 0) {
-                    clearInterval(timerInt);
-                    timerEl.innerText = "ESCALATED";
-                    document.getElementById('top-lock-warning').innerHTML = "RRS Failed: Escalated to Management";
-                    document.getElementById('top-lock-warning').className = "text-rose-400 font-semibold flex items-center text-xs bg-rose-500/10 px-4 py-1.5 rounded-full border border-rose-500/30 transition-all uppercase tracking-widest shadow-[0_0_15px_rgba(244,63,94,0.3)]";
-                    document.getElementById('reply-input').disabled = true;
-                    document.getElementById('rrs-notes').disabled = true;
-                    document.getElementById('reply-input').placeholder = "Time expired. Lead routed to Manager Hub.";
-                }
-            }, 1000);
-        });
+            const sessionData = sessionStorage.getItem('apex_session');
+            if (!sessionData) return;
 
-        function sendAndUnlock() {
-            const input = document.getElementById('reply-input');
-            const notes = document.getElementById('rrs-notes');
-            const errorText = document.getElementById('rrs-error-text');
-            const text = input.value.trim();
-            const notesText = notes.value.trim();
-            
-            if (!notesText) {
-                notes.classList.add('rrs-error');
-                errorText.classList.remove('hidden');
-                notes.focus();
+            let session;
+            try {
+                session = JSON.parse(sessionData);
+            } catch (error) {
                 return;
-            } else {
-                notes.classList.remove('rrs-error');
-                errorText.classList.add('hidden');
             }
 
-            if (!text) return input.focus();
-
-            const history = document.getElementById('chat-history');
-            const newMsg = document.createElement('div');
-            newMsg.className = "flex flex-col items-end gap-1 mt-4";
-            newMsg.innerHTML = `<div class="text-[10px] text-zinc-400 mr-2 uppercase tracking-widest font-bold">You • Just Now</div><div class="chat-bubble-send">${text}</div>`;
-            history.appendChild(newMsg);
-            input.value = '';
-            
-            notes.disabled = true;
-            notes.className = "minimal-input h-24 resize-none text-sm text-zinc-500 bg-white/5 border-white/5";
-
-            const lockWarning = document.getElementById('top-lock-warning');
-            lockWarning.className = "text-emerald-400 font-semibold flex items-center text-xs bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/30 transition-all uppercase tracking-widest";
-            lockWarning.innerHTML = "RRS FULFILLED: SYSTEM UNLOCKED";
-            
-            input.className = "w-full minimal-input h-20 border-white/5 focus:border-white/20 resize-none transition-colors";
-            input.placeholder = "Message sent. Continue conversation...";
-            
-            document.getElementById('urgent-queue-card').className = "glass-panel p-5 relative transition-all opacity-50 shadow-none border-white/5";
-            document.getElementById('urgent-timer').style.display = 'none';
-            document.getElementById('urgent-message').style.display = 'none';
-
-            const btn = document.getElementById('unlock-btn');
-            btn.className = "bg-white/10 text-slate-400 cursor-not-allowed px-8 h-20 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center shrink-0";
-            btn.innerHTML = "Logged";
-            btn.disabled = true;
-        }
-
-        function generatePrintout() {
-            document.getElementById('print-fname').innerText = document.getElementById('ui-fname').innerText;
-            document.getElementById('print-phone').innerText = "(555) 019-8822";
-            document.getElementById('print-bike').innerText = document.getElementById('ui-bike').innerText;
-            document.getElementById('print-method').innerText = document.getElementById('ui-method').value.toUpperCase();
-            
-            const dp = document.getElementById('ui-downpayment').value;
-            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 });
-            document.getElementById('print-downpayment').innerText = formatter.format(dp);
-            
-            document.getElementById('print-date').innerText = new Date().toLocaleDateString();
-            window.print();
-        }
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Global Dynamic Tooltip Engine
-        const tooltip = document.createElement('div');
-        tooltip.className = 'dynamic-tooltip';
-        document.body.appendChild(tooltip);
-
-        document.querySelectorAll('[data-tooltip]').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                tooltip.innerHTML = el.getAttribute('data-tooltip');
-                tooltip.classList.add('active');
-            });
-            el.addEventListener('mousemove', (e) => {
-                let x = e.pageX + 15;
-                let y = e.pageY + 15;
-                
-                const rect = tooltip.getBoundingClientRect();
-                if (x + rect.width > window.innerWidth) x = window.innerWidth - rect.width - 15;
-                if (y + rect.height > window.innerHeight + window.scrollY) y = e.pageY - rect.height - 15;
-                
-                tooltip.style.left = x + 'px';
-                tooltip.style.top = y + 'px';
-            });
-            el.addEventListener('mouseleave', () => {
-                tooltip.classList.remove('active');
-            });
-        });
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // 1. Enforce Authentication
-            const sessionData = sessionStorage.getItem('apex_session');
-
-            const session = JSON.parse(sessionData);
-            
-            // 2. Dynamic Dealership Branding (White-Labeling)
             const mainHeader = document.querySelector('h1');
             if (mainHeader && mainHeader.innerText.toUpperCase().includes('APEX')) {
-                mainHeader.innerHTML = `${session.dealer} <span class="text-zinc-500 text-sm ml-2 font-medium tracking-normal capitalize">Powered by Apex OS</span>`;
+                mainHeader.innerHTML = `${session.dealer || 'Apex Dealer Systems'} <span class="text-zinc-500 text-sm ml-2 font-medium tracking-normal capitalize">Powered by Apex OS</span>`;
             }
 
-            // 3. Dynamic Brand Color Injection (Ambient Environment)
             if (session.color) {
                 const bgGlow = document.querySelector('.ambient-glow');
                 if (bgGlow) {
                     bgGlow.style.background = `radial-gradient(circle at center, ${session.color}15 0%, ${session.color}05 35%, transparent 70%)`;
                 }
             }
-        });
-    </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // 1. Enforce Authentication Failsafe
-            const sessionData = sessionStorage.getItem('apex_session');
-            if (!sessionData) return;
-            
-            const session = JSON.parse(sessionData);
-            
-            // 2. Dynamic Dealership Branding (White-Labeling)
-            const mainHeader = document.querySelector('h1');
-            if (mainHeader && mainHeader.innerText.toUpperCase().includes('APEX')) {
-                mainHeader.innerHTML = `${session.dealer} <span class="text-zinc-500 text-sm ml-2 font-medium tracking-normal capitalize">Powered by Apex OS</span>`;
-            }
-
-            // 3. High-Fidelity Canvas Engine (Replaces CSS Glow)
             const canvas = document.getElementById('ambient-canvas');
             if (canvas && session.color) {
                 const ctx = canvas.getContext('2d');
                 let width, height;
 
-                // Set Canvas Resolution perfectly to the device screen
                 function resize() {
                     width = window.innerWidth;
                     height = window.innerHeight;
@@ -462,34 +338,28 @@
                 window.addEventListener('resize', resize);
                 resize();
 
-                // Convert Hex to RGB for seamless gradient blending
                 const hex = session.color.replace('#', '');
                 const r = parseInt(hex.substring(0, 2), 16);
                 const g = parseInt(hex.substring(2, 4), 16);
                 const b = parseInt(hex.substring(4, 6), 16);
                 const rgb = `${r}, ${g}, ${b}`;
 
-                // Smooth Animation Loop
                 let startTime = Date.now();
                 function animate() {
                     const elapsed = (Date.now() - startTime) / 1000;
                     ctx.clearRect(0, 0, width, height);
 
-                    // Organic math for smooth, drifting movement (No stop-motion)
                     const driftX1 = width / 2 + Math.sin(elapsed * 0.3) * (width * 0.15);
                     const driftY1 = height / 2 + Math.cos(elapsed * 0.2) * (height * 0.15);
-                    
                     const driftX2 = width / 2 + Math.cos(elapsed * 0.25) * (width * 0.15);
                     const driftY2 = height / 2 + Math.sin(elapsed * 0.35) * (height * 0.15);
 
-                    // Draw Orb 1
                     const gradient1 = ctx.createRadialGradient(driftX1, driftY1, 0, driftX1, driftY1, width * 0.5);
                     gradient1.addColorStop(0, `rgba(${rgb}, 0.08)`);
                     gradient1.addColorStop(1, 'rgba(0, 0, 0, 0)');
                     ctx.fillStyle = gradient1;
                     ctx.fillRect(0, 0, width, height);
 
-                    // Draw Orb 2 (Offset for non-circular, organic blending)
                     const gradient2 = ctx.createRadialGradient(driftX2, driftY2, 0, driftX2, driftY2, width * 0.6);
                     gradient2.addColorStop(0, `rgba(${rgb}, 0.06)`);
                     gradient2.addColorStop(1, 'rgba(0, 0, 0, 0)');
@@ -499,6 +369,12 @@
                     requestAnimationFrame(animate);
                 }
                 animate();
+
+                const navBar = document.querySelector('.glass-nav');
+                if (navBar) {
+                    navBar.style.borderBottom = `1px solid rgba(${rgb}, 0.4)`;
+                    navBar.style.boxShadow = `0 10px 40px rgba(0,0,0,0.8), 0 1px 20px rgba(${rgb}, 0.2)`;
+                }
             }
         });
     </script>
