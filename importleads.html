@@ -83,16 +83,77 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
+        /* --- ADVANCED BORDER ANIMATION LOGIC --- */
         .crm-tab { 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            background-color: rgba(0, 0, 0, 0.3) !important; border: 1px solid rgba(255, 255, 255, 0.04);
+            position: relative;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            background-color: rgba(255, 255, 255, 0.04) !important; /* Acts as the static border */
+            border: none;
+            border-radius: 0.75rem; /* 12px for rounded-xl */
+            overflow: hidden;
+            z-index: 1;
         }
-        .crm-tab:hover { transform: translateY(-2px); background-color: rgba(255, 255, 255, 0.06) !important; }
 
-        .tab-dp360:hover { border-color: rgba(56, 189, 248, 0.8); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3); }
-        .tab-dx1:hover { border-color: rgba(249, 115, 22, 0.8); box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); }
-        .tab-cdk:hover { border-color: rgba(156, 163, 175, 0.8); box-shadow: 0 4px 20px rgba(156, 163, 175, 0.3); } 
-        .tab-vinsolutions:hover { border-color: rgba(59, 130, 246, 0.8); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); }
+        /* The Spinning Gradient */
+        .crm-tab::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent 75%, var(--brand-glow) 100%);
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        /* The Inner Frosted Mask */
+        .crm-tab::after {
+            content: '';
+            position: absolute;
+            inset: 1px; /* Masks the center, leaving exactly 1px for the animated border */
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: calc(0.75rem - 1px);
+            z-index: -1;
+            transition: background-color 0.2s ease;
+        }
+
+        /* Ensure Text/Content sits above the masks */
+        .crm-tab > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .crm-tab:hover { transform: translateY(-2px); }
+        .crm-tab:hover::after { background-color: rgba(20, 20, 20, 0.9); }
+        
+        .crm-tab:hover::before {
+            opacity: 1;
+            /* Chains the swift wrap (1.25s) into the idle loop (12.5s) seamlessly */
+            animation: 
+                border-spin-fast 1.25s linear forwards, 
+                border-spin-idle 12.5s linear 1.25s infinite;
+        }
+
+        @keyframes border-spin-fast {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes border-spin-idle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Brand Colors & External Glows */
+        .tab-vinsolutions { --brand-glow: rgba(59, 130, 246, 1); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.0); transition: box-shadow 0.2s; }
+        .tab-vinsolutions:hover { box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); }
+
+        .tab-cdk { --brand-glow: rgba(156, 163, 175, 1); box-shadow: 0 4px 20px rgba(156, 163, 175, 0.0); transition: box-shadow 0.2s; }
+        .tab-cdk:hover { box-shadow: 0 4px 20px rgba(156, 163, 175, 0.3); }
+
+        .tab-dx1 { --brand-glow: rgba(249, 115, 22, 1); box-shadow: 0 4px 20px rgba(249, 115, 22, 0.0); transition: box-shadow 0.2s; }
+        .tab-dx1:hover { box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); }
+
+        .tab-dp360 { --brand-glow: rgba(56, 189, 248, 1); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.0); transition: box-shadow 0.2s; }
+        .tab-dp360:hover { box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3); }
 
         .brand-text { font-weight: 900; font-size: 14px; letter-spacing: 0.5px; }
         .logo-box { width: 48px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -152,7 +213,7 @@
 
                 <div class="w-full space-y-3">
                     
-                    <button onclick="startImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                    <button onclick="startImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full px-6 py-4 flex items-center justify-between group">
                         <span class="font-medium text-slate-300 text-sm">Import from VinSolutions</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
                             <div class="logo-box">
@@ -162,7 +223,7 @@
                         </div>
                     </button>
 
-                    <button onclick="startImport('CDK Global')" class="crm-tab tab-cdk w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                    <button onclick="startImport('CDK Global')" class="crm-tab tab-cdk w-full px-6 py-4 flex items-center justify-between group">
                         <span class="font-medium text-slate-300 text-sm">Import from CDK Global</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
                             <div class="logo-box">
@@ -172,7 +233,7 @@
                         </div>
                     </button>
 
-                    <button onclick="startImport('DX1 Platform')" class="crm-tab tab-dx1 w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                    <button onclick="startImport('DX1 Platform')" class="crm-tab tab-dx1 w-full px-6 py-4 flex items-center justify-between group">
                         <span class="font-medium text-slate-300 text-sm">Import from DX1 Platform</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
                             <div class="logo-box">
@@ -182,7 +243,7 @@
                         </div>
                     </button>
 
-                    <button onclick="startImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                    <button onclick="startImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full px-6 py-4 flex items-center justify-between group">
                         <span class="font-medium text-slate-300 text-sm">Import from Dealership Performance 360</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
                             <div class="logo-box">
