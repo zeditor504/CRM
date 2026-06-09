@@ -111,7 +111,7 @@
                 </div>
             </div>
 
-            <div class="hidden grid-cols-4 gap-6 shrink-0">
+            <div class="grid grid-cols-4 gap-6 shrink-0" style="display: none !important;">
                 
                 <div class="glass-panel p-6 overflow-hidden flex justify-between items-center">
                     <div class="pr-4">
@@ -329,8 +329,9 @@
                 tooltip.classList.remove('active');
             });
         });
-    </script>
+        </script>
 
+        <script>
         document.addEventListener("DOMContentLoaded", () => {
             // 1. Enforce Authentication Failsafe
             const sessionData = sessionStorage.getItem('apex_session');
@@ -402,6 +403,7 @@
                     requestAnimationFrame(animate);
                 }
                 animate();
+
                 // 4. Premium Header Brand Glow
                 const navBar = document.querySelector('.glass-nav');
                 if (navBar) {
@@ -411,6 +413,5 @@
             }
         });
     </script>
-
 </body>
 </html>

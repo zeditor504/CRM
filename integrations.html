@@ -159,23 +159,84 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // 1. Enforce Authentication Failsafe
             const sessionData = sessionStorage.getItem('apex_session');
-            if (!sessionData) { window.location.href = 'login.html'; return; }
-            const session = JSON.parse(sessionData);
+            if (!sessionData) return;
             
+            let session;
+            try {
+                session = JSON.parse(sessionData);
+            } catch (error) {
+                return;
+            }
+            
+            // 2. Dynamic Dealership Branding (White-Labeling)
             const mainHeader = document.querySelector('h1');
             if (mainHeader && mainHeader.innerText.toUpperCase().includes('APEX')) {
                 mainHeader.innerHTML = `${session.dealer} <span class="text-zinc-500 text-sm ml-2 font-medium tracking-normal capitalize">Powered by Apex OS</span>`;
             }
 
-            if (session.color) {
-                const bgGlow = document.querySelector('.ambient-glow');
-                if (bgGlow) { bgGlow.style.background = `radial-gradient(circle at center, ${session.color}15 0%, transparent 65%)`; }
-            }
+            // 3. High-Fidelity Canvas Engine (Replaces CSS Glow)
+            const canvas = document.getElementById('ambient-canvas');
+            if (canvas && session.color) {
+                const ctx = canvas.getContext('2d');
+                let width, height;
 
-            setInterval(() => {
-                document.getElementById('live-clock').innerText = `Time: ${new Date().toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
-            }, 1000);
+                // Set Canvas Resolution perfectly to the device screen
+                function resize() {
+                    width = window.innerWidth;
+                    height = window.innerHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+                }
+                window.addEventListener('resize', resize);
+                resize();
+
+                // Convert Hex to RGB for seamless gradient blending
+                const hex = session.color.replace('#', '');
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                const rgb = `${r}, ${g}, ${b}`;
+
+                // Smooth Animation Loop
+                let startTime = Date.now();
+                function animate() {
+                    const elapsed = (Date.now() - startTime) / 1000;
+                    ctx.clearRect(0, 0, width, height);
+
+                    // Organic math for smooth, drifting movement (No stop-motion)
+                    const driftX1 = width / 2 + Math.sin(elapsed * 0.3) * (width * 0.15);
+                    const driftY1 = height / 2 + Math.cos(elapsed * 0.2) * (height * 0.15);
+                    
+                    const driftX2 = width / 2 + Math.cos(elapsed * 0.25) * (width * 0.15);
+                    const driftY2 = height / 2 + Math.sin(elapsed * 0.35) * (height * 0.15);
+
+                    // Draw Orb 1
+                    const gradient1 = ctx.createRadialGradient(driftX1, driftY1, 0, driftX1, driftY1, width * 0.5);
+                    gradient1.addColorStop(0, `rgba(${rgb}, 0.08)`);
+                    gradient1.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    ctx.fillStyle = gradient1;
+                    ctx.fillRect(0, 0, width, height);
+
+                    // Draw Orb 2 (Offset for non-circular, organic blending)
+                    const gradient2 = ctx.createRadialGradient(driftX2, driftY2, 0, driftX2, driftY2, width * 0.6);
+                    gradient2.addColorStop(0, `rgba(${rgb}, 0.06)`);
+                    gradient2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    ctx.fillStyle = gradient2;
+                    ctx.fillRect(0, 0, width, height);
+
+                    requestAnimationFrame(animate);
+                }
+                animate();
+
+                // 4. Premium Header Brand Glow
+                const navBar = document.querySelector('.glass-nav');
+                if (navBar) {
+                    navBar.style.borderBottom = `1px solid rgba(${rgb}, 0.4)`;
+                    navBar.style.boxShadow = `0 10px 40px rgba(0,0,0,0.8), 0 1px 20px rgba(${rgb}, 0.2)`;
+                }
+            }
         });
     </script>
 </body>

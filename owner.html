@@ -197,9 +197,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // 1. Enforce Authentication Failsafe
             const sessionData = sessionStorage.getItem('apex_session');
             if (!sessionData) return;
-
+            
             let session;
             try {
                 session = JSON.parse(sessionData);
@@ -207,10 +208,10 @@
                 return;
             }
             
-            // White-labeling Header
-            const brandHeader = document.getElementById('dealer-brand-name');
-            if (brandHeader) {
-                brandHeader.innerHTML = `${session.dealer || 'Apex Dealer Group'} <span class="text-zinc-600 text-sm ml-2 font-medium tracking-normal capitalize">Owner Hub</span>`;
+            // 2. Dynamic Dealership Branding (White-Labeling)
+            const mainHeader = document.querySelector('h1');
+            if (mainHeader && mainHeader.innerText.toUpperCase().includes('APEX')) {
+                mainHeader.innerHTML = `${session.dealer} <span class="text-zinc-500 text-sm ml-2 font-medium tracking-normal capitalize">Powered by Apex OS</span>`;
             }
 
             // 3. High-Fidelity Canvas Engine (Replaces CSS Glow)
@@ -266,23 +267,15 @@
                     requestAnimationFrame(animate);
                 }
                 animate();
+
                 // 4. Premium Header Brand Glow
                 const navBar = document.querySelector('.glass-nav');
                 if (navBar) {
                     navBar.style.borderBottom = `1px solid rgba(${rgb}, 0.4)`;
                     navBar.style.boxShadow = `0 10px 40px rgba(0,0,0,0.8), 0 1px 20px rgba(${rgb}, 0.2)`;
                 }
-            }   
-
-            setInterval(() => {
-                document.getElementById('live-clock').innerText = `Time: ${new Date().toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
-            }, 1000);
+            }
         });
-
-        function logout() {
-            sessionStorage.removeItem('apex_session');
-            window.location.href = 'login.html';
-        }
     </script>
 </body>
 </html>

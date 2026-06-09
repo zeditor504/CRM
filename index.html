@@ -329,7 +329,12 @@
             const sessionData = sessionStorage.getItem('apex_session');
             if (!sessionData) return;
             
-            const session = JSON.parse(sessionData);
+            let session;
+            try {
+                session = JSON.parse(sessionData);
+            } catch (error) {
+                return;
+            }
             
             // 2. Dynamic Dealership Branding (White-Labeling)
             const mainHeader = document.querySelector('h1');
@@ -390,6 +395,7 @@
                     requestAnimationFrame(animate);
                 }
                 animate();
+
                 // 4. Premium Header Brand Glow
                 const navBar = document.querySelector('.glass-nav');
                 if (navBar) {
