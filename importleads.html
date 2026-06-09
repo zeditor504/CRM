@@ -24,7 +24,6 @@
             background-size: 32px 32px;
         }
 
-        /* --- ADVANCED DATA TRANSFORMATION PIPELINE --- */
         #wave-layer { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             z-index: -1; pointer-events: none; overflow: hidden; 
@@ -99,24 +98,16 @@
         .logo-box { width: 48px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .brand-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        /* Unified Tooltip System */
-        .tooltip-container { position: relative; display: inline-flex; align-items: center; cursor: help; }
-        .tooltip-text {
-            visibility: hidden; opacity: 0; transform: translateY(10px);
-            position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%) translateY(10px);
-            background-color: rgba(20, 20, 20, 0.95); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
-            padding: 12px 16px; color: #e4e4e7; font-size: 0.75rem; font-weight: 500;
-            line-height: 1.5; text-transform: none; letter-spacing: normal;
-            width: 240px; text-align: center; z-index: 100;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none;
+        /* Dynamic Tooltip CSS */
+        [data-tooltip] { cursor: help; }
+        .dynamic-tooltip {
+            position: absolute; background-color: rgba(20, 20, 20, 0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 12px 16px;
+            color: #e4e4e7; font-size: 0.75rem; font-weight: 500; line-height: 1.5; text-transform: none; 
+            letter-spacing: normal; width: 240px; text-align: left; z-index: 999999; pointer-events: none;
+            opacity: 0; transition: opacity 0.2s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-        .tooltip-text::after {
-            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-            border-width: 6px; border-style: solid; border-color: rgba(255,255,255,0.1) transparent transparent transparent;
-        }
-        .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+        .dynamic-tooltip.active { opacity: 1; }
 
         .footer-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px 0; display: flex; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto; z-index: 20; position: relative;}
         .footer-section { flex: 1; display: flex; }
@@ -155,22 +146,19 @@
             
             <div class="glass-panel w-full p-10 flex flex-col items-center relative z-10 mx-auto">
                 <div class="text-center mb-10">
-                    <div class="tooltip-container inline-block">
-                        <h2 class="text-2xl font-bold text-white uppercase mb-3 tracking-[0.4em] flex items-center gap-2">IMPORT PAST LEADS <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></h2>
-                        <span class="tooltip-text">Importing maps old customer logs and vehicle data to the Apex ecosystem without overwriting active deals or creating duplicate entries.</span>
-                    </div>
+                    <h2 class="text-2xl font-bold text-white uppercase mb-3 tracking-[0.4em] flex items-center justify-center gap-2 w-max mx-auto" data-tooltip="Importing maps old customer logs and vehicle data to the Apex ecosystem without overwriting active deals or creating duplicate entries.">IMPORT PAST LEADS <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></h2>
                     <p class="text-sm text-zinc-400 font-medium">Select your previous software system to securely map data into Apex Dealer Systems.</p>
                 </div>
 
                 <div class="w-full space-y-3">
                     
-                    <button onclick="startImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full rounded-xl px-6 py-4 flex items-center justify-between group">
-                        <span class="font-medium text-slate-300 text-sm">Import from Dealership Performance 360</span>
+                    <button onclick="startImport('DP360')" class="crm-tab tab-dp360 w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                        <span class="font-medium text-slate-300 text-sm">Import from DP360</span>
                         <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
                             <div class="logo-box">
                                 <img src="assets/dp360.png" alt="DP360 Logo" class="brand-logo">
                             </div>
-                            <span class="brand-text" style="color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);">DEALERSHIP PERFORMANCE 360</span>
+                            <span class="brand-text" style="color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);">DP360</span>
                         </div>
                     </button>
 
@@ -338,6 +326,32 @@
         }
         setInterval(updateClock, 1000);
         updateClock(); 
+
+        // Global Dynamic Tooltip Engine
+        const tooltip = document.createElement('div');
+        tooltip.className = 'dynamic-tooltip';
+        document.body.appendChild(tooltip);
+
+        document.querySelectorAll('[data-tooltip]').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                tooltip.innerHTML = el.getAttribute('data-tooltip');
+                tooltip.classList.add('active');
+            });
+            el.addEventListener('mousemove', (e) => {
+                let x = e.pageX + 15;
+                let y = e.pageY + 15;
+                
+                const rect = tooltip.getBoundingClientRect();
+                if (x + rect.width > window.innerWidth) x = window.innerWidth - rect.width - 15;
+                if (y + rect.height > window.innerHeight + window.scrollY) y = e.pageY - rect.height - 15;
+                
+                tooltip.style.left = x + 'px';
+                tooltip.style.top = y + 'px';
+            });
+            el.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('active');
+            });
+        });
     </script>
 </body>
 </html>
