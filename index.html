@@ -11,7 +11,6 @@
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
 
-        /* PERFECT MATTE BLACK ENFORCEMENT */
         body { 
             background-color: #141414 !important; color: #f1f5f9 !important; 
             margin: 0; padding: 0; min-height: 100vh; 
@@ -30,7 +29,6 @@
 
         .container-wrapper { width: 95vw; max-width: 1400px; z-index: 10; position: relative; padding-top: 30px; flex: 1; display: flex; flex-direction: column; }
 
-        /* Neutral Frosted Glass */
         .glass-panel {
             background-color: rgba(30, 30, 30, 0.4) !important;
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -42,7 +40,6 @@
         
         .header { text-align: center; }
         .header h1 { margin: 0; font-size: 2.2rem; font-weight: 700; letter-spacing: -0.5px; color: #ffffff; }
-        .header h1 span { color: #ffffff; font-weight: 700; }
         .header p { margin: 6px 0 0 0; color: #a1a1aa; font-size: 0.95rem; font-weight: 400; }
 
         .profile-btn { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); padding: 8px 16px; border-radius: 100px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; color: #e4e4e7; font-weight: 600; font-size: 0.85rem; }
@@ -54,11 +51,11 @@
         .stat-value { font-size: 2rem; font-weight: 800; color: #ffffff; }
         .stat-sub { font-size: 0.8rem; color: #34d399; font-weight: 500; margin-top: 4px; }
 
-        .sms-alerts { padding: 16px 24px; display: flex; align-items: center; gap: 15px; margin-bottom: 24px; background-color: rgba(255, 255, 255, 0.05) !important; border-color: rgba(255, 255, 255, 0.1); border-radius: 16px; }
-        .sms-badge { background-color: #ffffff; color: #000000; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em; }
-        .sms-text { font-size: 0.9rem; color: #e2e8f0; font-weight: 500; flex-grow: 1; }
-        .sms-btn { background-color: #34d399; color: #000000; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
-        .sms-btn:hover { background-color: #10b981; transform: translateY(-1px); }
+        .sms-alerts { padding: 16px 24px; display: flex; align-items: center; gap: 15px; margin-bottom: 24px; background-color: rgba(245, 158, 11, 0.1) !important; border-color: rgba(245, 158, 11, 0.3); border-radius: 16px; }
+        .sms-badge { background-color: #f59e0b; color: #000000; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+        .sms-text { font-size: 0.9rem; color: #fcd34d; font-weight: 600; flex-grow: 1; }
+        .sms-btn { background-color: #ffffff; color: #000000; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+        .sms-btn:hover { background-color: #e4e4e7; transform: translateY(-1px); }
 
         .queue-header { font-size: 0.85rem; color: #34d399; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 12px; display: flex; align-items: center; }
 
@@ -72,8 +69,8 @@
         tbody tr { cursor: pointer; transition: background-color 0.2s ease; }
         tbody tr:hover { background-color: rgba(255,255,255,0.05); }
 
+        .status-mrs { background-color: rgba(245, 158, 11, 0.15); color: #fcd34d; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(245, 158, 11, 0.4); text-transform: uppercase; letter-spacing: 0.05em; }
         .status-new { background-color: rgba(52, 211, 153, 0.15); color: #34d399; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(52, 211, 153, 0.3); text-transform: uppercase; letter-spacing: 0.05em; }
-        .status-stale { background-color: rgba(249, 115, 22, 0.15); color: #fbbf24; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(249, 115, 22, 0.3); text-transform: uppercase; letter-spacing: 0.05em; }
         
         .action-container { display: flex; gap: 16px; justify-content: center; margin-bottom: 30px; }
         .action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 100px; font-size: 0.85rem; font-weight: 600; transition: all 0.2s ease; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -88,16 +85,7 @@
         .footer-section.center { justify-content: center; }
         .footer-section.right { justify-content: flex-end; }
         .footer-pill { background-color: rgba(20, 20, 20, 0.8) !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; }
-
-        #profile-sidebar {
-            position: fixed; top: 0; right: -400px; width: 380px; height: 100vh;
-            background-color: rgba(20, 20, 20, 0.95) !important; backdrop-filter: blur(30px);
-            border-left: 1px solid rgba(255,255,255,0.08); z-index: 100;
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 30px;
-            box-shadow: -20px 0 50px rgba(0,0,0,0.8);
-        }
-        #profile-sidebar.active { right: 0; }
-
+        
         ::-webkit-scrollbar { height: 6px; width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -119,24 +107,23 @@
                 <p>Active Leads Dashboard • Click a row to enter Deal Desk</p>
             </div>
             <div style="width: 150px; text-align: right;">
-                <button class="profile-btn ml-auto" onclick="toggleSidebar()">
+                <button class="profile-btn ml-auto">
                     <div class="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center text-xs text-white font-bold border border-white/20">SR</div>
                     Sales Rep
-                    <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
             </div>
         </div>
 
         <div class="stats-row">
             <div class="glass-panel stat-card">
-                <div class="stat-title">Assigned Today</div>
-                <div class="stat-value">12</div>
-                <div class="stat-sub">You are on pace</div>
+                <div class="stat-title">MRS Compliance</div>
+                <div class="stat-value">98.5%</div>
+                <div class="stat-sub">Top 10% of team</div>
             </div>
             <div class="glass-panel stat-card">
-                <div class="stat-title">Avg Response Time</div>
-                <div class="stat-value">3m 45s</div>
-                <div class="stat-sub text-white">Top 10% of team</div>
+                <div class="stat-title">Assigned Today</div>
+                <div class="stat-value">12</div>
+                <div class="stat-sub text-white">Pacing perfectly</div>
             </div>
             <div class="glass-panel stat-card">
                 <div class="stat-title">Appointments Set</div>
@@ -146,8 +133,8 @@
         </div>
 
         <div class="glass-panel sms-alerts">
-            <span class="sms-badge">Alert</span>
-            <span class="sms-text">You have an automated AI follow-up awaiting human takeover.</span>
+            <span class="sms-badge">MRS Action Required</span>
+            <span class="sms-text">AI successfully secured phone number for Carl (Honda CBR lead). Give them a call!</span>
             <button class="sms-btn" onclick="window.location.href='deal-desk.html?id=1'">Open Deal Desk</button>
         </div>
 
@@ -198,56 +185,19 @@
         </div>
     </footer>
 
-    <div id="profile-sidebar">
-        <div class="flex justify-end mb-8">
-            <button class="text-zinc-400 hover:text-white transition" onclick="toggleSidebar()">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-        </div>
-        <div class="flex items-center gap-5 mb-10">
-            <div class="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center text-xl text-white font-bold shadow-lg border border-white/10">SR</div>
-            <div>
-                <h2 class="text-xl font-bold text-white">Sales Rep</h2>
-                <p class="text-sm text-zinc-300 font-medium mt-1 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active Status</p>
-            </div>
-        </div>
-        
-        <div class="space-y-8">
-            <div class="glass-panel p-5 border-white/5 shadow-none">
-                <h3 class="text-xs text-zinc-400 uppercase tracking-widest font-semibold mb-4">Monthly Quota</h3>
-                <div class="w-full bg-zinc-800/50 rounded-full h-2.5 mb-3 overflow-hidden">
-                    <div class="bg-white h-full rounded-full" style="width: 60%"></div>
-                </div>
-                <div class="flex justify-between text-sm text-zinc-300 font-medium">
-                    <span>12 Closed</span>
-                    <span>Goal: 20</span>
-                </div>
-            </div>
-            
-            <div>
-                <h3 class="text-xs text-zinc-400 uppercase tracking-widest font-semibold mb-4">Settings</h3>
-                <ul class="space-y-2 text-sm text-zinc-300 font-medium">
-                    <li class="flex items-center gap-3 cursor-pointer hover:text-white transition p-3 rounded-lg hover:bg-white/5"><svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Preferences</li>
-                    <li class="flex items-center gap-3 cursor-pointer hover:text-white transition p-3 rounded-lg hover:bg-white/5"><svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg> Notifications</li>
-                    <li class="flex items-center gap-3 cursor-pointer text-rose-400 hover:text-rose-300 transition p-3 rounded-lg hover:bg-rose-500/10 mt-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> Secure Logout</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
     <script>
-        const sampleNames = ["Josh Stevenson", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", "James Easton", "Benjamin Mercer", "Lucas Thorne", "Henry Blackwell", "Alexander Cross"];
-        const sampleVehicles = ["2024 Ducati Panigale V4", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", "Honda CBR600RR", "BMW S1000RR", "2024 Yamaha R1", "Kawasaki Z900", "KTM 390 Duke", "Triumph Super 1200"];
+        const sampleNames = ["Carl", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", "James Easton", "Benjamin Mercer", "Lucas Thorne", "Henry Blackwell", "Alexander Cross"];
+        const sampleVehicles = ["Honda CBR600RR", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", "2024 Ducati Panigale V4", "BMW S1000RR", "2024 Yamaha R1", "Kawasaki Z900", "KTM 390 Duke", "Triumph Super 1200"];
         const leadsDatabase = [];
 
         for (let i = 1; i <= 10; i++) {
             leadsDatabase.push({ 
                 id: `LD-${1000 + i}`, 
                 name: sampleNames[i - 1], 
-                phone: `(555) 01${String(20 + i)}`, 
+                phone: (i === 1) ? `555-019-8822` : `(555) 01${String(20 + i)}`, 
                 vehicle: sampleVehicles[i - 1], 
-                source: "Website Intake Form", 
-                status: (i === 4) ? "Stale" : "New Lead" 
+                source: "Website AI Intake", 
+                status: (i === 1) ? "MRS Triggered" : "New Lead" 
             });
         }
 
@@ -257,7 +207,7 @@
                 let tr = document.createElement('tr');
                 tr.onclick = function() { window.location.href = 'deal-desk.html?id=' + (index + 1); };
                 
-                const statusClass = lead.status === "New Lead" ? "status-new" : "status-stale";
+                const statusClass = lead.status === "MRS Triggered" ? "status-mrs" : "status-new";
 
                 tr.innerHTML = `
                     <td class="tabular-nums font-mono text-sm">${lead.id}</td>
@@ -271,11 +221,6 @@
             });
         }
         loadData();
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('profile-sidebar');
-            sidebar.classList.toggle('active');
-        }
 
         function updateClock() {
             const now = new Date();
