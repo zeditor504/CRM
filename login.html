@@ -122,20 +122,15 @@
             // Lock session into browser memory
             sessionStorage.setItem('apex_session', JSON.stringify(session));
             
-            // Play Google's open-source UI success chime
-            const successChime = new Audio('https://actions.google.com/sounds/v1/ui/bell_ping.ogg');
-            successChime.volume = 0.5; // Set volume to 50% for a subtle effect
-            successChime.play().catch(err => console.log("Audio prevented by browser:", err));
-            
             // Change button text to show success visually
             const btn = document.querySelector('.login-btn');
             btn.innerHTML = "Access Granted...";
             btn.style.backgroundColor = "#34d399"; // Turns Apex Emerald
             
-            // Delay the redirect by 600ms so the chime can play out
+            // Swift redirect for visual feedback (reduced from 600ms to 200ms)
             setTimeout(() => {
                 window.location.replace(session.redirect);
-            }, 600);
+            }, 200);
         });
     </script>
 </body>
