@@ -22,7 +22,32 @@
             background-size: 32px 32px;
         }
         
-        .ambient-glow { position: absolute; top: -10%; left: 20%; width: 60vw; height: 30vw; background: radial-gradient(ellipse, rgba(255, 255, 255, 0.02) 0%, transparent 60%); filter: blur(100px); z-index: 0; pointer-events: none; }
+        /* --- UNIFIED BREATHING AMBIENT GLOW --- */
+        .ambient-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 65%);
+            filter: blur(120px);
+            z-index: -1;
+            pointer-events: none;
+            animation: ambientBreathe 10s ease-in-out infinite;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes ambientBreathe {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0.8;
+            }
+        }
 
         .glass-panel {
             background-color: rgba(30, 30, 30, 0.5) !important;
@@ -203,7 +228,7 @@
 
             // Inject Custom Brand Colors to UI Elements
             if (session.color) {
-                document.getElementById('dealer-glow').style.background = `radial-gradient(ellipse, ${session.color}25 0%, transparent 60%)`;
+                document.getElementById('dealer-glow').style.background = `radial-gradient(circle at center, ${session.color}25 0%, transparent 65%)`;
                 document.getElementById('health-ring').style.borderColor = session.color;
                 document.getElementById('color-target-1').style.color = session.color;
                 document.getElementById('color-target-2').style.color = session.color;

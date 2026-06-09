@@ -22,6 +22,33 @@
             background-size: 32px 32px;
         }
 
+        /* --- UNIFIED BREATHING AMBIENT GLOW --- */
+        .ambient-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 65%);
+            filter: blur(120px);
+            z-index: -1;
+            pointer-events: none;
+            animation: ambientBreathe 10s ease-in-out infinite;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes ambientBreathe {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0.8;
+            }
+        }
+
         .glass-panel {
             background-color: rgba(30, 30, 30, 0.4) !important;
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -66,6 +93,8 @@
     </style>
 </head>
 <body class="flex flex-col">
+
+    <div class="ambient-glow"></div>
 
     <nav class="no-print glass-nav h-16 flex items-center justify-between px-6 shrink-0 z-20">
         <div class="flex items-center space-x-4">
@@ -208,6 +237,46 @@
         </div>
     </div>
 
+    <div id="print-deal-sheet" class="hidden">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 30px;">
+            <div>
+                <h1 style="font-size: 30px; margin: 0; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">Apex Dealer Systems</h1>
+                <p style="margin: 5px 0 0 0; color: #555; font-size: 14px; font-weight: bold;">Official Sales Desk Worksheet</p>
+            </div>
+            <div style="text-align: right; font-size: 12px;">
+                <p style="margin: 0 0 5px 0;"><strong>Date:</strong> <span id="print-date"></span></p>
+                <p style="margin: 0;"><strong>Sales Agent:</strong> APEX User</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 40px; margin-bottom: 30px;">
+            <div style="flex: 1;">
+                <h2 style="background: #f4f4f5; padding: 8px 12px; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase; border: 1px solid #e4e4e7;">Customer Information</h2>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <tr><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; width: 30%;"><strong>Full Name:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; font-weight: bold; font-size: 16px;" id="print-fname"></td></tr>
+                    <tr><td style="padding: 8px 0;"><strong>Phone:</strong></td><td style="padding: 8px 0;" id="print-phone"></td></tr>
+                </table>
+            </div>
+            <div style="flex: 1;">
+                <h2 style="background: #f4f4f5; padding: 8px 12px; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase; border: 1px solid #e4e4e7;">Vehicle of Interest</h2>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <tr><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; width: 30%;"><strong>Unit:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; font-weight: bold;" id="print-bike"></td></tr>
+                    <tr><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5;"><strong>VIN:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #f4f4f5; font-family: monospace;">ZDM1000000777</td></tr>
+                </table>
+            </div>
+        </div>
+        <h2 style="background: #f4f4f5; padding: 8px 12px; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase; border: 1px solid #e4e4e7;">Deal Structure</h2>
+        <div style="border: 2px solid #000; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div>
+                <span style="display: block; font-size: 10px; color: #555; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Payment Method</span>
+                <span style="font-size: 24px; font-weight: 800;" id="print-method">FINANCE</span>
+            </div>
+            <div style="text-align: right;">
+                <span style="display: block; font-size: 10px; color: #555; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Down Payment / Cash</span>
+                <span style="font-size: 24px; font-weight: 800;" id="print-downpayment">$2,500</span>
+            </div>
+        </div>
+    </div>
+
     <footer class="no-print footer-wrapper">
         <div class="footer-section left">
             <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
@@ -289,6 +358,20 @@
             btn.disabled = true;
         }
 
+        function generatePrintout() {
+            document.getElementById('print-fname').innerText = document.getElementById('ui-fname').innerText;
+            document.getElementById('print-phone').innerText = "(555) 019-8822";
+            document.getElementById('print-bike').innerText = document.getElementById('ui-bike').innerText;
+            document.getElementById('print-method').innerText = document.getElementById('ui-method').value.toUpperCase();
+            
+            const dp = document.getElementById('ui-downpayment').value;
+            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 });
+            document.getElementById('print-downpayment').innerText = formatter.format(dp);
+            
+            document.getElementById('print-date').innerText = new Date().toLocaleDateString();
+            window.print();
+        }
+
         function updateClock() {
             const now = new Date();
             document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
@@ -342,9 +425,9 @@
 
             // 3. Dynamic Brand Color Injection (Ambient Environment)
             if (session.color) {
-                const bgGlow = document.querySelector('.glow-emerald, .ambient-glow');
+                const bgGlow = document.querySelector('.ambient-glow');
                 if (bgGlow) {
-                    bgGlow.style.background = `radial-gradient(ellipse, ${session.color}15 0%, transparent 60%)`;
+                    bgGlow.style.background = `radial-gradient(circle at center, ${session.color}15 0%, transparent 65%)`;
                 }
             }
         });

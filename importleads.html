@@ -24,6 +24,33 @@
             background-size: 32px 32px;
         }
 
+        /* --- UNIFIED BREATHING AMBIENT GLOW --- */
+        .ambient-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 65%);
+            filter: blur(120px);
+            z-index: -1;
+            pointer-events: none;
+            animation: ambientBreathe 10s ease-in-out infinite;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes ambientBreathe {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0.8;
+            }
+        }
+
         #wave-layer { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             z-index: -1; pointer-events: none; overflow: hidden; 
@@ -87,14 +114,13 @@
         .crm-tab { 
             position: relative;
             transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            background-color: rgba(255, 255, 255, 0.04) !important; /* Acts as the static border */
+            background-color: rgba(255, 255, 255, 0.04) !important;
             border: none;
-            border-radius: 0.75rem; /* 12px for rounded-xl */
+            border-radius: 0.75rem; 
             overflow: hidden;
             z-index: 1;
         }
 
-        /* The Spinning Gradient */
         .crm-tab::before {
             content: '';
             position: absolute;
@@ -105,18 +131,16 @@
             transition: opacity 0.2s ease;
         }
 
-        /* The Inner Frosted Mask */
         .crm-tab::after {
             content: '';
             position: absolute;
-            inset: 1px; /* Masks the center, leaving exactly 1px for the animated border */
+            inset: 1px;
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: calc(0.75rem - 1px);
             z-index: -1;
             transition: background-color 0.2s ease;
         }
 
-        /* Ensure Text/Content sits above the masks */
         .crm-tab > * {
             position: relative;
             z-index: 2;
@@ -127,7 +151,6 @@
         
         .crm-tab:hover::before {
             opacity: 1;
-            /* Chains the swift wrap (1.25s) into the idle loop (12.5s) seamlessly */
             animation: 
                 border-spin-fast 1.25s linear forwards, 
                 border-spin-idle 12.5s linear 1.25s infinite;
@@ -190,6 +213,8 @@
 </head>
 <body class="relative flex flex-col items-center">
 
+    <div class="ambient-glow"></div>
+
     <div id="wave-layer"></div>
 
     <nav class="glass-nav h-16 flex items-center justify-between px-6 shrink-0 w-full relative z-20">
@@ -207,7 +232,7 @@
             
             <div class="glass-panel w-full p-10 flex flex-col items-center relative z-10 mx-auto">
                 <div class="text-center mb-10">
-                    <h2 class="text-2xl font-bold text-white uppercase mb-3 tracking-[0.2em] flex items-center justify-center gap-2 w-max mx-auto" data-tooltip="Importing maps old customer logs and vehicle data to the Apex ecosystem without overwriting active deals or creating duplicate entries.">IMPORT PAST LEADS <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></h2>
+                    <h2 class="text-2xl font-bold text-white uppercase mb-3 tracking-[0.3em] flex items-center justify-center gap-2 w-max mx-auto" data-tooltip="Importing maps old customer logs and vehicle data to the Apex ecosystem without overwriting active deals or creating duplicate entries.">IMPORT PAST LEADS <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></h2>
                     <p class="text-sm text-zinc-400 font-medium">Select your previous software system to securely map data into Apex Dealer Systems.</p>
                 </div>
 
@@ -434,9 +459,9 @@
 
             // 3. Dynamic Brand Color Injection (Ambient Environment)
             if (session.color) {
-                const bgGlow = document.querySelector('.glow-emerald, .ambient-glow');
+                const bgGlow = document.querySelector('.ambient-glow');
                 if (bgGlow) {
-                    bgGlow.style.background = `radial-gradient(ellipse, ${session.color}15 0%, transparent 60%)`;
+                    bgGlow.style.background = `radial-gradient(circle at center, ${session.color}15 0%, transparent 65%)`;
                 }
             }
         });
