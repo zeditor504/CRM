@@ -122,8 +122,20 @@
             // Lock session into browser memory
             sessionStorage.setItem('apex_session', JSON.stringify(session));
             
-            // Route to correct RBAC tier
-            window.location.href = session.redirect;
+            // Play Google's open-source UI success chime
+            const successChime = new Audio('https://actions.google.com/sounds/v1/ui/bell_ping.ogg');
+            successChime.volume = 0.5; // Set volume to 50% for a subtle effect
+            successChime.play().catch(err => console.log("Audio prevented by browser:", err));
+            
+            // Change button text to show success visually
+            const btn = document.querySelector('.login-btn');
+            btn.innerHTML = "Access Granted...";
+            btn.style.backgroundColor = "#34d399"; // Turns Apex Emerald
+            
+            // Delay the redirect by 600ms so the chime can play out
+            setTimeout(() => {
+                window.location.replace(session.redirect);
+            }, 600);
         });
     </script>
 </body>
