@@ -11,11 +11,10 @@
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
         
-        /* STRICT MATTE BLACK ENFORCEMENT */
         body { 
             background-color: #141414 !important;
             color: #f1f5f9 !important;
-            margin: 0; min-height: 100vh; overflow-x: hidden;
+            margin: 0; min-height: 100vh; overflow-x: hidden; overflow-y: auto;
             display: flex; flex-direction: column; 
         }
 
@@ -40,11 +39,7 @@
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* The Funnel Logic: Constant horizontal speed, squeezed vertical path */
-        @keyframes moveX { 
-            0% { transform: translateX(0); } 
-            100% { transform: translateX(120vw); } 
-        }
+        @keyframes moveX { 0% { transform: translateX(0); } 100% { transform: translateX(120vw); } }
         
         @keyframes moveY {
             0% { transform: translateY(var(--start-y)); animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1); } 
@@ -53,21 +48,18 @@
             100% { transform: translateY(var(--end-y)); }
         }
 
-        /* Document strictly rotated, fades out right before hitting the center container at 1:1 scale */
         .doc-icon { animation: docFade var(--duration) linear forwards; }
         @keyframes docFade {
             0%, 35% { opacity: 0.85; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); }
             45%, 100% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); display: none; }
         }
 
-        /* Checkmark fades in right after the document fades out at 1:1 scale */
         .check-icon { opacity: 0; animation: checkFade var(--duration) linear forwards; }
         @keyframes checkFade {
             0%, 45% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
             55%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* Particles pop alongside the checkmark emergence */
         .pop-particle { 
             position: absolute; width: 6px; height: 6px; background-color: #34d399; 
             border-radius: 50%; box-shadow: 0 0 10px #34d399; opacity: 0; pointer-events: none; 
@@ -80,7 +72,6 @@
 
         .glow-wrapper { position: relative; width: 100%; max-width: 42rem; margin: 2rem auto; z-index: 10; flex: 1; display: flex; align-items: center;}
 
-        /* Neutral Dark Frosted Glass */
         .glass-panel {
             background-color: rgba(30, 30, 30, 0.4) !important;
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
@@ -99,7 +90,6 @@
         }
         .crm-tab:hover { transform: translateY(-2px); background-color: rgba(255, 255, 255, 0.06) !important; }
 
-        /* Exact Brand Hex Glows - Brightened for Dark Mode */
         .tab-dp360:hover { border-color: rgba(56, 189, 248, 0.8); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3); }
         .tab-dx1:hover { border-color: rgba(249, 115, 22, 0.8); box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); }
         .tab-elead:hover { border-color: rgba(239, 68, 68, 0.8); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3); } 
@@ -109,7 +99,25 @@
         .logo-box { width: 48px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .brand-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        /* ISOLATED FOOTER LAYOUT */
+        /* Unified Tooltip System */
+        .tooltip-container { position: relative; display: inline-flex; align-items: center; cursor: help; }
+        .tooltip-text {
+            visibility: hidden; opacity: 0; transform: translateY(10px);
+            position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%) translateY(10px);
+            background-color: rgba(20, 20, 20, 0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
+            padding: 12px 16px; color: #e4e4e7; font-size: 0.75rem; font-weight: 500;
+            line-height: 1.5; text-transform: none; letter-spacing: normal;
+            width: 240px; text-align: center; z-index: 100;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none;
+        }
+        .tooltip-text::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border-width: 6px; border-style: solid; border-color: rgba(255,255,255,0.1) transparent transparent transparent;
+        }
+        .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+
         .footer-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px 0; display: flex; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto; z-index: 20; position: relative;}
         .footer-section { flex: 1; display: flex; }
         .footer-section.left { justify-content: flex-start; }
@@ -147,7 +155,10 @@
             
             <div class="glass-panel w-full p-10 flex flex-col items-center relative z-10 mx-auto">
                 <div class="text-center mb-10">
-                    <h2 class="text-2xl font-bold text-white uppercase mb-3 tracking-[0.4em]">IMPORT PAST LEADS</h2>
+                    <div class="tooltip-container inline-block">
+                        <h2 class="text-2xl font-bold text-white uppercase mb-3 tracking-[0.4em] flex items-center gap-2">IMPORT PAST LEADS <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></h2>
+                        <span class="tooltip-text">Importing maps old customer logs and vehicle data to the Apex ecosystem without overwriting active deals or creating duplicate entries.</span>
+                    </div>
                     <p class="text-sm text-zinc-400 font-medium">Select your previous software system to securely map data into Apex Dealer Systems.</p>
                 </div>
 
@@ -159,7 +170,17 @@
                             <div class="logo-box">
                                 <img src="assets/dp360.png" alt="DP360 Logo" class="brand-logo">
                             </div>
-                            <span class="brand-text" style="color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);">DP360</span>
+                            <span class="brand-text" style="color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);">DEALERSHIP PERFORMANCE 360</span>
+                        </div>
+                    </button>
+
+                    <button onclick="startImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full rounded-xl px-6 py-4 flex items-center justify-between group">
+                        <span class="font-medium text-slate-300 text-sm">Import from VinSolutions</span>
+                        <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
+                            <div class="logo-box">
+                                <img src="assets/vinsolutions.png" alt="VinSolutions Logo" class="brand-logo">
+                            </div>
+                            <span class="brand-text" style="color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.4);">VINSOLUTIONS</span>
                         </div>
                     </button>
 
@@ -180,16 +201,6 @@
                                 <img src="assets/elead.png" alt="Elead Logo" class="brand-logo">
                             </div>
                             <span class="brand-text" style="color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.4);">ELEAD</span>
-                        </div>
-                    </button>
-
-                    <button onclick="startImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full rounded-xl px-6 py-4 flex items-center justify-between group">
-                        <span class="font-medium text-slate-300 text-sm">Import from VinSolutions</span>
-                        <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <div class="logo-box">
-                                <img src="assets/vinsolutions.png" alt="VinSolutions Logo" class="brand-logo">
-                            </div>
-                            <span class="brand-text" style="color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.4);">VINSOLUTIONS</span>
                         </div>
                     </button>
                     
@@ -227,35 +238,25 @@
     </footer>
 
     <script>
-        // Wave Animation Logic
         function createDataWave() {
             const layer = document.getElementById('wave-layer');
             const item = document.createElement('div');
             item.className = 'data-item';
             
-            // 1. Random Start & End (Full Y-axis 0vh to 100vh)
             const startY = Math.random() * 100;
             const endY = Math.random() * 100;
-            
-            // 2. Strict Central Bottleneck (Behind frosted glass: 40vh to 60vh)
             const midY = 40 + Math.random() * 20;
-            
-            // 3. Unorganized Rotation (-15 to 15 degrees)
             const rot = (Math.random() * 30 - 15).toFixed(2);
-
-            // 4. Fluid flow duration (6s to 8s)
             const duration = 6 + Math.random() * 2;
 
-            // Apply Variables
             item.style.setProperty('--duration', `${duration}s`);
             item.style.setProperty('--start-y', `${startY}vh`);
             item.style.setProperty('--mid-y', `${midY}vh`);
             item.style.setProperty('--end-y', `${endY}vh`);
             item.style.setProperty('--rot', `${rot}deg`);
 
-            // Generate dense explosion of tracking particles
             let particlesHTML = '';
-            const numParticles = 12 + Math.floor(Math.random() * 8); // 12-20 particles per burst
+            const numParticles = 12 + Math.floor(Math.random() * 8); 
             for(let i=0; i<numParticles; i++) {
                 const angle = Math.random() * Math.PI * 2;
                 const dist = 30 + Math.random() * 50; 
@@ -264,8 +265,6 @@
                 particlesHTML += `<div class="pop-particle" style="--px: ${px}; --py: ${py};"></div>`;
             }
 
-            // CSS-Synchronized HTML Payload 
-            // Both icons are perfectly circumscribed in identical 40x40 (w-10 h-10) circular bounding boxes.
             item.innerHTML = `
                 <div class="data-item-x">
                     <div class="data-item-y">
@@ -286,7 +285,6 @@
             
             layer.appendChild(item);
 
-            // Pop particles when reaching the middle (50% of the animation duration)
             setTimeout(() => {
                 const targetCheck = item.querySelector('.check-icon');
                 if(!targetCheck) return;
@@ -306,23 +304,16 @@
                 }
             }, (duration * 1000) / 2);
 
-            // Seamless DOM cleanup exactly 100ms after the CSS duration finishes
             setTimeout(() => {
                 if(item.parentNode) item.remove();
             }, (duration * 1000) + 100);
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Volume increased by 25%: Spawning every 480ms
             setInterval(createDataWave, 480);
-            
-            // Immediate heavy burst to flood the screen on page load
-            for(let i=0; i<10; i++) {
-                setTimeout(createDataWave, i * 150);
-            }
+            for(let i=0; i<10; i++) { setTimeout(createDataWave, i * 150); }
         });
 
-        // --- CORE IMPORT LOGIC ---
         function startImport(crmName) {
             document.getElementById('progress-overlay').classList.add('active');
             const title = document.getElementById('progress-title');

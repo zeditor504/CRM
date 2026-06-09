@@ -59,6 +59,25 @@
 
         .queue-header { font-size: 0.85rem; color: #34d399; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 12px; display: flex; align-items: center; }
 
+        /* Unified Tooltip System */
+        .tooltip-container { position: relative; display: inline-flex; align-items: center; cursor: help; }
+        .tooltip-text {
+            visibility: hidden; opacity: 0; transform: translateY(10px);
+            position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%) translateY(10px);
+            background-color: rgba(20, 20, 20, 0.95); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
+            padding: 12px 16px; color: #e4e4e7; font-size: 0.75rem; font-weight: 500;
+            line-height: 1.5; text-transform: none; letter-spacing: normal;
+            width: 240px; text-align: center; z-index: 100;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none;
+        }
+        .tooltip-text::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border-width: 6px; border-style: solid; border-color: rgba(255,255,255,0.1) transparent transparent transparent;
+        }
+        .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+
         .table-container { overflow-x: auto; margin-bottom: 30px; flex-grow: 1; border-radius: 16px; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
         th, td { padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle !important; }
@@ -69,7 +88,7 @@
         tbody tr { cursor: pointer; transition: background-color 0.2s ease; }
         tbody tr:hover { background-color: rgba(255,255,255,0.05); }
 
-        .status-mrs { background-color: rgba(245, 158, 11, 0.15); color: #fcd34d; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(245, 158, 11, 0.4); text-transform: uppercase; letter-spacing: 0.05em; }
+        .status-rrs { background-color: rgba(245, 158, 11, 0.15); color: #fcd34d; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(245, 158, 11, 0.4); text-transform: uppercase; letter-spacing: 0.05em; }
         .status-new { background-color: rgba(52, 211, 153, 0.15); color: #34d399; font-weight: 600; font-size: 0.75rem; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(52, 211, 153, 0.3); text-transform: uppercase; letter-spacing: 0.05em; }
         
         .action-container { display: flex; gap: 16px; justify-content: center; margin-bottom: 30px; }
@@ -116,7 +135,10 @@
 
         <div class="stats-row">
             <div class="glass-panel stat-card">
-                <div class="stat-title">MRS Compliance</div>
+                <div class="tooltip-container">
+                    <div class="stat-title flex items-center">RRS Compliance <svg class="w-3 h-3 ml-1 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                    <span class="tooltip-text">The Required Response System (RRS) tracks the percentage of leads where the sales agent successfully logged notes and contacted the customer within the designated timeframe.</span>
+                </div>
                 <div class="stat-value">98.5%</div>
                 <div class="stat-sub">Top 10% of team</div>
             </div>
@@ -133,7 +155,7 @@
         </div>
 
         <div class="glass-panel sms-alerts">
-            <span class="sms-badge">MRS Action Required</span>
+            <span class="sms-badge">RRS Action Required</span>
             <span class="sms-text">AI successfully secured phone number for Carl (Honda CBR lead). Give them a call!</span>
             <button class="sms-btn" onclick="window.location.href='deal-desk.html?id=1'">Open Deal Desk</button>
         </div>
@@ -197,7 +219,7 @@
                 phone: (i === 1) ? `555-019-8822` : `(555) 01${String(20 + i)}`, 
                 vehicle: sampleVehicles[i - 1], 
                 source: "Website AI Intake", 
-                status: (i === 1) ? "MRS Triggered" : "New Lead" 
+                status: (i === 1) ? "RRS Triggered" : "New Lead" 
             });
         }
 
@@ -207,7 +229,7 @@
                 let tr = document.createElement('tr');
                 tr.onclick = function() { window.location.href = 'deal-desk.html?id=' + (index + 1); };
                 
-                const statusClass = lead.status === "MRS Triggered" ? "status-mrs" : "status-new";
+                const statusClass = lead.status === "RRS Triggered" ? "status-rrs" : "status-new";
 
                 tr.innerHTML = `
                     <td class="tabular-nums font-mono text-sm">${lead.id}</td>
