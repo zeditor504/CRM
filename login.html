@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex OS | Dealer Login</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
+        
+        body { 
+            background-color: #141414 !important; color: #f1f5f9 !important; 
+            margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+
+        body::before {
+            content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        .ambient-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 60%); filter: blur(80px); z-index: -1; pointer-events: none; }
+
+        .glass-panel {
+            background-color: rgba(20, 20, 20, 0.6) !important;
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06); border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.02);
+            width: 100%; max-width: 440px; padding: 48px; position: relative; z-index: 10;
+        }
+
+        .minimal-input { background-color: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.08); color: white; border-radius: 12px; padding: 16px; width: 100%; font-size: 0.95rem; transition: all 0.2s; }
+        .minimal-input:focus { outline: none; border-color: rgba(255, 255, 255, 0.3); background-color: rgba(0, 0, 0, 0.8) !important; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
+
+        .login-btn { background-color: #ffffff; color: #000000; border: none; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: 0.2s; width: 100%; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 10px; }
+        .login-btn:hover { background-color: #e4e4e7; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <div class="glass-panel">
+        <div class="text-center mb-10">
+            <div class="w-16 h-16 bg-black border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <h1 class="text-2xl font-black text-white uppercase tracking-widest mb-2">Apex OS</h1>
+            <p class="text-sm text-zinc-400 font-medium">Dealership Operating System</p>
+        </div>
+
+        <form id="login-form" class="space-y-5">
+            <div>
+                <label class="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 ml-1">Work Email</label>
+                <input type="email" id="email" class="minimal-input" placeholder="e.g., umair@yamaha.com" required>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 ml-1">Secure Password</label>
+                <input type="password" id="password" class="minimal-input" placeholder="••••••••" required>
+            </div>
+            
+            <div class="pt-4">
+                <button type="submit" class="login-btn">Authenticate</button>
+            </div>
+        </form>
+
+        <div class="mt-8 pt-6 border-t border-white/5 text-center">
+            <p class="text-[10px] text-zinc-600 font-semibold uppercase tracking-widest leading-relaxed">
+                Test Accounts:<br>
+                sales@yamaha.com (Blue Theme)<br>
+                manager@ducati.com (Red Theme)<br>
+                owner@apex.com (Green Theme)
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.toLowerCase();
+            
+            // Baseline Default SaaS Session
+            let session = { role: 'sales', dealer: 'Apex Motorsports', color: '#34d399', redirect: 'index.html' };
+
+            // Dynamic Multi-Tenant White-Labeling Simulator
+            if (email.includes('yamaha')) {
+                session = { role: 'sales', dealer: 'Yamaha of Dallas', color: '#3b82f6', redirect: 'index.html' }; // Blue
+            } else if (email.includes('ducati') || email.includes('manager')) {
+                session = { role: 'manager', dealer: 'Ducati Austin', color: '#ef4444', redirect: 'manager.html' }; // Red
+            } else if (email.includes('owner')) {
+                session = { role: 'owner', dealer: 'Apex Dealer Group', color: '#22c55e', redirect: 'owner.html' }; // Green
+            }
+
+            // Lock session into browser memory
+            sessionStorage.setItem('apex_session', JSON.stringify(session));
+            
+            // Route to correct RBAC tier
+            window.location.href = session.redirect;
+        });
+    </script>
+</body>
+</html>

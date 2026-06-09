@@ -266,5 +266,32 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Enforce Authentication
+            const sessionData = sessionStorage.getItem('apex_session');
+            if (!sessionData) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const session = JSON.parse(sessionData);
+            
+            // 2. Dynamic Dealership Branding (White-Labeling)
+            const mainHeader = document.querySelector('h1');
+            if (mainHeader && mainHeader.innerText.toUpperCase().includes('APEX')) {
+                mainHeader.innerHTML = `${session.dealer} <span class="text-zinc-500 text-sm ml-2 font-medium tracking-normal capitalize">Powered by Apex OS</span>`;
+            }
+
+            // 3. Dynamic Brand Color Injection (Ambient Environment)
+            if (session.color) {
+                const bgGlow = document.querySelector('.glow-emerald, .ambient-glow');
+                if (bgGlow) {
+                    bgGlow.style.background = `radial-gradient(ellipse, ${session.color}15 0%, transparent 60%)`;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
