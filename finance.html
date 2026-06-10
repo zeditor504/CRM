@@ -140,30 +140,39 @@
                 const val = parseInt(slider.value);
                 scoreDisplay.innerText = val;
 
-                let color = '#34d399'; // Emerald
-                let glow = 'rgba(52,211,153,0.15)';
-                let tierText = 'Prime Credit';
-                let tierClasses = 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.15)]';
+                let color, glow, tierText, tierClasses;
 
-                if (val < 550) {
-                    color = '#ef4444'; glow = 'rgba(239,68,68,0.15)'; tierText = 'Deep Subprime';
-                    tierClasses = 'bg-red-500/10 border-red-500/20 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.15)]';
-                } else if (val < 650) {
-                    color = '#f59e0b'; glow = 'rgba(245,158,11,0.15)'; tierText = 'Subprime / Near Prime';
-                    tierClasses = 'bg-amber-500/10 border-amber-500/20 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)]';
-                } else if (val >= 780) {
-                    color = '#3b82f6'; glow = 'rgba(59,130,246,0.15)'; tierText = 'Super Prime';
+                // FICO Auto Score 8 Exact Terminology & Mapping
+                if (val >= 800) {
+                    // Exceptional: 800–900 (Blue/Purple Premium Hue)
+                    color = '#3b82f6'; glow = 'rgba(59,130,246,0.15)'; tierText = 'Exceptional';
                     tierClasses = 'bg-blue-500/10 border-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.15)]';
+                } else if (val >= 740) {
+                    // Very Good: 740–799 (Apex Emerald)
+                    color = '#34d399'; glow = 'rgba(52,211,153,0.15)'; tierText = 'Very Good';
+                    tierClasses = 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.15)]';
+                } else if (val >= 670) {
+                    // Good: 670–739 (Yellow)
+                    color = '#eab308'; glow = 'rgba(234,179,8,0.15)'; tierText = 'Good';
+                    tierClasses = 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.15)]';
+                } else if (val >= 580) {
+                    // Fair: 580–669 (Orange/Amber)
+                    color = '#f59e0b'; glow = 'rgba(245,158,11,0.15)'; tierText = 'Fair';
+                    tierClasses = 'bg-amber-500/10 border-amber-500/20 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)]';
+                } else {
+                    // Poor: 250–579 (Red)
+                    color = '#ef4444'; glow = 'rgba(239,68,68,0.15)'; tierText = 'Poor';
+                    tierClasses = 'bg-red-500/10 border-red-500/20 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.15)]';
                 }
 
-                // Update Slider Colors
+                // Update Slider Colors dynamically
                 slider.style.setProperty('--score-color', color);
                 
-                // Update Badge
-                tierDisplay.className = `text-sm font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border ${tierClasses}`;
+                // Update Status Badge dynamically
+                tierDisplay.className = `text-sm font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border ${tierClasses} transition-all duration-300`;
                 tierDisplay.innerText = tierText;
 
-                // Toggle Lenders
+                // Toggle Lenders based on active score
                 lenders.forEach(lender => {
                     const minScore = parseInt(lender.getAttribute('data-min'));
                     if (val >= minScore) {
