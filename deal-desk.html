@@ -188,11 +188,16 @@
             </div>
 
             <div class="p-6 border-t border-white/10 shrink-0 bg-black/40">
-                <div class="relative flex items-end gap-3">
-                    <textarea id="reply-input" class="minimal-input h-20 resize-none transition-colors border-amber-500/40 focus:border-amber-500/70" placeholder="Type your follow-up response after calling Carl..."></textarea>
-                    <button id="unlock-btn" class="send-btn bg-white text-black hover:bg-gray-200 px-8 h-20 rounded-xl text-sm font-bold uppercase tracking-widest transition flex items-center justify-center shrink-0 shadow-lg">
-                        Submit
-                    </button>
+                <div class="relative flex items-stretch gap-3">
+                    <div class="flex-1">
+                        <textarea id="reply-input" class="minimal-input h-20 resize-none transition-colors border-amber-500/40 focus:border-amber-500/70" placeholder="Type your follow-up response after calling Carl..."></textarea>
+                    </div>
+                    
+                    <div class="flex flex-col justify-start">
+                        <button id="unlock-btn" class="send-btn bg-white text-black hover:bg-gray-200 px-8 h-20 rounded-xl text-sm font-bold uppercase tracking-widest transition flex items-center justify-center shrink-0 shadow-lg">
+                            Submit
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
