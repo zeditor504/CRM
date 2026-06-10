@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="apex-core.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex Dealer Systems | Owner Backend</title>
@@ -183,31 +184,6 @@
             </div>
         </div>
     </main>
-
-    <footer class="footer-wrapper px-8">
-        <div class="footer-section left">
-            <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
-        </div>
-        <div class="footer-section center">
-            <div class="footer-pill flex items-center gap-2 text-[#34d399] font-semibold" id="color-target-2">
-                <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" id="color-target-3"></div> All Systems Online
-            </div>
-        </div>
-        <div class="footer-section right">
-            <div class="footer-pill">Central Time Zone (CT)</div>
-        </div>
-    </footer>
-
-    <script>
-        function updateClock() {
-            const clockEl = document.getElementById('live-clock');
-            if (clockEl) {
-                clockEl.innerText = `Time: ${new Date().toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
-            }
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
