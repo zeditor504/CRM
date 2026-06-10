@@ -103,20 +103,30 @@ function initSmartTextareas() {
 
 // 5. GLOBAL BUTTON ROUTING & ALERTS
 function initGlobalButtonRouting() {
+    // Universal Processing Animation
+    const triggerProcessing = (btn) => {
+        const originalText = btn.innerText;
+        btn.innerText = "PROCESSING...";
+        setTimeout(() => { btn.innerText = "SUCCESS"; btn.style.backgroundColor = "#34d399"; btn.style.color = "#000"; }, 800);
+        setTimeout(() => { btn.innerText = originalText; btn.style.backgroundColor = ""; btn.style.color = ""; }, 3000);
+    };
+
     const routeMap = {
         'PRINT DEAL SHEET': () => { window.print(); },
         'WEB CHAT': () => { alert("Apex Secure Chat initializing... Connecting to Web Queue."); },
         'SOCIAL DMS': () => { alert("Opening Social Matrix. Syncing Meta and X APIs..."); },
-        'SUBMIT': (btn) => { 
-            const originalText = btn.innerText;
-            btn.innerText = "PROCESSING...";
-            setTimeout(() => { btn.innerText = "SUCCESS"; btn.style.backgroundColor = "#34d399"; btn.style.color = "#000"; }, 800);
-            setTimeout(() => { btn.innerText = originalText; btn.style.backgroundColor = ""; btn.style.color = ""; }, 3000);
-        },
         'SEND PORTAL LINK': () => {
             alert("Secure Portal Link generated. SMS dispatched to customer.");
             window.open('portal.html', '_blank'); 
-        }
+        },
+        
+        // Map ALL potential button texts to the processing animation
+        'SUBMIT': triggerProcessing,
+        'SEND': triggerProcessing,
+        'REPLY': triggerProcessing,
+        'POST': triggerProcessing,
+        'SAVE': triggerProcessing,
+        'UPDATE': triggerProcessing
     };
 
     document.querySelectorAll('button').forEach(btn => {
