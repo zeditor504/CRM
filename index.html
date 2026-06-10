@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="apex-core.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex Dealer Systems | Sales Dashboard</title>
@@ -222,6 +223,10 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 Import Past CRM Data
             </button>
+            <button class="action-btn secondary-btn" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;" onclick="window.location.href='finance.html'">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                F&I Approval Engine
+            </button>
             <button class="action-btn secondary-btn" onclick="window.location.href='manager.html'">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                 Manager Hub Access
@@ -229,35 +234,17 @@
         </div>
     </div>
 
-    <footer class="footer-wrapper">
-        <div class="footer-section left">
-            <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
-        </div>
-        <div class="footer-section center">
-            <div class="footer-pill flex items-center gap-2 text-[#34d399] font-semibold">
-                <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div> All Systems Online
-            </div>
-        </div>
-        <div class="footer-section right">
-            <div class="footer-pill">Central Time Zone (CT)</div>
-        </div>
-    </footer>
-
     <script>
-        const sampleNames = ["Carl", "Noah Albright", "Oliver Sterling", "Elijah Crawford", "William Hayes", "James Easton", "Benjamin Mercer", "Lucas Thorne", "Henry Blackwell", "Alexander Cross"];
-        const sampleVehicles = ["Honda CBR600RR", "Kawasaki Ninja 400", "Yamaha MT-07", "Suzuki GSX-R750", "2024 Ducati Panigale V4", "BMW S1000RR", "2024 Yamaha R1", "Kawasaki Z900", "KTM 390 Duke", "Triumph Super 1200"];
-        const leadsDatabase = [];
-
-        for (let i = 1; i <= 10; i++) {
-            leadsDatabase.push({ 
-                id: `LD-${1000 + i}`, 
-                name: sampleNames[i - 1], 
-                phone: (i === 1) ? `555-019-8822` : `(555) 01${String(20 + i)}`, 
-                vehicle: sampleVehicles[i - 1], 
-                source: "Website AI Intake", 
-                status: (i === 1) ? "RRS Triggered" : "New Lead" 
-            });
-        }
+        const leadsDatabase = [
+            { id: "LD-1001", name: "Marcus Caldwell", phone: "(214) 555-0198", vehicle: "2024 Yamaha YZF-R1", source: "Web Chat", status: "Active" },
+            { id: "LD-1002", name: "Jessica Ramirez", phone: "(713) 555-0842", vehicle: "2023 Kawasaki Ninja 400", source: "Walk-In", status: "RRS Triggered" },
+            { id: "LD-1003", name: "Thomas Becker", phone: "(469) 555-0321", vehicle: "2024 Ducati Panigale V4 S", source: "Phone Lead", status: "Active" },
+            { id: "LD-1004", name: "David Lin", phone: "(832) 555-0994", vehicle: "2024 Sea-Doo Spark Trixx", source: "Facebook Lead", status: "New Lead" },
+            { id: "LD-1005", name: "Amanda Chen", phone: "(817) 555-8823", vehicle: "2024 Can-Am Maverick X3", source: "Website AI Intake", status: "New Lead" },
+            { id: "LD-1006", name: "Robert Taylor", phone: "(214) 555-4432", vehicle: "2024 Suzuki Hayabusa", source: "Web Chat", status: "Active" },
+            { id: "LD-1007", name: "Maria Garcia", phone: "(713) 555-9011", vehicle: "2023 Honda Grom", source: "Walk-In", status: "New Lead" },
+            { id: "LD-1008", name: "James Wilson", phone: "(817) 555-3329", vehicle: "2024 KTM 1290 Super Duke R", source: "Phone Lead", status: "RRS Triggered" }
+        ];
 
         function loadData() {
             const tbody = document.getElementById('table-body');
@@ -278,14 +265,7 @@
                 tbody.appendChild(tr);
             });
         }
-        loadData();
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock(); 
+        loadData(); 
 
         // Global Dynamic Tooltip Engine
         const tooltip = document.createElement('div');
@@ -416,6 +396,33 @@
                     navBar.style.borderBottom = `1px solid rgba(${rgb}, 0.4)`;
                     navBar.style.boxShadow = `0 10px 40px rgba(0,0,0,0.8), 0 1px 20px rgba(${rgb}, 0.2)`;
                 }
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Find your search input (Assuming it's an input with placeholder 'Search active leads...')
+            const searchInput = document.querySelector('input[placeholder*="Search"]');
+            // Assuming your leads are rows inside a container or table
+            const leadRows = document.querySelectorAll('.grid-cols-6'); // Adjust selector based on your exact layout
+            
+            if (searchInput && leadRows.length > 0) {
+                searchInput.addEventListener('keyup', (e) => {
+                    const term = e.target.value.toLowerCase();
+                    leadRows.forEach(row => {
+                        // Skip header row
+                        if (row.innerText.includes('CUSTOMER') && row.innerText.includes('VEHICLE')) return;
+                        
+                        const text = row.innerText.toLowerCase();
+                        if (text.includes(term)) {
+                            row.style.display = ''; // Show
+                            row.style.animation = 'fadeIn 0.3s ease forwards';
+                        } else {
+                            row.style.display = 'none'; // Hide
+                        }
+                    });
+                });
             }
         });
     </script>

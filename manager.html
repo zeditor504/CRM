@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="apex-core.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex Dealer Systems | Manager Hub</title>
@@ -250,20 +251,6 @@
         </div>
     </main>
 
-    <footer class="footer-wrapper px-8">
-        <div class="footer-section left">
-            <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
-        </div>
-        <div class="footer-section center">
-            <div class="footer-pill flex items-center gap-2 text-[#34d399] font-semibold">
-                <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div> All Systems Online
-            </div>
-        </div>
-        <div class="footer-section right">
-            <div class="footer-pill">Central Time Zone (CT)</div>
-        </div>
-    </footer>
-
     <script>
         const reps = [
             { name: "Umair", status: "Online", statusColor: "emerald-400", leads: 5, closed: 12, rrs: "100%", alert: false },
@@ -299,13 +286,6 @@
             });
         }
         loadReps();
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock(); 
 
         // Global Dynamic Tooltip Engine
         const tooltip = document.createElement('div');

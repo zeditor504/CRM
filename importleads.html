@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="apex-core.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex Dealer Systems | Import Leads</title>
@@ -76,10 +77,10 @@
         .glow-wrapper { position: relative; width: 100%; max-width: 42rem; margin: 2rem auto; z-index: 10; flex: 1; display: flex; align-items: center;}
 
         .glass-panel {
-            background-color: rgba(20, 20, 20, 0.85) !important;
-            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            background-color: rgba(12, 12, 12, 0.96) !important;
+            backdrop-filter: blur(60px); -webkit-backdrop-filter: blur(60px);
             border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(255, 255, 255, 0.08);  
-            z-index: 10; box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 30px 65px rgba(0, 0, 0, 0.8); border-radius: 24px;
+            z-index: 10; box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 30px 65px rgba(0, 0, 0, 0.9); border-radius: 24px;
         }
 
         /* --- LIQUID-GLASS APP BAR --- */
@@ -193,11 +194,20 @@
 
         /* --- EXPANSIVE OCEAN INTRO ANIMATION --- */
         .ocean-reveal {
-            animation: oceanEmergence 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: oceanRise 4.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        @keyframes oceanEmergence {
-            0% { opacity: 0; transform: scale(0.85) translateY(40px); filter: blur(12px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+
+        @keyframes oceanRise {
+            0% {
+                opacity: 0;
+                transform: translateY(150px) scale(0.60);
+                filter: blur(24px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
         }
 
     </style>
@@ -208,13 +218,16 @@
 
     <div id="wave-layer"></div>
 
-    <nav class="glass-nav h-16 flex items-center justify-between px-6 shrink-0 w-full relative z-20">
+    <nav class="glass-nav h-20 flex items-center justify-between px-8 w-full z-50 sticky top-0 shrink-0">
         <div class="flex items-center space-x-4">
-            <a href="index.html" class="text-zinc-400 hover:text-white transition flex items-center text-sm font-semibold border-r border-white/10 pr-4 mr-2 uppercase tracking-widest">
-                <svg class="w-4 h-4 mr-2 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                Dashboard
+            <a href="manager.html" class="text-zinc-400 hover:text-white transition flex items-center text-sm font-medium border-r border-white/10 pr-4 mr-2 uppercase tracking-widest">
+                <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Manager Hub
             </a>
-            <h1 class="text-lg font-bold text-white tracking-wide uppercase">Apex Dealer Systems</h1>
+            <h1 class="text-lg font-black tracking-widest text-white uppercase">Apex OS</h1>
+            <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5 ml-3 pl-3 border-l border-white/10">Data Import Engine</p>
+        </div>
+        <div class="flex items-center space-x-6">
             <div class="h-6 w-px bg-white/10 mx-3 hidden sm:block"></div>
             <button onclick="sessionStorage.removeItem('apex_session'); window.location.replace('login.html');" class="text-zinc-500 hover:text-white transition font-bold text-xs uppercase tracking-widest cursor-pointer bg-transparent border-none">
                 Log Out
@@ -292,20 +305,6 @@
         </div>
     </div>
 
-    <footer class="footer-wrapper px-6">
-        <div class="footer-section left">
-            <div class="footer-pill font-mono" id="live-clock">Time: --:--:--</div>
-        </div>
-        <div class="footer-section center">
-            <div class="footer-pill flex items-center gap-2 text-[#34d399] font-semibold">
-                <div class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div> All Systems Online
-            </div>
-        </div>
-        <div class="footer-section right">
-            <div class="footer-pill">Central Time Zone (CT)</div>
-        </div>
-    </footer>
-
     <script>
         function createDataWave() {
             const layer = document.getElementById('wave-layer');
@@ -371,7 +370,7 @@
                     p.style.animationDuration = `${duration}s`;
                     targetCheck.appendChild(p);
                 }
-            }, (duration * 1000) * 0.55);
+            }, (duration * 1000) * 0.85); // Delayed until the data exits the right side of the container!
 
             setTimeout(() => {
                 if(item.parentNode) item.remove();
@@ -400,14 +399,7 @@
                 btn.classList.remove('hidden');
             }, 3500);
         }
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('live-clock').innerText = `Time: ${now.toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock(); 
-
+         
         // Global Dynamic Tooltip Engine
         const tooltip = document.createElement('div');
         tooltip.className = 'dynamic-tooltip';
