@@ -4,83 +4,23 @@
     <script src="apex-core.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Dealer Systems | Import Leads</title>
+    <title>Apex Dealer Systems | Import Data Forge</title>
     <script>
         if (!sessionStorage.getItem('apex_session')) {
             window.location.replace('login.html');
         }
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
         
         body { 
-            background-color: #141414 !important;
+            background-color: #0a0a0a !important; /* Slightly darker to let the forge shine */
             color: #f1f5f9 !important;
-            margin: 0; min-height: 100vh; overflow-x: hidden; overflow-y: auto;
+            margin: 0; min-height: 100vh; overflow: hidden;
             display: flex; flex-direction: column; 
-        }
-
-        body::before {
-            content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-            background-size: 32px 32px;
-        }
-
-        #wave-layer { 
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: -1; pointer-events: none; overflow: hidden; 
-        }
-        
-        .data-item { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }
-        .data-item-x { position: absolute; top: 0; left: -10vw; width: 0; height: 0; animation: moveX var(--duration) linear forwards; }
-        .data-item-y { position: absolute; top: 0; left: 0; width: 0; height: 0; animation: moveY var(--duration) forwards; }
-        
-        .doc-icon, .check-icon { 
-            position: absolute; top: 0; left: 0;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        @keyframes moveX { 0% { transform: translateX(0); } 100% { transform: translateX(120vw); } }
-        
-        @keyframes moveY {
-            0% { transform: translateY(var(--start-y)); animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1); } 
-            35% { transform: translateY(var(--mid-y)); animation-timing-function: linear; } 
-            65% { transform: translateY(var(--mid-y)); animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1); } 
-            100% { transform: translateY(var(--end-y)); }
-        }
-
-        .doc-icon { animation: docFade var(--duration) linear forwards; }
-        @keyframes docFade {
-            0%, 35% { opacity: 0.85; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); }
-            45%, 100% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); display: none; }
-        }
-
-        .check-icon { opacity: 0; animation: checkFade var(--duration) linear forwards; }
-        @keyframes checkFade {
-            0%, 45% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-            55%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        .pop-particle { 
-            position: absolute; width: 6px; height: 6px; background-color: #34d399; 
-            border-radius: 50%; box-shadow: 0 0 10px #34d399; opacity: 0; pointer-events: none; 
-            animation: particlePop 1s cubic-bezier(0.2, 1, 0.3, 1) forwards; 
-        }
-        @keyframes particlePop {
-            0% { opacity: 1; transform: scale(1.5); }
-            100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
-        }
-
-        .glow-wrapper { position: relative; width: 100%; max-width: 42rem; margin: 2rem auto; z-index: 10; flex: 1; display: flex; align-items: center;}
-
-        .glass-panel {
-            background-color: rgba(12, 12, 12, 0.96) !important;
-            backdrop-filter: blur(60px); -webkit-backdrop-filter: blur(60px);
-            border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(255, 255, 255, 0.08);  
-            z-index: 10; box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 30px 65px rgba(0, 0, 0, 0.9); border-radius: 24px;
         }
 
         /* --- LIQUID-GLASS APP BAR --- */
@@ -92,137 +32,54 @@
             transition: border-bottom-color 0.4s ease, box-shadow 0.4s ease; 
         }
 
-        /* --- ADVANCED BORDER ANIMATION LOGIC --- */
-        .crm-tab { 
-            position: relative;
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            background-color: rgba(255, 255, 255, 0.04) !important;
-            border: none;
-            border-radius: 0.75rem; 
-            overflow: hidden;
-            z-index: 1;
+        /* Contains the visual chaos, letting the bright core bleed through heavily */
+        .glass-panel {
+            background-color: rgba(12, 12, 12, 0.85) !important;
+            backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
+            border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(255, 255, 255, 0.08);  
+            z-index: 10; box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 30px 65px rgba(0, 0, 0, 0.95); 
+            border-radius: 24px;
         }
 
-        .crm-tab::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(from 0deg, transparent 75%, var(--brand-glow) 100%);
-            z-index: -2;
-            opacity: 0;
-            transition: opacity 0.2s ease;
+        .cinematic-btn {
+            background: linear-gradient(135deg, #ffffff 0%, #d4d4d8 100%);
+            color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cinematic-btn:hover {
+            transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.3), inset 0 -2px 0 rgba(0,0,0,0.2);
         }
 
-        .crm-tab::after {
-            content: '';
-            position: absolute;
-            inset: 1px;
-            background-color: rgba(0, 0, 0, 0.4);
-            border-radius: calc(0.75rem - 1px);
-            z-index: -1;
-            transition: background-color 0.2s ease;
-        }
-
-        .crm-tab > * {
-            position: relative;
-            z-index: 2;
-        }
-
-        .crm-tab:hover { transform: translateY(-2px); }
-        .crm-tab:hover::after { background-color: rgba(20, 20, 20, 0.9); }
-        
-        .crm-tab:hover::before {
-            opacity: 1;
-            animation: 
-                border-spin-fast 1.25s linear forwards, 
-                border-spin-idle 12.5s linear 1.25s infinite;
-        }
-
-        @keyframes border-spin-fast {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes border-spin-idle {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Brand Colors & External Glows */
-        .tab-vinsolutions { --brand-glow: rgba(59, 130, 246, 1); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.0); transition: box-shadow 0.2s; }
-        .tab-vinsolutions:hover { box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); }
-
-        .tab-cdk { --brand-glow: rgba(156, 163, 175, 1); box-shadow: 0 4px 20px rgba(156, 163, 175, 0.0); transition: box-shadow 0.2s; }
-        .tab-cdk:hover { box-shadow: 0 4px 20px rgba(156, 163, 175, 0.3); }
-
-        .tab-dx1 { --brand-glow: rgba(249, 115, 22, 1); box-shadow: 0 4px 20px rgba(249, 115, 22, 0.0); transition: box-shadow 0.2s; }
-        .tab-dx1:hover { box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); }
-
-        .tab-dp360 { --brand-glow: rgba(56, 189, 248, 1); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.0); transition: box-shadow 0.2s; }
-        .tab-dp360:hover { box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3); }
-
-        .brand-text { font-weight: 900; font-size: 14px; letter-spacing: 0.5px; }
-        .logo-box { width: 48px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .brand-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
-
-        /* Dynamic Tooltip CSS */
-        [data-tooltip] { cursor: help; }
-        .dynamic-tooltip {
-            position: absolute; background-color: rgba(20, 20, 20, 0.95); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 12px 16px;
-            color: #e4e4e7; font-size: 0.75rem; font-weight: 500; line-height: 1.5; text-transform: none; 
-            letter-spacing: normal; width: 240px; text-align: left; z-index: 999999; pointer-events: none;
-            opacity: 0; transition: opacity 0.2s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        .dynamic-tooltip.active { opacity: 1; }
-
-        .footer-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px 0; display: flex; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto; z-index: 20; position: relative;}
-        .footer-section { flex: 1; display: flex; }
-        .footer-section.left { justify-content: flex-start; }
-        .footer-section.center { justify-content: center; }
-        .footer-section.right { justify-content: flex-end; }
-        .footer-pill { background-color: rgba(20, 20, 20, 0.8) !important; border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 100px; padding: 6px 16px; font-size: 12px !important; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; backdrop-filter: blur(8px); }
-
-        .modal-overlay {
-            position: fixed; inset: 0; background-color: rgba(0,0,0,0.85) !important; backdrop-filter: blur(12px);
-            z-index: 50; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: 0.3s;
-        }
-        .modal-overlay.active { opacity: 1; pointer-events: all; }
-        .progress-box { width: 100%; max-width: 450px; padding: 40px; text-align: center; }
-        .progress-bar-container { width: 100%; height: 6px; background-color: rgba(255,255,255,0.1) !important; border-radius: 100px; overflow: hidden; margin: 24px 0; }
-        .progress-bar { height: 100%; background-color: #34d399 !important; width: 0%; transition: width 0.4s ease; }
-
-        /* --- EXPANSIVE OCEAN INTRO ANIMATION --- */
+        /* --- CINEMATIC OCEAN REVEAL --- */
         .ocean-reveal {
-            animation: oceanRise 4.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: oceanRise 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-
         @keyframes oceanRise {
-            0% {
-                opacity: 0;
-                transform: translateY(150px) scale(0.60);
-                filter: blur(24px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-                filter: blur(0);
-            }
+            0% { opacity: 0; transform: translateY(120px) scale(0.70); filter: blur(20px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
+        /* Overlays for the import progress */
+        .progress-overlay {
+            position: absolute; inset: 0; background: rgba(12,12,12,0.95); border-radius: 24px; z-index: 20;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
+        }
+        .progress-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .progress-track { width: 80%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 30px; overflow: hidden; position: relative; }
+        .progress-fill { height: 100%; width: 0%; background: #34d399; border-radius: 4px; transition: width 0.4s ease; box-shadow: 0 0 15px #34d399; }
     </style>
 </head>
-<body class="relative flex flex-col items-center">
+<body class="flex flex-col relative">
 
-    <canvas id="ambient-canvas" class="fixed inset-0 z-[-1] pointer-events-none w-full h-full"></canvas>
-
-    <div id="wave-layer"></div>
+    <canvas id="forge-canvas" class="fixed inset-0 z-[-1] pointer-events-none w-full h-full"></canvas>
 
     <nav class="glass-nav h-20 flex items-center justify-between px-8 w-full z-50 sticky top-0 shrink-0">
         <div class="flex items-center space-x-4">
-            <a href="manager.html" class="text-zinc-400 hover:text-white transition flex items-center text-sm font-medium border-r border-white/10 pr-4 mr-2 uppercase tracking-widest">
+            <a href="index.html" class="text-zinc-400 hover:text-white transition flex items-center text-sm font-medium border-r border-white/10 pr-4 mr-2 uppercase tracking-widest">
                 <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                Manager Hub
+                Sales Dash
             </a>
             <h1 class="text-lg font-black tracking-widest text-white uppercase">Apex OS</h1>
             <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5 ml-3 pl-3 border-l border-white/10">Data Import Engine</p>
@@ -235,197 +92,56 @@
         </div>
     </nav>
 
-    <main class="flex-1 flex items-center justify-center p-6 relative z-10 w-full">
-        <div class="glow-wrapper w-full">
-            
-            <div class="glass-panel w-full p-10 flex flex-col items-center relative z-10 mx-auto">
-                <div class="text-center mb-10">
-                    <h2 class="text-2xl font-bold text-white uppercase mb-3 tracking-[0.3em] flex items-center justify-center gap-2 w-max mx-auto" data-tooltip="Importing maps old customer logs and vehicle data to the Apex ecosystem without overwriting active deals or creating duplicate entries.">IMPORT PAST LEADS <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></h2>
-                    <p class="text-sm text-zinc-400 font-medium">Select your previous software system to securely map data into Apex Dealer Systems.</p>
+    <main class="flex-1 flex items-center justify-center relative p-8">
+        <div class="glow-wrapper w-full max-w-2xl relative">
+            <div class="glass-panel p-12 text-center relative overflow-hidden">
+                
+                <div id="initial-state">
+                    <div class="w-20 h-20 mx-auto bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 shadow-2xl relative">
+                        <div class="absolute inset-0 rounded-full border border-white/20 animate-ping opacity-20"></div>
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    </div>
+                    
+                    <h2 class="text-3xl font-black text-white uppercase tracking-tight mb-3">Sync Past CRM Data</h2>
+                    <p class="text-sm text-zinc-400 font-medium mb-10 max-w-md mx-auto leading-relaxed">
+                        Connect your previous CRM database. Apex AI will extract raw, unstructured leads and forge them into perfectly structured deal desks in real-time.
+                    </p>
+                    
+                    <div class="flex flex-col gap-4 max-w-xs mx-auto">
+                        <select id="crm-select" class="bg-black/50 border border-white/10 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-white/30 cursor-pointer appearance-none text-center font-semibold tracking-wide">
+                            <option value="vin">VinSolutions Export</option>
+                            <option value="eleads">Eleads (CSV)</option>
+                            <option value="dx1">DX1 Database</option>
+                            <option value="custom">Custom CSV Upload</option>
+                        </select>
+                        <button onclick="triggerForgeImport()" class="cinematic-btn px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest w-full">
+                            Begin Synchronization
+                        </button>
+                    </div>
                 </div>
 
-                <div class="w-full space-y-3">
+                <div class="progress-overlay" id="progress-overlay">
+                    <div class="w-16 h-16 mb-6 relative">
+                        <svg class="w-full h-full text-emerald-400 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center font-bold text-xs text-white" id="perc-text">0%</div>
+                    </div>
+                    <h2 id="progress-title" class="text-2xl font-black text-white uppercase tracking-tight mb-2">Forging Data...</h2>
+                    <p id="progress-subtitle" class="text-xs text-zinc-400 font-medium uppercase tracking-widest">Restructuring raw variables</p>
                     
-                    <button onclick="startImport('VinSolutions')" class="crm-tab tab-vinsolutions w-full px-6 py-4 flex items-center justify-between group">
-                        <span class="font-medium text-slate-300 text-sm">Import from VinSolutions</span>
-                        <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <div class="logo-box">
-                                <img src="assets/vinsolutions.png" alt="VinSolutions Logo" class="brand-logo">
-                            </div>
-                            <span class="brand-text" style="color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.4);">VINSOL</span>
-                        </div>
-                    </button>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
 
-                    <button onclick="startImport('CDK Global')" class="crm-tab tab-cdk w-full px-6 py-4 flex items-center justify-between group">
-                        <span class="font-medium text-slate-300 text-sm">Import from CDK Global</span>
-                        <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <div class="logo-box">
-                                <img src="assets/cdk.png" alt="CDK Logo" class="brand-logo">
-                            </div>
-                            <span class="brand-text" style="color: #9ca3af; text-shadow: 0 0 10px rgba(156, 163, 175, 0.4);">CDK</span>
-                        </div>
+                    <button id="finish-btn" onclick="window.location.href='index.html'" class="hidden cinematic-btn px-10 py-3 mt-10 rounded-xl text-xs font-black uppercase tracking-widest">
+                        Enter Sales Dashboard
                     </button>
-
-                    <button onclick="startImport('DX1 Platform')" class="crm-tab tab-dx1 w-full px-6 py-4 flex items-center justify-between group">
-                        <span class="font-medium text-slate-300 text-sm">Import from DX1 Platform</span>
-                        <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <div class="logo-box">
-                                <img src="assets/dx1.png" alt="DX1 Logo" class="brand-logo">
-                            </div>
-                            <span class="brand-text" style="color: #f97316; text-shadow: 0 0 10px rgba(249, 115, 22, 0.4);">DX1</span>
-                        </div>
-                    </button>
-
-                    <button onclick="startImport('Dealership Performance 360')" class="crm-tab tab-dp360 w-full px-6 py-4 flex items-center justify-between group">
-                        <span class="font-medium text-slate-300 text-sm">Import from Dealership Performance 360</span>
-                        <div class="flex items-center space-x-3 opacity-80 group-hover:opacity-100 transition">
-                            <div class="logo-box">
-                                <img src="assets/dp360.png" alt="DP360 Logo" class="brand-logo">
-                            </div>
-                            <span class="brand-text" style="color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);">DP360</span>
-                        </div>
-                    </button>
-                    
                 </div>
             </div>
         </div>
     </main>
-
-    <div id="progress-overlay" class="modal-overlay">
-        <div class="glass-panel progress-box relative">
-            <div class="w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center mx-auto mb-6 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2 tracking-wide" id="progress-title">Connecting to API</h3>
-            <p class="text-sm text-slate-400 font-medium" id="progress-subtitle">Establishing secure handshake...</p>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="progress-fill"></div>
-            </div>
-            <button id="finish-btn" class="hidden w-full bg-slate-800 border border-white/10 text-white py-3 rounded-full text-xs uppercase tracking-widest font-bold mt-4 hover:bg-slate-700 transition" onclick="window.location.href='index.html'">Return to Dashboard</button>
-        </div>
-    </div>
-
-    <script>
-        function createDataWave() {
-            const layer = document.getElementById('wave-layer');
-            const item = document.createElement('div');
-            item.className = 'data-item';
-            
-            const startY = Math.random() * 100;
-            const endY = Math.random() * 100;
-            const midY = 40 + Math.random() * 20;
-            const rot = (Math.random() * 30 - 15).toFixed(2);
-            const duration = 6 + Math.random() * 2;
-
-            item.style.setProperty('--duration', `${duration}s`);
-            item.style.setProperty('--start-y', `${startY}vh`);
-            item.style.setProperty('--mid-y', `${midY}vh`);
-            item.style.setProperty('--end-y', `${endY}vh`);
-            item.style.setProperty('--rot', `${rot}deg`);
-
-            let particlesHTML = '';
-            const numParticles = 12 + Math.floor(Math.random() * 8); 
-            for(let i=0; i<numParticles; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const dist = 30 + Math.random() * 50; 
-                const px = (Math.cos(angle) * dist).toFixed(2) + 'px';
-                const py = (Math.sin(angle) * dist).toFixed(2) + 'px';
-                particlesHTML += `<div class="pop-particle" style="--px: ${px}; --py: ${py};"></div>`;
-            }
-
-            item.innerHTML = `
-                <div class="data-item-x">
-                    <div class="data-item-y">
-                        <div class="doc-icon">
-                            <div class="w-10 h-10 rounded-full border border-rose-500/40 bg-rose-500/10 flex items-center justify-center shadow-[0_0_15px_rgba(244,63,94,0.3)]">
-                                <svg class="text-rose-500 w-5 h-5 drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            </div>
-                        </div>
-                        <div class="check-icon">
-                            <div class="w-10 h-10 rounded-full border border-emerald-400 bg-emerald-500/10 flex items-center justify-center shadow-[0_0_15px_rgba(52,211,153,0.3)]">
-                                <svg class="text-emerald-400 w-6 h-6 drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-                            </div>
-                            ${particlesHTML}
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            layer.appendChild(item);
-
-            setTimeout(() => {
-                const targetCheck = item.querySelector('.check-icon');
-                if(!targetCheck) return;
-                
-                const numParticles = 12 + Math.floor(Math.random() * 8); 
-                for(let i=0; i<numParticles; i++) {
-                    const p = document.createElement('div');
-                    p.className = 'pop-particle';
-                    const angle = Math.random() * Math.PI * 2;
-                    const dist = 30 + Math.random() * 50; 
-                    const px = (Math.cos(angle) * dist).toFixed(2) + 'px';
-                    const py = (Math.sin(angle) * dist).toFixed(2) + 'px';
-                    p.style.setProperty('--px', px);
-                    p.style.setProperty('--py', py);
-                    p.style.animationDuration = `${duration}s`;
-                    targetCheck.appendChild(p);
-                }
-            }, (duration * 1000) * 0.85); // Delayed until the data exits the right side of the container!
-
-            setTimeout(() => {
-                if(item.parentNode) item.remove();
-            }, (duration * 1000) + 100);
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            setInterval(createDataWave, 480);
-            for(let i=0; i<10; i++) { setTimeout(createDataWave, i * 150); }
-        });
-
-        function startImport(crmName) {
-            document.getElementById('progress-overlay').classList.add('active');
-            const title = document.getElementById('progress-title');
-            const sub = document.getElementById('progress-subtitle');
-            const fill = document.getElementById('progress-fill');
-            const btn = document.getElementById('finish-btn');
-            
-            setTimeout(() => { fill.style.width = '30%'; title.innerText = `Mapping ${crmName}`; sub.innerText = "Aligning custom fields to Apex structure..."; }, 800);
-            setTimeout(() => { fill.style.width = '70%'; title.innerText = "Syncing Records"; sub.innerText = "Transferring leads and customer histories..."; }, 2200);
-            setTimeout(() => { 
-                fill.style.width = '100%'; 
-                title.innerText = "Import Complete"; 
-                title.classList.add('text-[#34d399]');
-                sub.innerText = "All records passed integrity verification!"; 
-                btn.classList.remove('hidden');
-            }, 3500);
-        }
-         
-        // Global Dynamic Tooltip Engine
-        const tooltip = document.createElement('div');
-        tooltip.className = 'dynamic-tooltip';
-        document.body.appendChild(tooltip);
-
-        document.querySelectorAll('[data-tooltip]').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                tooltip.innerHTML = el.getAttribute('data-tooltip');
-                tooltip.classList.add('active');
-            });
-            el.addEventListener('mousemove', (e) => {
-                let x = e.pageX + 15;
-                let y = e.pageY + 15;
-                
-                const rect = tooltip.getBoundingClientRect();
-                if (x + rect.width > window.innerWidth) x = window.innerWidth - rect.width - 15;
-                if (y + rect.height > window.innerHeight + window.scrollY) y = e.pageY - rect.height - 15;
-                
-                tooltip.style.left = x + 'px';
-                tooltip.style.top = y + 'px';
-            });
-            el.addEventListener('mouseleave', () => {
-                tooltip.classList.remove('active');
-            });
-        });
-    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -433,98 +149,391 @@
             const glowWrapper = document.querySelector('.glow-wrapper');
             
             if (!hasSeenReveal && glowWrapper) {
-                // First time: Play the animation
                 glowWrapper.classList.add('ocean-reveal');
                 sessionStorage.setItem('apex_ocean_reveal', 'true');
             } else if (glowWrapper) {
-                // Subsequent visits: Load instantly without animation classes
                 glowWrapper.style.opacity = '1';
             }
         });
+
+        // UI Transition Logic
+        function triggerForgeImport() {
+            const crm = document.getElementById('crm-select').options[document.getElementById('crm-select').selectedIndex].text;
+            document.getElementById('progress-overlay').classList.add('active');
+            
+            // Tell the Forge Canvas to go crazy
+            if(window.apexForge) window.apexForge.startImport();
+
+            const title = document.getElementById('progress-title');
+            const sub = document.getElementById('progress-subtitle');
+            const fill = document.getElementById('progress-fill');
+            const perc = document.getElementById('perc-text');
+            const btn = document.getElementById('finish-btn');
+            
+            setTimeout(() => { fill.style.width = '25%'; perc.innerText = '25%'; title.innerText = `Ingesting ${crm}`; sub.innerText = "Extracting unstructured arrays..."; }, 800);
+            setTimeout(() => { fill.style.width = '65%'; perc.innerText = '65%'; title.innerText = "AI Restructuring"; sub.innerText = "Mapping custom fields to Apex DB..."; }, 2800);
+            setTimeout(() => { fill.style.width = '85%'; perc.innerText = '85%'; title.innerText = "Purifying Leads"; sub.innerText = "Removing duplicates and dead data..."; }, 5000);
+            setTimeout(() => { 
+                fill.style.width = '100%'; 
+                perc.innerText = '100%'; 
+                title.innerText = "Forge Complete"; 
+                title.classList.add('text-[#34d399]');
+                sub.innerText = "All records structured and secured."; 
+                btn.classList.remove('hidden');
+                
+                // Tell the Forge Canvas to calm down and shockwave
+                if(window.apexForge) window.apexForge.completeImport();
+            }, 7500);
+        }
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // 1. Enforce Authentication Failsafe
-            const sessionData = sessionStorage.getItem('apex_session');
-            if (!sessionData) return;
-            
-            let session;
-            try {
-                session = JSON.parse(sessionData);
-            } catch (error) {
-                return;
-            }
-            
-            // 2. Dynamic Dealership Branding (White-Labeling)
-            const mainHeader = document.querySelector('h1');
-            if (mainHeader && mainHeader.innerText.toUpperCase().includes('APEX')) {
-                mainHeader.innerHTML = `${session.dealer} <span class="text-zinc-500 text-sm ml-2 font-medium tracking-normal capitalize">Powered by Apex OS</span>`;
+        class ApexDataForge {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d', { alpha: false }); // Optimize performance
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+                
+                // State Management
+                this.state = 'IDLE'; // IDLE, IMPORTING, COMPLETE
+                this.particles = {
+                    raw: [],       // Red embers entering
+                    processed: [], // Green streams exiting
+                    shockwaves: [] // Final burst
+                };
+                
+                // Engine Configuration
+                this.config = {
+                    coreX: this.width / 2,
+                    coreY: this.height / 2,
+                    rawSpawnRateIdle: 0.05,
+                    rawSpawnRateActive: 0.8, // Heavy influx
+                    coreRotation: 0,
+                    corePulse: 0
+                };
+
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                
+                // Start Loop
+                this.lastTime = performance.now();
+                requestAnimationFrame((t) => this.render(t));
+                
+                // Expose globally for UI triggers
+                window.apexForge = this;
             }
 
-            // 3. High-Fidelity Canvas Engine (Replaces CSS Glow)
-            const canvas = document.getElementById('ambient-canvas');
-            if (canvas && session.color) {
-                const ctx = canvas.getContext('2d');
-                let width, height;
+            resize() {
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+                // High DPI support for sharp rendering
+                const dpr = window.devicePixelRatio || 1;
+                this.canvas.width = this.width * dpr;
+                this.canvas.height = this.height * dpr;
+                this.ctx.scale(dpr, dpr);
+                this.config.coreX = this.width / 2;
+                this.config.coreY = this.height / 2;
+            }
 
-                // Set Canvas Resolution perfectly to the device screen
-                function resize() {
-                    width = window.innerWidth;
-                    height = window.innerHeight;
-                    canvas.width = width;
-                    canvas.height = height;
+            startImport() {
+                this.state = 'IMPORTING';
+                // Burst spawn raw data
+                for(let i=0; i<50; i++) this.spawnRawData(true);
+            }
+
+            completeImport() {
+                this.state = 'COMPLETE';
+                this.particles.raw = []; // Vaporize remaining raw
+                // Create massive shockwave
+                this.particles.shockwaves.push({ radius: 10, alpha: 1, speed: 15 });
+                setTimeout(() => { this.state = 'IDLE'; }, 2000);
+            }
+
+            spawnRawData(isBurst = false) {
+                const startY = (Math.random() * this.height * 1.5) - (this.height * 0.25);
+                const startX = -50 - (Math.random() * 200);
+                
+                this.particles.raw.push({
+                    x: startX,
+                    y: startY,
+                    vx: 1 + Math.random() * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    radius: 1.5 + Math.random() * 2,
+                    life: 0,
+                    wobbleSpeed: 0.02 + Math.random() * 0.05,
+                    wobbleAmp: 1 + Math.random() * 3,
+                    baseY: startY,
+                    caught: false // True when it enters the gravity well
+                });
+            }
+
+            spawnProcessedData() {
+                // Eject from the core to the right
+                const angle = (Math.random() * Math.PI/2) - (Math.PI/4); // Fan out to the right
+                const speed = 15 + Math.random() * 15;
+                
+                this.particles.processed.push({
+                    x: this.config.coreX,
+                    y: this.config.coreY,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    history: [], // For trailing light effect
+                    life: 1.0,
+                    size: 2 + Math.random() * 2
+                });
+            }
+
+            drawBackground(dt) {
+                // Deep dark space background
+                this.ctx.fillStyle = '#050505';
+                this.ctx.fillRect(0, 0, this.width, this.height);
+
+                // Ambient colored orbs (simulates the session color glow)
+                const driftX = this.config.coreX + Math.sin(Date.now() * 0.0005) * 100;
+                const driftY = this.config.coreY + Math.cos(Date.now() * 0.0004) * 100;
+
+                const bgGlow = this.ctx.createRadialGradient(driftX, driftY, 0, driftX, driftY, this.width * 0.6);
+                bgGlow.addColorStop(0, this.state === 'IMPORTING' ? 'rgba(52, 211, 153, 0.08)' : 'rgba(255, 255, 255, 0.03)');
+                bgGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                
+                this.ctx.fillStyle = bgGlow;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+            }
+
+            drawCore(dt) {
+                const cx = this.config.coreX;
+                const cy = this.config.coreY;
+                
+                // Spin calculations
+                const spinSpeed = this.state === 'IMPORTING' ? 0.05 : 0.005;
+                this.config.coreRotation += spinSpeed;
+                
+                // Pulse calculations
+                const targetPulse = this.state === 'IMPORTING' ? 1.5 : 1.0;
+                this.config.corePulse += (targetPulse - this.config.corePulse) * 0.05;
+                const pulse = this.config.corePulse + Math.sin(Date.now() * 0.01) * 0.05;
+
+                this.ctx.save();
+                this.ctx.translate(cx, cy);
+                this.ctx.rotate(this.config.coreRotation);
+                this.ctx.scale(pulse, pulse);
+
+                // Draw Outer Containment Ring
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, 180, 0, Math.PI * 2);
+                this.ctx.strokeStyle = this.state === 'IMPORTING' ? 'rgba(52, 211, 153, 0.1)' : 'rgba(255, 255, 255, 0.05)';
+                this.ctx.lineWidth = 1;
+                this.ctx.stroke();
+
+                // Draw Dashed Processing Ring
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, 140, 0, Math.PI * 2);
+                this.ctx.setLineDash([15, 20]);
+                this.ctx.strokeStyle = this.state === 'IMPORTING' ? 'rgba(52, 211, 153, 0.3)' : 'rgba(255, 255, 255, 0.1)';
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+                this.ctx.setLineDash([]); // Reset
+
+                // Draw Inner Core Glow
+                const coreGlow = this.ctx.createRadialGradient(0, 0, 0, 0, 0, 80);
+                if (this.state === 'IMPORTING') {
+                    coreGlow.addColorStop(0, 'rgba(52, 211, 153, 0.8)');
+                    coreGlow.addColorStop(0.5, 'rgba(52, 211, 153, 0.2)');
+                    coreGlow.addColorStop(1, 'rgba(0,0,0,0)');
+                } else {
+                    coreGlow.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+                    coreGlow.addColorStop(1, 'rgba(0,0,0,0)');
                 }
-                window.addEventListener('resize', resize);
-                resize();
+                this.ctx.fillStyle = coreGlow;
+                this.ctx.fill();
 
-                // Convert Hex to RGB for seamless gradient blending
-                const hex = session.color.replace('#', '');
-                const r = parseInt(hex.substring(0, 2), 16);
-                const g = parseInt(hex.substring(2, 4), 16);
-                const b = parseInt(hex.substring(4, 6), 16);
-                const rgb = `${r}, ${g}, ${b}`;
+                // Constellation Math inside the core (Draws geometric lines to look like AI processing)
+                if (this.state === 'IMPORTING') {
+                    this.ctx.beginPath();
+                    for(let i=0; i<8; i++) {
+                        const a1 = (Math.PI*2/8) * i + this.config.coreRotation * 2;
+                        const a2 = (Math.PI*2/8) * ((i+3)%8) + this.config.coreRotation * 2;
+                        const r1 = 20 + Math.random() * 60;
+                        const r2 = 20 + Math.random() * 60;
+                        this.ctx.moveTo(Math.cos(a1)*r1, Math.sin(a1)*r1);
+                        this.ctx.lineTo(Math.cos(a2)*r2, Math.sin(a2)*r2);
+                    }
+                    this.ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                    this.ctx.lineWidth = 0.5;
+                    this.ctx.stroke();
+                }
 
-                // Smooth Animation Loop
-                let startTime = Date.now();
-                function animate() {
-                    const elapsed = (Date.now() - startTime) / 1000;
-                    ctx.clearRect(0, 0, width, height);
+                this.ctx.restore();
+            }
 
-                    // Organic math for smooth, drifting movement (No stop-motion)
-                    const driftX1 = width / 2 + Math.sin(elapsed * 0.3) * (width * 0.15);
-                    const driftY1 = height / 2 + Math.cos(elapsed * 0.2) * (height * 0.15);
+            updateAndDrawRaw(dt) {
+                const cx = this.config.coreX;
+                const cy = this.config.coreY;
+                const gravityZone = 400; // Distance at which embers get sucked in
+
+                for (let i = this.particles.raw.length - 1; i >= 0; i--) {
+                    let p = this.particles.raw[i];
+                    p.life += dt;
                     
-                    const driftX2 = width / 2 + Math.cos(elapsed * 0.25) * (width * 0.15);
-                    const driftY2 = height / 2 + Math.sin(elapsed * 0.35) * (height * 0.15);
+                    // Distance to core
+                    const dx = cx - p.x;
+                    const dy = cy - p.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
 
-                    // Draw Orb 1
-                    const gradient1 = ctx.createRadialGradient(driftX1, driftY1, 0, driftX1, driftY1, width * 0.5);
-                    gradient1.addColorStop(0, `rgba(${rgb}, 0.08)`);
-                    gradient1.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                    ctx.fillStyle = gradient1;
-                    ctx.fillRect(0, 0, width, height);
+                    if (this.state === 'IMPORTING' && dist < gravityZone) {
+                        p.caught = true;
+                    }
 
-                    // Draw Orb 2 (Offset for non-circular, organic blending)
-                    const gradient2 = ctx.createRadialGradient(driftX2, driftY2, 0, driftX2, driftY2, width * 0.6);
-                    gradient2.addColorStop(0, `rgba(${rgb}, 0.06)`);
-                    gradient2.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                    ctx.fillStyle = gradient2;
-                    ctx.fillRect(0, 0, width, height);
+                    if (p.caught) {
+                        // Extreme gravity pull
+                        const force = (gravityZone - dist) / gravityZone; // 0 to 1
+                        p.vx += (dx / dist) * force * 1.5;
+                        p.vy += (dy / dist) * force * 1.5;
+                        // Add orbital swirl
+                        p.vx += (dy / dist) * 0.5;
+                        p.vy -= (dx / dist) * 0.5;
+                    } else {
+                        // Wandering logic
+                        p.y = p.baseY + Math.sin(p.life * p.wobbleSpeed) * p.wobbleAmp;
+                        if (this.state === 'IMPORTING') {
+                            p.vx += 0.05; // Accelerate towards center
+                        }
+                    }
 
-                    requestAnimationFrame(animate);
-                }
-                animate();
+                    p.x += p.vx;
+                    p.y += p.vy;
 
-                // 4. Premium Header Brand Glow
-                const navBar = document.querySelector('.glass-nav');
-                if (navBar) {
-                    navBar.style.borderBottom = `1px solid rgba(${rgb}, 0.4)`;
-                    navBar.style.boxShadow = `0 10px 40px rgba(0,0,0,0.8), 0 1px 20px rgba(${rgb}, 0.2)`;
+                    // Rendering the red ember
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    this.ctx.fillStyle = `rgba(244, 63, 94, ${p.caught ? 0.8 : 0.4})`; // Rose/Red color
+                    this.ctx.shadowBlur = 15;
+                    this.ctx.shadowColor = '#f43f5e';
+                    this.ctx.fill();
+                    this.ctx.shadowBlur = 0; // Reset
+
+                    // If it hits the absolute core, forge it into green data
+                    if (dist < 40) {
+                        this.particles.raw.splice(i, 1);
+                        if (this.state === 'IMPORTING') {
+                            // 30% chance to immediately spawn a green outgoing stream
+                            if (Math.random() > 0.7) this.spawnProcessedData();
+                        }
+                    } else if (p.x > this.width + 100) {
+                        // Flew off screen (if not caught)
+                        this.particles.raw.splice(i, 1);
+                    }
                 }
             }
+
+            updateAndDrawProcessed(dt) {
+                for (let i = this.particles.processed.length - 1; i >= 0; i--) {
+                    let p = this.particles.processed[i];
+                    
+                    // Record history for the crystalline light trail
+                    p.history.push({x: p.x, y: p.y});
+                    if (p.history.length > 20) p.history.shift(); // Keep trail length limited
+
+                    // Accelerate outwards
+                    p.vx *= 1.02;
+                    p.vy *= 1.02;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= 0.01;
+
+                    // Draw the crystalline trail
+                    if (p.history.length > 1) {
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(p.history[0].x, p.history[0].y);
+                        for (let j = 1; j < p.history.length; j++) {
+                            // Quadratic bezier for smooth curves
+                            const curr = p.history[j];
+                            const prev = p.history[j-1];
+                            const xc = (prev.x + curr.x) / 2;
+                            const yc = (prev.y + curr.y) / 2;
+                            this.ctx.quadraticCurveTo(prev.x, prev.y, xc, yc);
+                        }
+                        this.ctx.lineTo(p.x, p.y);
+                        
+                        // Emerald Green Trail
+                        this.ctx.strokeStyle = `rgba(52, 211, 153, ${p.life})`;
+                        this.ctx.lineWidth = p.size;
+                        this.ctx.lineCap = 'round';
+                        this.ctx.shadowBlur = 20;
+                        this.ctx.shadowColor = '#34d399';
+                        this.ctx.stroke();
+                        this.ctx.shadowBlur = 0; // Reset
+                    }
+
+                    // Draw leading bright node
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size * 1.5, 0, Math.PI * 2);
+                    this.ctx.fillStyle = '#ffffff';
+                    this.ctx.fill();
+
+                    // Cleanup
+                    if (p.x > this.width + 200 || p.life <= 0) {
+                        this.particles.processed.splice(i, 1);
+                    }
+                }
+            }
+
+            updateAndDrawShockwaves() {
+                const cx = this.config.coreX;
+                const cy = this.config.coreY;
+
+                for (let i = this.particles.shockwaves.length - 1; i >= 0; i--) {
+                    let s = this.particles.shockwaves[i];
+                    s.radius += s.speed;
+                    s.alpha -= 0.02;
+
+                    if (s.alpha <= 0) {
+                        this.particles.shockwaves.splice(i, 1);
+                        continue;
+                    }
+
+                    this.ctx.beginPath();
+                    this.ctx.arc(cx, cy, s.radius, 0, Math.PI * 2);
+                    this.ctx.strokeStyle = `rgba(52, 211, 153, ${s.alpha})`;
+                    this.ctx.lineWidth = 10 * s.alpha;
+                    this.ctx.stroke();
+                }
+            }
+
+            render(timestamp) {
+                // Delta time calculations
+                let dt = timestamp - this.lastTime;
+                this.lastTime = timestamp;
+
+                // Spawn Logic based on state
+                const spawnChance = this.state === 'IMPORTING' ? this.config.rawSpawnRateActive : this.config.rawSpawnRateIdle;
+                if (Math.random() < spawnChance) this.spawnRawData();
+
+                // 1. Draw Background
+                this.drawBackground(dt);
+                
+                // 2. Draw Raw Incoming Embers
+                this.updateAndDrawRaw(dt);
+                
+                // 3. Draw The Core Forge
+                this.drawCore(dt);
+                
+                // 4. Draw Processed Outgoing Streams
+                this.updateAndDrawProcessed(dt);
+
+                // 5. Draw Final Shockwaves
+                this.updateAndDrawShockwaves();
+
+                // Loop
+                requestAnimationFrame((t) => this.render(t));
+            }
+        }
+
+        // Initialize the Forge on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            new ApexDataForge('forge-canvas');
         });
     </script>
-
 </body>
 </html>
