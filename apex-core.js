@@ -205,14 +205,15 @@ window.apexToast = function(message, type = "info") {
 };
 
 /* ==========================================================================
-   6. GLOBAL BUTTON ROUTING (Central Logic)
+   6. GLOBAL BUTTON ROUTING (Universal Catch-All)
    ========================================================================== */
 function initGlobalButtonRouting() {
-    const triggerProcessing = (btn) => {
+    const triggerProcessing = (btn, customMessage = null) => {
         if (btn.classList.contains('is-locked')) return;
         btn.classList.add('is-locked');
 
         const originalText = btn.innerText.trim();
+        const actionName = originalText || "System";
         btn.innerText = "PROCESSING...";
         btn.style.pointerEvents = "none";
         btn.style.opacity = "0.8";
@@ -226,13 +227,11 @@ function initGlobalButtonRouting() {
             btn.style.backgroundColor = "#34d399"; 
             btn.style.color = "#000"; 
             
-            if (messageText) {
+            if (messageText && (originalText === "SUBMIT" || originalText === "SEND" || originalText === "REPLY")) {
                 const chatHistory = document.getElementById('chat-history');
                 if (chatHistory) {
-                    const now = new Date();
-                    const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                    
-                    const newBubble = `
+                    const timeString = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    chatHistory.insertAdjacentHTML('beforeend', `
                         <div class="flex flex-col items-end gap-1 mt-4 animate-[fadeIn_0.3s_ease_forwards]">
                             <div class="text-[10px] text-zinc-400 mr-2 flex items-center uppercase tracking-widest font-bold">
                                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -240,16 +239,13 @@ function initGlobalButtonRouting() {
                             </div>
                             <div class="chat-bubble-send bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-4 py-3 text-emerald-400 max-w-[80%]">${messageText}</div>
                         </div>
-                    `;
-                    chatHistory.insertAdjacentHTML('beforeend', newBubble);
+                    `);
                     chatHistory.scrollTop = chatHistory.scrollHeight; 
                 }
-                if (textArea) {
-                    textArea.value = ''; 
-                    localStorage.removeItem(`draft_${textArea.id}`); // Clear drafts
-                }
-            } else if (originalText !== "SUBMIT") {
-                apexToast(`${originalText} Action Completed.`, "success");
+                if (textArea) { textArea.value = ''; localStorage.removeItem(`draft_${textArea.id}`); }
+            } else {
+                // UNIVERSAL CATCH-ALL TOAST
+                apexToast(customMessage || `${actionName} Executed Successfully.`, "success");
             }
         }, 800);
 
@@ -263,19 +259,30 @@ function initGlobalButtonRouting() {
         }, 2000);
     };
 
+    // Specific Overrides
     const routeMap = {
         'PRINT DEAL SHEET': () => { window.print(); apexToast("Preparing Document for Print...", "info"); },
         'WEB CHAT': () => { apexToast("Apex Secure Chat initializing...", "info"); },
         'SOCIAL DMS': () => { apexToast("Syncing Meta and X APIs...", "info"); },
-        'SEND PORTAL LINK': () => { apexToast("Secure Link Dispatched via SMS.", "success"); setTimeout(() => { window.open('portal.html', '_blank'); }, 1000); },
-        'SUBMIT': triggerProcessing, 'SEND': triggerProcessing, 'SAVE': triggerProcessing
+        'SEND PORTAL LINK': () => { apexToast("Secure Link Dispatched via SMS.", "success"); setTimeout(() => { window.open('portal.html', '_blank'); }, 1000); }
     };
 
+    // Scan every button on the entire site
     document.querySelectorAll('button').forEach(btn => {
         if (btn.classList.contains('send-btn')) btn.removeAttribute('onclick');
-        const text = btn.innerText.trim().toUpperCase();
-        if (routeMap[text] && !btn.hasAttribute('onclick')) {
-            btn.addEventListener('click', (e) => { e.preventDefault(); routeMap[text](btn); });
+        
+        // If it doesn't already have an onclick or href, make it functional!
+        if (!btn.hasAttribute('onclick') && !btn.hasAttribute('href') && !btn.getAttribute('data-wired')) {
+            btn.setAttribute('data-wired', 'true'); // Prevent double-wiring
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const text = btn.innerText.trim().toUpperCase();
+                if (routeMap[text]) {
+                    routeMap[text](); // Run specific override
+                } else {
+                    triggerProcessing(btn); // Run Universal Catch-All
+                }
+            });
         }
     });
 }
@@ -304,12 +311,14 @@ function initCommandPalette() {
     const list = document.getElementById('apex-cmd-list');
 
     const commands = [
-        { icon: 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z', label: 'Sales Dashboard', action: () => window.location.href = 'index.html' },
-        { icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z', label: 'Manager Hub', action: () => window.location.href = 'manager.html' },
-        { icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z', label: 'F&I Approval Engine', action: () => window.location.href = 'finance.html' },
-        { icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12', label: 'Import Past CRM Leads', action: () => window.location.href = 'importleads.html' },
-        { icon: 'M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14', label: 'Launch Customer Portal (Demo)', action: () => window.open('portal.html', '_blank') },
-        { icon: 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1', label: 'Secure Log Out', action: () => { sessionStorage.removeItem('apex_session'); window.location.replace('login.html'); } }
+        { icon: 'M4 6a2 2 0 012-2h2...z', label: 'Sales Dashboard', action: () => window.location.href = 'index.html' },
+        { icon: 'M17 20h5v-2a3...z', label: 'Manager Hub', action: () => window.location.href = 'manager.html' },
+        { icon: 'M12 8c-1.657...z', label: 'F&I Approval Engine', action: () => window.location.href = 'finance.html' },
+        { icon: 'M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z', label: 'Service & Repair Portal', action: () => window.location.href = 'service.html' },
+        { icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', label: 'Parts & Inventory', action: () => window.location.href = 'parts.html' },
+        { icon: 'M4 16v1a3 3...m4-4v12', label: 'Import Past CRM Leads', action: () => window.location.href = 'importleads.html' },
+        { icon: 'M10 6H6a2 2...L10 14', label: 'Launch Customer Portal (Demo)', action: () => window.open('portal.html', '_blank') },
+        { icon: 'M17 16l4-4...h4a3 3 0 013 3v1', label: 'Secure Log Out', action: () => { sessionStorage.removeItem('apex_session'); window.location.replace('login.html'); } }
     ];
 
     const renderList = (filter = "") => {

@@ -1,172 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="apex-core.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex OS | Dealer Login</title>
-    
+    <title>Apex OS | Unified Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
-        
-        body { 
-            background-color: #141414 !important; color: #f1f5f9 !important; 
-            margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
-
-        body::before {
-            content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-            background-size: 32px 32px;
-        }
-
-        .glass-panel {
-            background-color: rgba(20, 20, 20, 0.6) !important;
-            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.06); border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.02);
-            width: 100%; max-width: 440px; padding: 48px; position: relative; z-index: 10;
-        }
-
-        .minimal-input { background-color: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.08); color: white; border-radius: 12px; padding: 16px; width: 100%; font-size: 0.95rem; transition: all 0.2s; }
-        .minimal-input:focus { outline: none; border-color: rgba(255, 255, 255, 0.3); background-color: rgba(0, 0, 0, 0.8) !important; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
-
-        .login-btn { background-color: #ffffff; color: #000000; border: none; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: 0.2s; width: 100%; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 10px; }
-        .login-btn:hover { background-color: #e4e4e7; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+        body { background-color: #141414 !important; color: #f1f5f9 !important; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        body::before { content: ''; position: fixed; inset: 0; z-index: -2; background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
+        .glass-panel { background-color: rgba(20, 20, 20, 0.7) !important; backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8); border-radius: 24px; }
+        .ambient-glow { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vw; background: radial-gradient(circle at center, rgba(52, 211, 153, 0.05), transparent 50%); transform: translate(-50%, -50%); z-index: -1; pointer-events: none; }
     </style>
 </head>
-<body>
-
-    <canvas id="ambient-canvas" class="fixed inset-0 z-[-1] pointer-events-none w-full h-full"></canvas>
-
-    <div class="glass-panel">
+<body class="relative">
+    <div class="ambient-glow"></div>
+    <div class="glass-panel p-10 w-full max-w-4xl relative z-10">
         <div class="text-center mb-10">
-            <div class="w-16 h-16 bg-black border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+            <div class="w-16 h-16 mx-auto bg-black border border-white/10 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(52,211,153,0.1)]">
                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             </div>
-            <h1 class="text-2xl font-black text-white uppercase tracking-widest mb-2">Apex OS</h1>
-            <p class="text-sm text-zinc-400 font-medium">Dealership Operating System</p>
+            <h1 class="text-3xl font-black text-white uppercase tracking-widest mb-2">Apex OS</h1>
+            <p class="text-sm text-zinc-400 font-medium tracking-wide">Select your clearance level to initialize session.</p>
         </div>
 
-        <form id="login-form" class="space-y-5">
-            <div>
-                <label class="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 ml-1">Work Email</label>
-                <input type="email" id="email" class="minimal-input" placeholder="e.g., umair@yamaha.com" required>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 ml-1">Secure Password</label>
-                <input type="password" id="password" class="minimal-input" placeholder="••••••••" required>
-            </div>
+        <div class="grid grid-cols-3 gap-4">
+            <button onclick="login('index.html')" class="p-6 rounded-xl border border-white/5 bg-black/40 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition text-left group">
+                <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+                <h2 class="text-sm font-bold text-white uppercase tracking-widest">Sales</h2>
+                <p class="text-[10px] text-zinc-500 font-bold mt-1">Lead Management</p>
+            </button>
             
-            <div class="pt-4">
-                <button type="submit" class="login-btn">Log In</button>
-            </div>
-        </form>
+            <button onclick="login('manager.html')" class="p-6 rounded-xl border border-white/5 bg-black/40 hover:bg-blue-500/10 hover:border-blue-500/30 transition text-left group">
+                <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div>
+                <h2 class="text-sm font-bold text-white uppercase tracking-widest">Manager</h2>
+                <p class="text-[10px] text-zinc-500 font-bold mt-1">Store Operations</p>
+            </button>
 
-        <div class="mt-8 pt-6 border-t border-white/5 text-center">
-            <p class="text-[10px] text-zinc-600 font-semibold uppercase tracking-widest leading-relaxed">
-                Test Accounts:<br>
-                sales@yamaha.com (Blue Theme)<br>
-                manager@ducati.com (Red Theme)<br>
-                owner@apex.com (Green Theme)
-            </p>
+            <button onclick="login('finance.html')" class="p-6 rounded-xl border border-white/5 bg-black/40 hover:bg-purple-500/10 hover:border-purple-500/30 transition text-left group">
+                <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center mb-4 group-hover:scale-110 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                <h2 class="text-sm font-bold text-white uppercase tracking-widest">F&I</h2>
+                <p class="text-[10px] text-zinc-500 font-bold mt-1">Approvals & Docs</p>
+            </button>
+
+            <button onclick="login('service.html')" class="p-6 rounded-xl border border-white/5 bg-black/40 hover:bg-amber-500/10 hover:border-amber-500/30 transition text-left group">
+                <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"></path></svg></div>
+                <h2 class="text-sm font-bold text-white uppercase tracking-widest">Service</h2>
+                <p class="text-[10px] text-zinc-500 font-bold mt-1">Repair Orders</p>
+            </button>
+
+            <button onclick="login('parts.html')" class="p-6 rounded-xl border border-white/5 bg-black/40 hover:bg-rose-500/10 hover:border-rose-500/30 transition text-left group">
+                <div class="w-10 h-10 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center mb-4 group-hover:scale-110 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg></div>
+                <h2 class="text-sm font-bold text-white uppercase tracking-widest">Parts</h2>
+                <p class="text-[10px] text-zinc-500 font-bold mt-1">Inventory Sync</p>
+            </button>
+
+            <button onclick="login('owner.html')" class="p-6 rounded-xl border border-white/5 bg-black/40 hover:bg-white/10 hover:border-white/30 transition text-left group">
+                <div class="w-10 h-10 rounded-full bg-zinc-800 text-white flex items-center justify-center mb-4 border border-white/20 group-hover:scale-110 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg></div>
+                <h2 class="text-sm font-bold text-white uppercase tracking-widest">Executive</h2>
+                <p class="text-[10px] text-zinc-500 font-bold mt-1">Command Center</p>
+            </button>
         </div>
     </div>
-
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value.toLowerCase();
-            
-            // Baseline Default SaaS Session
-            let session = { role: 'sales', dealer: 'Apex Motorsports', color: '#34d399', redirect: 'index.html' };
-
-            // Dynamic Multi-Tenant White-Labeling Simulator
-            if (email.includes('yamaha')) {
-                session = { role: 'sales', dealer: 'Yamaha of Dallas', color: '#3b82f6', redirect: 'index.html' }; // Blue
-            } else if (email.includes('ducati') || email.includes('manager')) {
-                session = { role: 'manager', dealer: 'Ducati Austin', color: '#ef4444', redirect: 'manager.html' }; // Red
-            } else if (email.includes('owner')) {
-                session = { role: 'owner', dealer: 'Apex Dealer Group', color: '#22c55e', redirect: 'owner.html' }; // Green
-            }
-
-            // Lock session into browser memory
-            sessionStorage.setItem('apex_session', JSON.stringify(session));
-            
-            // Change button text to show success visually
-            const btn = document.querySelector('.login-btn');
-            btn.innerHTML = "Access Granted...";
-            btn.style.backgroundColor = "#34d399"; // Turns Apex Emerald
-            
-            // 3. High-Fidelity Canvas Engine (Replaces CSS Glow)
-            const canvas = document.getElementById('ambient-canvas');
-            if (canvas && session.color) {
-                const ctx = canvas.getContext('2d');
-                let width, height;
-
-                // Set Canvas Resolution perfectly to the device screen
-                function resize() {
-                    width = window.innerWidth;
-                    height = window.innerHeight;
-                    canvas.width = width;
-                    canvas.height = height;
-                }
-                window.addEventListener('resize', resize);
-                resize();
-
-                // Convert Hex to RGB for seamless gradient blending
-                const hex = session.color.replace('#', '');
-                const r = parseInt(hex.substring(0, 2), 16);
-                const g = parseInt(hex.substring(2, 4), 16);
-                const b = parseInt(hex.substring(4, 6), 16);
-                const rgb = `${r}, ${g}, ${b}`;
-
-                // Smooth Animation Loop
-                let startTime = Date.now();
-                function animate() {
-                    const elapsed = (Date.now() - startTime) / 1000;
-                    ctx.clearRect(0, 0, width, height);
-
-                    // Organic math for smooth, drifting movement (No stop-motion)
-                    const driftX1 = width / 2 + Math.sin(elapsed * 0.3) * (width * 0.15);
-                    const driftY1 = height / 2 + Math.cos(elapsed * 0.2) * (height * 0.15);
-                    
-                    const driftX2 = width / 2 + Math.cos(elapsed * 0.25) * (width * 0.15);
-                    const driftY2 = height / 2 + Math.sin(elapsed * 0.35) * (height * 0.15);
-
-                    // Draw Orb 1
-                    const gradient1 = ctx.createRadialGradient(driftX1, driftY1, 0, driftX1, driftY1, width * 0.5);
-                    gradient1.addColorStop(0, `rgba(${rgb}, 0.08)`);
-                    gradient1.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                    ctx.fillStyle = gradient1;
-                    ctx.fillRect(0, 0, width, height);
-
-                    // Draw Orb 2 (Offset for non-circular, organic blending)
-                    const gradient2 = ctx.createRadialGradient(driftX2, driftY2, 0, driftX2, driftY2, width * 0.6);
-                    gradient2.addColorStop(0, `rgba(${rgb}, 0.06)`);
-                    gradient2.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                    ctx.fillStyle = gradient2;
-                    ctx.fillRect(0, 0, width, height);
-
-                    requestAnimationFrame(animate);
-                }
-                animate();
-                // 4. Premium Header Brand Glow
-                const navBar = document.querySelector('.glass-nav');
-                if (navBar) {
-                    navBar.style.borderBottom = `1px solid rgba(${rgb}, 0.4)`;
-                    navBar.style.boxShadow = `0 10px 40px rgba(0,0,0,0.8), 0 1px 20px rgba(${rgb}, 0.2)`;
-                }
-            }
-
-            // Swift redirect for visual feedback (reduced from 600ms to 200ms)
-            setTimeout(() => {
-                window.location.replace(session.redirect);
-            }, 200);
-        });
+        function login(route) {
+            sessionStorage.setItem('apex_session', JSON.stringify({ dealer: "Apex Dealer", color: "#34d399" }));
+            window.location.href = route;
+        }
     </script>
 </body>
 </html>
