@@ -205,7 +205,7 @@ window.apexToast = function(message, type = "info") {
 };
 
 /* ==========================================================================
-   6. GLOBAL BUTTON ROUTING (Universal Catch-All)
+   6. GLOBAL BUTTON ROUTING (Universal Catch-All & AI Intercept)
    ========================================================================== */
 function initGlobalButtonRouting() {
     const triggerProcessing = (btn, customMessage = null) => {
@@ -259,26 +259,39 @@ function initGlobalButtonRouting() {
         }, 2000);
     };
 
-    // Specific Overrides
+    // Specific Action Overrides
     const routeMap = {
         'PRINT DEAL SHEET': () => { window.print(); apexToast("Preparing Document for Print...", "info"); },
         'WEB CHAT': () => { apexToast("Apex Secure Chat initializing...", "info"); },
         'SOCIAL DMS': () => { apexToast("Syncing Meta and X APIs...", "info"); },
-        'SEND PORTAL LINK': () => { apexToast("Secure Link Dispatched via SMS.", "success"); setTimeout(() => { window.open('portal.html', '_blank'); }, 1000); }
+        'SEND PORTAL LINK': () => { apexToast("Secure Link Dispatched via SMS.", "success"); setTimeout(() => { window.open('portal.html', '_blank'); }, 1000); },
+        'LOG OUT': () => { sessionStorage.removeItem('apex_session'); window.location.replace('login.html'); },
+        'USE SUGGESTION': (btn) => {
+            const container = btn.parentElement;
+            const suggestionNode = container.querySelector('p.italic');
+            const chatInput = document.getElementById('reply-input');
+            if (suggestionNode && chatInput) {
+                chatInput.value = suggestionNode.innerText.replace(/(^"|"$)/g, ''); 
+                chatInput.focus();
+                apexToast("AI Suggestion Applied to Text Box.", "success");
+            } else {
+                triggerProcessing(btn);
+            }
+        }
     };
 
     // Scan every button on the entire site
     document.querySelectorAll('button').forEach(btn => {
         if (btn.classList.contains('send-btn')) btn.removeAttribute('onclick');
         
-        // If it doesn't already have an onclick or href, make it functional!
+        // Make ALL unlinked buttons functional
         if (!btn.hasAttribute('onclick') && !btn.hasAttribute('href') && !btn.getAttribute('data-wired')) {
             btn.setAttribute('data-wired', 'true'); // Prevent double-wiring
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const text = btn.innerText.trim().toUpperCase();
                 if (routeMap[text]) {
-                    routeMap[text](); // Run specific override
+                    routeMap[text](btn); // Run specific override
                 } else {
                     triggerProcessing(btn); // Run Universal Catch-All
                 }

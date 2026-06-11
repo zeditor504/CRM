@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex OS | Executive Command Center</title>
     <script src="apex-core.js"></script>
+    <script>
+        const session = JSON.parse(sessionStorage.getItem('apex_session') || '{}');
+        if (session.role !== 'Executive') {
+            alert('SECURITY CLEARANCE DENIED: Executive Access Required.');
+            window.location.replace('login.html');
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
         body { background-color: #141414 !important; color: #f1f5f9 !important; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         .glass-nav { background: linear-gradient(to bottom, rgba(20,20,20,0.6) 0%, rgba(10,10,10,0.7) 100%) !important; backdrop-filter: blur(40px) saturate(120%); border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .glass-panel { background-color: rgba(12,12,12,0.85) !important; backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(255,255,255,0.02), 0 30px 65px rgba(0,0,0,0.95); border-radius: 24px; }
+        .glass-panel { background-color: rgba(15, 15, 15, 0.9) !important; backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(255,255,255,0.02), 0 30px 65px rgba(0,0,0,0.95); border-radius: 24px; }
         .health-ring { stroke-dasharray: 100; stroke-dashoffset: 12; transition: stroke-dashoffset 1s ease-out; }
     </style>
 </head>

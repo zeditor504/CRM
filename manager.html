@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex Dealer Systems | Manager Hub</title>
     <script>
-        if (!sessionStorage.getItem('apex_session')) {
+        const session = JSON.parse(sessionStorage.getItem('apex_session') || '{}');
+        if (session.role !== 'Executive' && session.role !== 'Manager') {
+            alert('SECURITY CLEARANCE DENIED: Management Access Required.');
             window.location.replace('login.html');
         }
     </script>
@@ -28,7 +30,7 @@
         }
 
         .glass-panel {
-            background-color: rgba(20, 20, 20, 0.6) !important;
+            background-color: rgba(15, 15, 15, 0.9) !important;
             backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
             border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.08);  
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.05);
