@@ -108,17 +108,21 @@
                     </p>
                     
                     <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-6" id="crm-grid">
-                        <button class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 hover:border-white/30 transition group" data-crm="VinSolutions">
-                            <img src="vin.png" alt="VinSolutions" class="h-6 opacity-70 group-hover:opacity-100 transition filter grayscale group-hover:grayscale-0">
+                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="VinSolutions">
+                            <img src="vin.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
+                            <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">VinSolutions</span>
                         </button>
-                        <button class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 hover:border-white/30 transition group" data-crm="Eleads">
-                            <img src="eleads.png" alt="Eleads" class="h-6 opacity-70 group-hover:opacity-100 transition filter grayscale group-hover:grayscale-0">
+                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="Eleads">
+                            <img src="eleads.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
+                            <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">Eleads</span>
                         </button>
-                        <button class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 hover:border-white/30 transition group" data-crm="DX1">
-                            <img src="dx1.png" alt="DX1" class="h-6 opacity-70 group-hover:opacity-100 transition filter grayscale group-hover:grayscale-0">
+                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="DX1">
+                            <img src="dx1.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
+                            <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">DX1</span>
                         </button>
-                        <button class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 hover:border-white/30 transition group active-crm shadow-[0_0_15px_rgba(255,255,255,0.1)] border-white/30" data-crm="DP360">
-                            <img src="dp360.png" alt="DP360" class="h-6 opacity-100 transition">
+                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_15px_rgba(52,211,153,0.15)] transition relative overflow-hidden h-16 group active-crm" data-crm="DP360">
+                            <img src="dp360.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none">
+                            <span class="font-black text-emerald-400 tracking-widest uppercase text-xs relative z-10 label-text">DP360</span>
                         </button>
                     </div>
 
@@ -167,26 +171,33 @@
             }
         });
 
-        // CRM Selection Logic
+        // Bulletproof CRM Selection Logic
         document.addEventListener("DOMContentLoaded", () => {
             const crmBtns = document.querySelectorAll('.crm-btn');
             const hiddenInput = document.getElementById('selected-crm');
 
             crmBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // Reset all
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // 1. Reset all buttons to default state
                     crmBtns.forEach(b => {
-                        b.classList.remove('active-crm', 'shadow-[0_0_15px_rgba(255,255,255,0.1)]', 'border-white/30');
-                        b.querySelector('img').classList.add('opacity-70', 'filter', 'grayscale');
-                        b.querySelector('img').classList.remove('opacity-100', 'grayscale-0');
+                        b.className = "crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group";
+                        const img = b.querySelector('img');
+                        if (img) img.className = "absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none";
+                        const span = b.querySelector('.label-text');
+                        if (span) span.className = "font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text";
                     });
                     
-                    // Activate selected
-                    btn.classList.add('active-crm', 'shadow-[0_0_15px_rgba(255,255,255,0.1)]', 'border-white/30');
-                    btn.querySelector('img').classList.remove('opacity-70', 'filter', 'grayscale');
-                    btn.querySelector('img').classList.add('opacity-100');
+                    // 2. Activate clicked button (Emerald Highlight)
+                    btn.className = "crm-btn flex items-center justify-center p-4 rounded-xl border border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_15px_rgba(52,211,153,0.15)] transition relative overflow-hidden h-16 group active-crm";
+                    const activeImg = btn.querySelector('img');
+                    if (activeImg) activeImg.className = "absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none";
+                    const activeSpan = btn.querySelector('.label-text');
+                    if (activeSpan) activeSpan.className = "font-black text-emerald-400 tracking-widest uppercase text-xs relative z-10 label-text";
                     
-                    hiddenInput.value = btn.getAttribute('data-crm');
+                    // 3. Update hidden input
+                    if (hiddenInput) hiddenInput.value = btn.getAttribute('data-crm');
                 });
             });
         });
