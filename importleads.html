@@ -108,20 +108,20 @@
                     </p>
                     
                     <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-6" id="crm-grid">
-                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="VinSolutions">
-                            <img src="vin.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
+                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="VinSolutions" data-color="blue">
+                            <img src="assets/vinsolutions.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
                             <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">VinSolutions</span>
                         </button>
-                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="Eleads">
-                            <img src="eleads.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
-                            <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">Eleads</span>
+                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="CDK" data-color="yellow">
+                            <img src="assets/cdk.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
+                            <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">CDK Global</span>
                         </button>
-                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="DX1">
-                            <img src="dx1.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
+                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="DX1" data-color="rose">
+                            <img src="assets/dx1.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
                             <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">DX1</span>
                         </button>
-                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_15px_rgba(52,211,153,0.15)] transition relative overflow-hidden h-16 group active-crm" data-crm="DP360">
-                            <img src="dp360.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none">
+                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_15px_rgba(52,211,153,0.15)] transition relative overflow-hidden h-16 group active-crm" data-crm="DP360" data-color="emerald">
+                            <img src="assets/dp360.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none">
                             <span class="font-black text-emerald-400 tracking-widest uppercase text-xs relative z-10 label-text">DP360</span>
                         </button>
                     </div>
@@ -182,21 +182,32 @@
                     
                     // 1. Reset all buttons to default state
                     crmBtns.forEach(b => {
-                        b.className = "crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group";
+                        b.className = `crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group`;
                         const img = b.querySelector('img');
                         if (img) img.className = "absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none";
                         const span = b.querySelector('.label-text');
-                        if (span) span.className = "font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text";
+                        if (span) span.className = `font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text`;
                     });
                     
-                    // 2. Activate clicked button (Emerald Highlight)
-                    btn.className = "crm-btn flex items-center justify-center p-4 rounded-xl border border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_15px_rgba(52,211,153,0.15)] transition relative overflow-hidden h-16 group active-crm";
+                    // 2. Get specific color theme for this CRM
+                    const color = btn.getAttribute('data-color');
+                    
+                    // 3. Activate clicked button with specific color
+                    btn.className = `crm-btn flex items-center justify-center p-4 rounded-xl border border-${color}-500/50 bg-${color}-500/10 shadow-[0_0_15px_rgba(var(--${color}-rgb),0.15)] transition relative overflow-hidden h-16 group active-crm`;
+                    
+                    // Manual shadow fix for Tailwind compilation limits
+                    if(color === 'blue') btn.style.boxShadow = '0 0 15px rgba(59,130,246,0.15)';
+                    if(color === 'yellow') btn.style.boxShadow = '0 0 15px rgba(234,179,8,0.15)';
+                    if(color === 'rose') btn.style.boxShadow = '0 0 15px rgba(244,63,94,0.15)';
+                    if(color === 'emerald') btn.style.boxShadow = '0 0 15px rgba(52,211,153,0.15)';
+
                     const activeImg = btn.querySelector('img');
                     if (activeImg) activeImg.className = "absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none";
-                    const activeSpan = btn.querySelector('.label-text');
-                    if (activeSpan) activeSpan.className = "font-black text-emerald-400 tracking-widest uppercase text-xs relative z-10 label-text";
                     
-                    // 3. Update hidden input
+                    const activeSpan = btn.querySelector('.label-text');
+                    if (activeSpan) activeSpan.className = `font-black text-${color}-400 tracking-widest uppercase text-xs relative z-10 label-text`;
+                    
+                    // 4. Update hidden input
                     if (hiddenInput) hiddenInput.value = btn.getAttribute('data-crm');
                 });
             });
