@@ -14,11 +14,30 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        apex: {
+                            bg: '#0A0A0A',
+                            panel: '#1A1A1A',
+                            primary: '#00FF9F',    /* Electric Teal */
+                            secondary: '#FF2E63',  /* Hot Magenta */
+                            premium: '#FFD700',    /* Gold */
+                            text: '#E0E0E0',
+                            muted: '#666666'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
-        body { background-color: #141414 !important; color: #f1f5f9 !important; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body { background-color: #0A0A0A !important; color: #f1f5f9 !important; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         .glass-nav { background: linear-gradient(to bottom, rgba(20,20,20,0.6) 0%, rgba(10,10,10,0.7) 100%) !important; backdrop-filter: blur(40px) saturate(120%); border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .glass-panel { background-color: rgba(15, 15, 15, 0.9) !important; backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(255,255,255,0.02), 0 30px 65px rgba(0,0,0,0.95); border-radius: 24px; }
+        .glass-panel { background-color: rgba(26, 26, 26, 0.85) !important; /* #1A1A1A equivalent */ backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(255,255,255,0.02), 0 30px 65px rgba(0,0,0,0.95); border-radius: 24px; }
         .health-ring { stroke-dasharray: 100; stroke-dashoffset: 12; transition: stroke-dashoffset 1s ease-out; }
     </style>
 </head>

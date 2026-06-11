@@ -7,15 +7,34 @@
     <title>Apex OS | Showroom Status</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        apex: {
+                            bg: '#0A0A0A',
+                            panel: '#1A1A1A',
+                            primary: '#00FF9F',    /* Electric Teal */
+                            secondary: '#FF2E63',  /* Hot Magenta */
+                            premium: '#FFD700',    /* Gold */
+                            text: '#E0E0E0',
+                            muted: '#666666'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
-        body { background-color: #141414 !important; color: #f1f5f9 !important; margin: 0; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        body { background-color: #0A0A0A !important; color: #f1f5f9 !important; margin: 0; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
         body::before { content: ''; position: fixed; inset: 0; z-index: -2; background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
         
         .ambient-glow { position: fixed; top: 50%; left: 50%; width: 100vw; height: 100vh; border-radius: 50%; background: radial-gradient(circle at center, rgba(52, 211, 153, 0.05) 0%, transparent 65%); filter: blur(120px); z-index: -1; animation: ambientBreathe 10s ease-in-out infinite; transform: translate(-50%, -50%); pointer-events: none; }
         @keyframes ambientBreathe { 0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
 
-        .glass-panel { background-color: rgba(15, 15, 15, 0.9) !important; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .glass-panel { background-color: rgba(26, 26, 26, 0.85) !important; /* #1A1A1A equivalent */ backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         /* --- LIQUID-GLASS APP BAR --- */
         .glass-nav { 
             background: linear-gradient(to bottom, rgba(20, 20, 20, 0.6) 0%, rgba(10, 10, 10, 0.7) 100%) !important; 
