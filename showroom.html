@@ -31,7 +31,7 @@
         body { background-color: #0A0A0A !important; color: #f1f5f9 !important; margin: 0; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
         body::before { content: ''; position: fixed; inset: 0; z-index: -2; background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
         
-        .ambient-glow { position: fixed; top: 50%; left: 50%; width: 100vw; height: 100vh; border-radius: 50%; background: radial-gradient(circle at center, rgba(52, 211, 153, 0.05) 0%, transparent 65%); filter: blur(120px); z-index: -1; animation: ambientBreathe 10s ease-in-out infinite; transform: translate(-50%, -50%); pointer-events: none; }
+        .ambient-glow { position: fixed; top: 50%; left: 50%; width: 100vw; height: 100vh; border-radius: 50%; background: radial-gradient(circle at center, rgba(0, 255, 159, 0.05) 0%, transparent 65%); filter: blur(120px); z-index: -1; animation: ambientBreathe 10s ease-in-out infinite; transform: translate(-50%, -50%); pointer-events: none; }
         @keyframes ambientBreathe { 0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
 
         .glass-panel { background-color: rgba(26, 26, 26, 0.85) !important; /* #1A1A1A equivalent */ backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
@@ -46,8 +46,8 @@
 
         .status-col { flex: 1; display: flex; flex-direction: column; gap: 20px; }
         .customer-card { padding: 24px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); transition: 0.3s ease; }
-        .pulse-card { border-color: rgba(52, 211, 153, 0.4); box-shadow: 0 0 20px rgba(52, 211, 153, 0.1); animation: cardPulse 2s infinite; }
-        @keyframes cardPulse { 0%, 100% { box-shadow: 0 0 15px rgba(52, 211, 153, 0.1); } 50% { box-shadow: 0 0 30px rgba(52, 211, 153, 0.3); } }
+        .pulse-card { border-color: rgba(0, 255, 159, 0.4); box-shadow: 0 0 20px rgba(0, 255, 159, 0.1); animation: cardPulse 2s infinite; }
+        @keyframes cardPulse { 0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 159, 0.1); } 50% { box-shadow: 0 0 30px rgba(0, 255, 159, 0.3); } }
     </style>
 </head>
 <body class="flex flex-col">
@@ -57,8 +57,8 @@
         <div class="flex items-center space-x-6">
             <h1 class="text-3xl font-black text-white tracking-widest uppercase">Apex Dealer Group <span class="text-zinc-500 font-medium ml-3">Showroom Status</span></h1>
         </div>
-        <div class="text-emerald-400 font-bold tracking-widest uppercase text-lg flex items-center gap-3">
-            <span class="w-3 h-3 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_#34d399]"></span> Live Updates
+        <div class="text-apex-primary font-bold tracking-widest uppercase text-lg flex items-center gap-3">
+            <span class="w-3 h-3 bg-apex-primary rounded-full animate-pulse shadow-[0_0_10px_#00FF9F]"></span> Live Updates
             <div class="h-6 w-px bg-white/10 mx-3 hidden sm:block"></div>
             <button onclick="sessionStorage.removeItem('apex_session'); window.location.replace('login.html');" class="text-zinc-500 hover:text-white transition font-bold text-xs uppercase tracking-widest cursor-pointer bg-transparent border-none">
                 Log Out
@@ -81,19 +81,19 @@
         </div>
 
         <div class="glass-panel p-8 status-col">
-            <h2 class="text-xl font-bold text-amber-400 uppercase tracking-widest border-b border-amber-500/20 pb-4 mb-2">2. Detail & Prep</h2>
-            <div class="customer-card pulse-card" style="border-color: rgba(245, 158, 11, 0.4); animation: none; box-shadow: 0 0 20px rgba(245, 158, 11, 0.1);">
+            <h2 class="text-xl font-bold text-apex-premium uppercase tracking-widest border-b border-apex-premium/20 pb-4 mb-2">2. Detail & Prep</h2>
+            <div class="customer-card pulse-card" style="border-color: rgba(255, 215, 0, 0.4); animation: none; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);">
                 <h3 class="text-3xl font-black text-white mb-2">Elijah C.</h3>
-                <p class="text-lg text-amber-400 font-bold mb-2">Installing Accessories</p>
+                <p class="text-lg text-apex-premium font-bold mb-2">Installing Accessories</p>
                 <p class="text-sm text-zinc-400 font-medium">Kawasaki Ninja 400 • Rep: Sarah</p>
             </div>
         </div>
 
         <div class="glass-panel p-8 status-col">
-            <h2 class="text-xl font-bold text-emerald-400 uppercase tracking-widest border-b border-emerald-500/20 pb-4 mb-2">3. Ready for Delivery</h2>
+            <h2 class="text-xl font-bold text-apex-primary uppercase tracking-widest border-b border-apex-primary/20 pb-4 mb-2">3. Ready for Delivery</h2>
             <div class="customer-card pulse-card">
                 <h3 class="text-4xl font-black text-white mb-2">Noah A.</h3>
-                <p class="text-xl text-emerald-400 font-bold mb-2">Please see the front desk!</p>
+                <p class="text-xl text-apex-primary font-bold mb-2">Please see the front desk!</p>
                 <p class="text-sm text-zinc-400 font-medium">2024 Ducati Panigale V4 • Rep: Paul</p>
             </div>
         </div>

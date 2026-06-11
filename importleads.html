@@ -88,7 +88,7 @@
         .progress-overlay.active { opacity: 1; pointer-events: auto; }
         
         .progress-track { width: 80%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 30px; overflow: hidden; position: relative; }
-        .progress-fill { height: 100%; width: 0%; background: #34d399; border-radius: 4px; transition: width 0.4s ease; box-shadow: 0 0 15px #34d399; }
+        .progress-fill { height: 100%; width: 0%; background: #00FF9F; border-radius: 4px; transition: width 0.4s ease; box-shadow: 0 0 15px #00FF9F; }
     </style>
 </head>
 <body class="flex flex-col relative">
@@ -140,9 +140,9 @@
                             <img src="assets/dx1.png" onerror="this.style.display='none'" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
                             <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">DX1</span>
                         </button>
-                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_15px_rgba(52,211,153,0.15)] transition relative overflow-hidden h-16 group active-crm" data-crm="DP360" data-color="emerald">
+                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-apex-primary/50 bg-apex-primary/10 shadow-[0_0_15px_rgba(0,255,159,0.15)] transition relative overflow-hidden h-16 group active-crm" data-crm="DP360" data-color="emerald">
                             <img src="assets/dp360.png" onerror="this.style.display='none'" alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none">
-                            <span class="font-black text-emerald-400 tracking-widest uppercase text-xs relative z-10 label-text">DP360</span>
+                            <span class="font-black text-apex-primary tracking-widest uppercase text-xs relative z-10 label-text">DP360</span>
                         </button>
                     </div>
 
@@ -157,7 +157,7 @@
 
                 <div class="progress-overlay" id="progress-overlay">
                     <div class="w-16 h-16 mb-6 relative">
-                        <svg class="w-full h-full text-emerald-400 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <svg class="w-full h-full text-apex-primary animate-spin" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
@@ -222,7 +222,7 @@
                     if(color === 'blue') btn.style.boxShadow = '0 0 15px rgba(59,130,246,0.15)';
                     if(color === 'yellow') btn.style.boxShadow = '0 0 15px rgba(234,179,8,0.15)';
                     if(color === 'rose') btn.style.boxShadow = '0 0 15px rgba(244,63,94,0.15)';
-                    if(color === 'emerald') btn.style.boxShadow = '0 0 15px rgba(52,211,153,0.15)';
+                    if(color === 'emerald') btn.style.boxShadow = '0 0 15px rgba(0,255,159,0.15)';
 
                     const activeImg = btn.querySelector('img');
                     // Remove grayscale (filter-none) and boost opacity slightly for the active state
@@ -258,7 +258,7 @@
                 fill.style.width = '100%'; 
                 perc.innerText = '100%'; 
                 title.innerText = "Forge Complete"; 
-                title.classList.add('text-[#34d399]');
+                        title.classList.add('text-[#00FF9F]');
                 sub.innerText = "All records structured and secured."; 
                 btn.classList.remove('hidden');
                 
@@ -374,7 +374,7 @@
                 const driftY = this.config.coreY + Math.cos(Date.now() * 0.0004) * 100;
 
                 const bgGlow = this.ctx.createRadialGradient(driftX, driftY, 0, driftX, driftY, this.width * 0.6);
-                bgGlow.addColorStop(0, this.state === 'IMPORTING' ? 'rgba(52, 211, 153, 0.08)' : 'rgba(255, 255, 255, 0.03)');
+                bgGlow.addColorStop(0, this.state === 'IMPORTING' ? 'rgba(0, 255, 159, 0.08)' : 'rgba(255, 255, 255, 0.03)');
                 bgGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
                 
                 this.ctx.fillStyle = bgGlow;
@@ -402,7 +402,7 @@
                 // Draw Outer Containment Ring
                 this.ctx.beginPath();
                 this.ctx.arc(0, 0, 180, 0, Math.PI * 2);
-                this.ctx.strokeStyle = this.state === 'IMPORTING' ? 'rgba(52, 211, 153, 0.1)' : 'rgba(255, 255, 255, 0.05)';
+                this.ctx.strokeStyle = this.state === 'IMPORTING' ? 'rgba(0, 255, 159, 0.1)' : 'rgba(255, 255, 255, 0.05)';
                 this.ctx.lineWidth = 1;
                 this.ctx.stroke();
 
@@ -410,7 +410,7 @@
                 this.ctx.beginPath();
                 this.ctx.arc(0, 0, 140, 0, Math.PI * 2);
                 this.ctx.setLineDash([15, 20]);
-                this.ctx.strokeStyle = this.state === 'IMPORTING' ? 'rgba(52, 211, 153, 0.3)' : 'rgba(255, 255, 255, 0.1)';
+                this.ctx.strokeStyle = this.state === 'IMPORTING' ? 'rgba(0, 255, 159, 0.3)' : 'rgba(255, 255, 255, 0.1)';
                 this.ctx.lineWidth = 2;
                 this.ctx.stroke();
                 this.ctx.setLineDash([]); // Reset
@@ -418,8 +418,8 @@
                 // Draw Inner Core Glow
                 const coreGlow = this.ctx.createRadialGradient(0, 0, 0, 0, 0, 80);
                 if (this.state === 'IMPORTING') {
-                    coreGlow.addColorStop(0, 'rgba(52, 211, 153, 0.8)');
-                    coreGlow.addColorStop(0.5, 'rgba(52, 211, 153, 0.2)');
+                    coreGlow.addColorStop(0, 'rgba(0, 255, 159, 0.8)');
+                    coreGlow.addColorStop(0.5, 'rgba(0, 255, 159, 0.2)');
                     coreGlow.addColorStop(1, 'rgba(0,0,0,0)');
                 } else {
                     coreGlow.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
@@ -487,9 +487,9 @@
                     // Rendering the red ember
                     this.ctx.beginPath();
                     this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    this.ctx.fillStyle = `rgba(244, 63, 94, ${p.caught ? 0.8 : 0.4})`; // Rose/Red color
+                    this.ctx.fillStyle = `rgba(255, 46, 99, ${p.caught ? 0.8 : 0.4})`; // Hot Magenta raw data
                     this.ctx.shadowBlur = 15;
-                    this.ctx.shadowColor = '#f43f5e';
+                    this.ctx.shadowColor = '#FF2E63';
                     this.ctx.fill();
                     this.ctx.shadowBlur = 0; // Reset
 
@@ -536,12 +536,12 @@
                         }
                         this.ctx.lineTo(p.x, p.y);
                         
-                        // Emerald Green Trail
-                        this.ctx.strokeStyle = `rgba(52, 211, 153, ${p.life})`;
+                        // Electric Teal Trail
+                        this.ctx.strokeStyle = `rgba(0, 255, 159, ${p.life})`;
                         this.ctx.lineWidth = p.size;
                         this.ctx.lineCap = 'round';
                         this.ctx.shadowBlur = 20;
-                        this.ctx.shadowColor = '#34d399';
+                        this.ctx.shadowColor = '#00FF9F';
                         this.ctx.stroke();
                         this.ctx.shadowBlur = 0; // Reset
                     }
@@ -575,7 +575,7 @@
 
                     this.ctx.beginPath();
                     this.ctx.arc(cx, cy, s.radius, 0, Math.PI * 2);
-                    this.ctx.strokeStyle = `rgba(52, 211, 153, ${s.alpha})`;
+                    this.ctx.strokeStyle = `rgba(0, 255, 159, ${s.alpha})`;
                     this.ctx.lineWidth = 10 * s.alpha;
                     this.ctx.stroke();
                 }
