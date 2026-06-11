@@ -426,8 +426,8 @@ function initMagneticUI() {
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
             
-            // Subtle pull calculation
-            elem.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+            // Subtle pull calculation (Reduced by 50%)
+            elem.style.transform = `translate(${x * 0.075}px, ${y * 0.075}px)`;
         });
 
         elem.addEventListener('mouseleave', () => {
