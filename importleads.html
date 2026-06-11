@@ -104,16 +104,27 @@
                     
                     <h2 class="text-3xl font-black text-white uppercase tracking-tight mb-3">Sync Past CRM Data</h2>
                     <p class="text-sm text-zinc-400 font-medium mb-10 max-w-md mx-auto leading-relaxed">
-                        Connect your previous CRM database. Apex AI will extract raw, unstructured leads and forge them into perfectly structured deal desks in real-time.
+                        Select your previous CRM database. Apex AI will extract raw, unstructured leads and forge them into perfectly structured deal desks in real-time.
                     </p>
                     
-                    <div class="flex flex-col gap-4 max-w-xs mx-auto">
-                        <select id="crm-select" class="bg-black/50 border border-white/10 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-white/30 cursor-pointer appearance-none text-center font-semibold tracking-wide">
-                            <option value="vin">VinSolutions Export</option>
-                            <option value="eleads">Eleads (CSV)</option>
-                            <option value="dx1">DX1 Database</option>
-                            <option value="custom">Custom CSV Upload</option>
-                        </select>
+                    <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-6" id="crm-grid">
+                        <button class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 hover:border-white/30 transition group" data-crm="VinSolutions">
+                            <img src="vin.png" alt="VinSolutions" class="h-6 opacity-70 group-hover:opacity-100 transition filter grayscale group-hover:grayscale-0">
+                        </button>
+                        <button class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 hover:border-white/30 transition group" data-crm="Eleads">
+                            <img src="eleads.png" alt="Eleads" class="h-6 opacity-70 group-hover:opacity-100 transition filter grayscale group-hover:grayscale-0">
+                        </button>
+                        <button class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 hover:border-white/30 transition group" data-crm="DX1">
+                            <img src="dx1.png" alt="DX1" class="h-6 opacity-70 group-hover:opacity-100 transition filter grayscale group-hover:grayscale-0">
+                        </button>
+                        <button class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 hover:border-white/30 transition group active-crm shadow-[0_0_15px_rgba(255,255,255,0.1)] border-white/30" data-crm="DP360">
+                            <img src="dp360.png" alt="DP360" class="h-6 opacity-100 transition">
+                        </button>
+                    </div>
+
+                    <input type="hidden" id="selected-crm" value="DP360">
+
+                    <div class="flex flex-col gap-4 max-w-sm mx-auto">
                         <button onclick="triggerForgeImport()" class="cinematic-btn px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest w-full">
                             Begin Synchronization
                         </button>
@@ -156,12 +167,35 @@
             }
         });
 
+        // CRM Selection Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            const crmBtns = document.querySelectorAll('.crm-btn');
+            const hiddenInput = document.getElementById('selected-crm');
+
+            crmBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Reset all
+                    crmBtns.forEach(b => {
+                        b.classList.remove('active-crm', 'shadow-[0_0_15px_rgba(255,255,255,0.1)]', 'border-white/30');
+                        b.querySelector('img').classList.add('opacity-70', 'filter', 'grayscale');
+                        b.querySelector('img').classList.remove('opacity-100', 'grayscale-0');
+                    });
+                    
+                    // Activate selected
+                    btn.classList.add('active-crm', 'shadow-[0_0_15px_rgba(255,255,255,0.1)]', 'border-white/30');
+                    btn.querySelector('img').classList.remove('opacity-70', 'filter', 'grayscale');
+                    btn.querySelector('img').classList.add('opacity-100');
+                    
+                    hiddenInput.value = btn.getAttribute('data-crm');
+                });
+            });
+        });
+
         // UI Transition Logic
         function triggerForgeImport() {
-            const crm = document.getElementById('crm-select').options[document.getElementById('crm-select').selectedIndex].text;
+            const crmName = document.getElementById('selected-crm').value;
             document.getElementById('progress-overlay').classList.add('active');
             
-            // Tell the Forge Canvas to go crazy
             if(window.apexForge) window.apexForge.startImport();
 
             const title = document.getElementById('progress-title');
@@ -170,7 +204,7 @@
             const perc = document.getElementById('perc-text');
             const btn = document.getElementById('finish-btn');
             
-            setTimeout(() => { fill.style.width = '25%'; perc.innerText = '25%'; title.innerText = `Ingesting ${crm}`; sub.innerText = "Extracting unstructured arrays..."; }, 800);
+            setTimeout(() => { fill.style.width = '25%'; perc.innerText = '25%'; title.innerText = `Ingesting ${crmName}`; sub.innerText = "Extracting unstructured arrays..."; }, 800);
             setTimeout(() => { fill.style.width = '65%'; perc.innerText = '65%'; title.innerText = "AI Restructuring"; sub.innerText = "Mapping custom fields to Apex DB..."; }, 2800);
             setTimeout(() => { fill.style.width = '85%'; perc.innerText = '85%'; title.innerText = "Purifying Leads"; sub.innerText = "Removing duplicates and dead data..."; }, 5000);
             setTimeout(() => { 
@@ -181,7 +215,6 @@
                 sub.innerText = "All records structured and secured."; 
                 btn.classList.remove('hidden');
                 
-                // Tell the Forge Canvas to calm down and shockwave
                 if(window.apexForge) window.apexForge.completeImport();
             }, 7500);
         }
