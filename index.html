@@ -227,7 +227,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 F&I Approval Engine
             </button>
-            <button class="action-btn secondary-btn" onclick="window.location.href='manager.html'">
+            <button id="manager-access-btn" class="action-btn secondary-btn" onclick="window.location.href='manager.html'">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                 Manager Hub Access
             </button>
@@ -292,6 +292,21 @@
                 tooltip.classList.remove('active');
             });
         });
+    </script>
+
+    <script>
+        // Role-Based Button Security
+        const sessionData = sessionStorage.getItem('apex_session');
+        if (sessionData) {
+            try {
+                const session = JSON.parse(sessionData);
+                // Hide the Manager Hub button if the user is just Staff
+                if (session.role === "Staff") {
+                    const managerBtn = document.getElementById('manager-access-btn');
+                    if (managerBtn) managerBtn.style.display = 'none';
+                }
+            } catch(e) {}
+        }
     </script>
 
     <script>

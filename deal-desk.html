@@ -425,6 +425,48 @@
                 }
             }
         });
+
+        // 5. Deal Sheet Print Logic
+        window.generatePrintout = function() {
+            // Grab live data from the UI
+            const customerName = document.getElementById('ui-fname') ? document.getElementById('ui-fname').innerText : "Unknown Customer";
+            const customerPhone = document.getElementById('ui-address') ? document.getElementById('ui-address').innerText.split('•')[0].trim() : "N/A";
+            const bike = document.getElementById('ui-bike') ? document.getElementById('ui-bike').innerText : "Unknown Unit";
+            const price = document.getElementById('ui-price') ? document.getElementById('ui-price').innerText : "$0";
+            
+            const methodSelect = document.getElementById('ui-method');
+            const method = methodSelect ? methodSelect.options[methodSelect.selectedIndex].text : "Finance";
+            const downpayment = document.getElementById('ui-downpayment') ? "$" + document.getElementById('ui-downpayment').value : "$0";
+
+            // Map data to the hidden print layout
+            const printDate = document.getElementById('print-date');
+            if (printDate) printDate.innerText = new Date().toLocaleDateString();
+            
+            const printName = document.getElementById('print-fname');
+            if (printName) printName.innerText = customerName;
+            
+            const printPhoneObj = document.getElementById('print-phone');
+            if (printPhoneObj) printPhoneObj.innerText = customerPhone;
+            
+            const printBike = document.getElementById('print-bike');
+            if (printBike) printBike.innerText = bike;
+            
+            const printMethod = document.getElementById('print-method');
+            if (printMethod) printMethod.innerText = method.toUpperCase();
+            
+            const printDown = document.getElementById('print-downpayment');
+            if (printDown) printDown.innerText = downpayment;
+
+            // Optional: Trigger a toast before printing
+            if (typeof apexToast === 'function') {
+                apexToast("Preparing Deal Sheet for Print...", "info");
+            }
+
+            // Small delay to allow DOM updates, then print
+            setTimeout(() => {
+                window.print();
+            }, 300);
+        };
     </script>
 
 </body>

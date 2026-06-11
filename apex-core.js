@@ -89,10 +89,14 @@ function initGlobalTimekeeping() {
 }
 
 /* ==========================================================================
-   4. SMART TEXTAREAS (Context-Aware Logic)
+   4. SMART TEXTAREAS (Context-Aware Logic & Double-Fire Fix)
    ========================================================================== */
 function initSmartTextareas() {
     document.querySelectorAll('textarea').forEach(ta => {
+        // 1. Prevent double event listeners
+        if (ta.getAttribute('data-listener-attached') === 'true') return;
+        ta.setAttribute('data-listener-attached', 'true');
+
         const parent = ta.parentElement;
         if (parent && !parent.querySelector('.shortcut-helper')) {
             const helper = document.createElement('div');
