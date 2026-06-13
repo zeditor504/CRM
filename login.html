@@ -45,62 +45,24 @@
             <p class="text-xs text-zinc-500 font-bold tracking-widest uppercase">Dealership Access Grid</p>
         </div>
 
-        <div class="space-y-8">
+        <form id="login-form" class="max-w-md mx-auto space-y-4">
             <div>
-                <div class="tier-header">
-                    <span class="bg-zinc-800 text-white text-[10px] font-black px-2 py-1 rounded border border-white/10">TIER 1</span>
-                    <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Executive Leadership</h2>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="login('owner.html', 'Executive')" class="p-4 rounded-xl border border-white/5 bg-black/40 hover:bg-white/5 transition text-left flex items-center gap-4 group">
-                        <div class="w-10 h-10 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center group-hover:scale-110 transition shrink-0"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg></div>
-                        <div><h3 class="text-sm font-bold text-white uppercase tracking-widest">Dealer Principal / Owner</h3><p class="text-[10px] text-zinc-500 font-bold mt-0.5">Executive Command Center</p></div>
-                    </button>
-                    <button onclick="login('owner.html', 'Executive')" class="p-4 rounded-xl border border-white/5 bg-black/40 hover:bg-white/5 transition text-left flex items-center gap-4 group">
-                        <div class="w-10 h-10 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center group-hover:scale-110 transition shrink-0"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg></div>
-                        <div><h3 class="text-sm font-bold text-white uppercase tracking-widest">General Manager (GM)</h3><p class="text-[10px] text-zinc-500 font-bold mt-0.5">High-Level Dealership KPIs</p></div>
-                    </button>
-                </div>
+                <label for="username" class="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Username</label>
+                <input type="text" id="username" name="username" required autocomplete="username"
+                    class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00FF9F]/50 transition">
             </div>
-
             <div>
-                <div class="tier-header">
-                    <span class="bg-blue-500/20 text-blue-400 border border-blue-500/30 text-[10px] font-black px-2 py-1 rounded">TIER 2</span>
-                    <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Departmental Managers</h2>
-                </div>
-                <div class="grid grid-cols-3 gap-4">
-                    <button onclick="login('manager.html', 'Manager')" class="p-4 rounded-xl border border-white/5 bg-black/40 hover:bg-blue-500/10 hover:border-blue-500/30 transition text-left group">
-                        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-1">Sales Manager</h3><p class="text-[9px] text-zinc-500 font-bold">Team Performance & Overrides</p>
-                    </button>
-                    <button onclick="login('index.html', 'Manager')" class="p-4 rounded-xl border border-white/5 bg-black/40 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition text-left group">
-                        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-1">Marketing Mgr</h3><p class="text-[9px] text-zinc-500 font-bold">Campaigns & Events</p>
-                    </button>
-                    <button onclick="login('index.html', 'Manager')" class="p-4 rounded-xl border border-white/5 bg-black/40 hover:bg-zinc-500/10 hover:border-zinc-500/30 transition text-left group">
-                        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-1">Office Controller</h3><p class="text-[9px] text-zinc-500 font-bold">Accounting & Payroll</p>
-                    </button>
-                </div>
+                <label for="password" class="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password"
+                    class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00FF9F]/50 transition">
             </div>
-
-            <div>
-                <div class="tier-header">
-                    <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black px-2 py-1 rounded">TIER 3</span>
-                    <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Operational Leads & Staff</h2>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="login('index.html', 'Staff')" class="p-4 rounded-xl border border-white/5 bg-black/40 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition text-left flex items-center gap-4 group">
-                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
-                        <div><h3 class="text-xs font-bold text-white uppercase tracking-widest">Lead Sales / Specialist</h3><p class="text-[9px] text-zinc-500 font-bold mt-0.5">Floor Traffic & Deal Desk</p></div>
-                    </button>
-                </div>
-            </div>
-        </div>
+            <p id="login-error" class="hidden text-xs font-bold text-rose-400 uppercase tracking-widest text-center"></p>
+            <button type="submit"
+                class="w-full bg-[#00FF9F] text-black font-black text-xs uppercase tracking-widest py-4 rounded-xl hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                Sign In
+            </button>
+        </form>
     </div>
-    <script>
-        function login(route, roleLevel) {
-            // Saves specific role to validate exclusively on protected pages
-            sessionStorage.setItem('apex_session', JSON.stringify({ dealer: 'Apex Dealer', color: '#34d399', role: roleLevel }));
-            window.location.href = route;
-        }
-    </script>
+    <script src="apex-core.js"></script>
 </body>
 </html>

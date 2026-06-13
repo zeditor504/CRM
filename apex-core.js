@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initNetworkMonitor();
     
     // Phase 4: Security & Admin
+    initLoginAuth();
     initCommandPalette();
     initKeyboardShortcuts();
     initZeroTrustSecurity();
@@ -269,7 +270,12 @@ function initGlobalButtonRouting() {
         'WEB CHAT': () => { apexToast("Apex Secure Chat initializing...", "info"); },
         'SOCIAL DMS': () => { apexToast("Syncing Meta and X APIs...", "info"); },
         'SEND PORTAL LINK': () => { apexToast("Secure Link Dispatched via SMS.", "success"); setTimeout(() => { window.open('portal.html', '_blank'); }, 1000); },
-        'LOG OUT': () => { sessionStorage.removeItem('apex_session'); window.location.replace('login.html'); },
+        'LOG OUT': () => {
+            sessionStorage.removeItem('apex_session');
+            sessionStorage.removeItem('accessToken');
+            sessionStorage.removeItem('user');
+            window.location.replace('login.html');
+        },
         'USE SUGGESTION': (btn) => {
             const container = btn.parentElement;
             const suggestionNode = container.querySelector('p.italic');
@@ -372,7 +378,83 @@ function initCommandPalette() {
 }
 
 /* ==========================================================================
-   8. ZERO-TRUST IDLE SECURITY
+   8. LOGIN AUTH PIPELINE
+   ========================================================================== */
+function getAuthRedirectPath(role) {
+    if (role === 'Executive/Owner' || role === 'Executive') return 'owner.html';
+    if (role === 'Manager') return 'manager.html';
+    if (role === 'Staff/Sales' || role === 'Staff') return 'index.html';
+    return 'index.html';
+}
+
+function normalizeApexSessionRole(role) {
+    if (role === 'Executive/Owner' || role === 'Executive') return 'Executive';
+    if (role === 'Manager') return 'Manager';
+    return 'Staff';
+}
+
+function initLoginAuth() {
+    if (!window.location.pathname.includes('login.html')) return;
+
+    const form = document.getElementById('login-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = form.username.value.trim();
+        const password = form.password.value;
+        const errorEl = document.getElementById('login-error');
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        if (errorEl) {
+            errorEl.classList.add('hidden');
+            errorEl.textContent = '';
+        }
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'AUTHENTICATING...';
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (!response.ok) {
+                throw new Error('Invalid credentials');
+            }
+
+            const { accessToken, user } = await response.json();
+
+            sessionStorage.setItem('accessToken', accessToken);
+            sessionStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('apex_session', JSON.stringify({
+                dealer: 'Apex Dealer',
+                color: '#34d399',
+                role: normalizeApexSessionRole(user.role)
+            }));
+
+            window.location.href = getAuthRedirectPath(user.role);
+        } catch (err) {
+            if (errorEl) {
+                errorEl.textContent = err.message || 'Authentication failed';
+                errorEl.classList.remove('hidden');
+            }
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign In';
+            }
+        }
+    });
+
+    apexLog("Auth", "Login form wired to backend pipeline");
+}
+
+/* ==========================================================================
+   9. ZERO-TRUST IDLE SECURITY
    ========================================================================== */
 function initZeroTrustSecurity() {
     if(window.location.pathname.includes('login.html')) return;
