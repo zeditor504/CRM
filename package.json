@@ -1,0 +1,18 @@
+{
+  "name": "apex-os",
+  "version": "1.0.0",
+  "description": "Apex OS - Dealership Management System (static frontend + optional Node/Express + PostgreSQL backend API)",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve:frontend": "python3 -m http.server 8080"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1",
+    "socket.io": "^4.8.1"
+  }
+}
