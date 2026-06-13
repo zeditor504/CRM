@@ -4,7 +4,7 @@
     <script src="apex-core.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Dealer Systems | Import Data Forge</title>
+    <title>Apex Dealer Systems | Lead Intake Forge</title>
     <script>
         if (!sessionStorage.getItem('apex_session')) {
             window.location.replace('login.html');
@@ -12,7 +12,7 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -21,9 +21,10 @@
                         apex: {
                             bg: '#0A0A0A',
                             panel: '#1A1A1A',
-                            primary: '#00FF9F',    /* Electric Teal */
-                            secondary: '#FF2E63',  /* Hot Magenta */
-                            premium: '#FFD700',    /* Gold */
+                            primary: '#00FF9F',
+                            cyan: '#00D8FF',
+                            secondary: '#FF2E63',
+                            premium: '#FFD700',
                             text: '#E0E0E0',
                             muted: '#666666'
                         }
@@ -35,65 +36,171 @@
 
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
-        
-        body { 
-            background-color: #0A0A0A !important; /* Slightly darker to let the forge shine */
+
+        body {
+            background-color: #0A0A0A !important;
             color: #f1f5f9 !important;
-            margin: 0; min-height: 100vh; overflow: hidden;
-            display: flex; flex-direction: column; 
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- LIQUID-GLASS APP BAR --- */
-        .glass-nav { 
-            background: linear-gradient(to bottom, rgba(20, 20, 20, 0.6) 0%, rgba(10, 10, 10, 0.7) 100%) !important; 
-            backdrop-filter: blur(40px) saturate(120%); -webkit-backdrop-filter: blur(40px) saturate(120%); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-            box-shadow: inset 0 -1px 10px rgba(255,255,255,0.02), 0 15px 40px rgba(0,0,0,0.6); 
-            transition: border-bottom-color 0.4s ease, box-shadow 0.4s ease; 
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% 40%, rgba(0, 255, 159, 0.04) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 40% at 50% 60%, rgba(0, 216, 255, 0.03) 0%, transparent 70%);
         }
 
-        /* Contains the visual chaos, letting the bright core bleed through heavily */
-        .glass-panel {
-            background-color: rgba(26, 26, 26, 0.85) !important; /* #1A1A1A equivalent */
-            backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
-            border: 1px solid rgba(255, 255, 255, 0.04); border-top: 1px solid rgba(255, 255, 255, 0.08);  
-            z-index: 10; box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 30px 65px rgba(0, 0, 0, 0.95); 
-            border-radius: 24px;
+        .glass-nav {
+            background: linear-gradient(to bottom, rgba(20, 20, 20, 0.6) 0%, rgba(10, 10, 10, 0.7) 100%) !important;
+            backdrop-filter: blur(40px) saturate(120%);
+            -webkit-backdrop-filter: blur(40px) saturate(120%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 -1px 10px rgba(255, 255, 255, 0.02), 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
-        .cinematic-btn {
+        /* Pulsing Core Brand Gradient border shell */
+        .drop-zone-shell {
+            position: relative;
+            border-radius: 28px;
+            padding: 2px;
+            background: linear-gradient(135deg, #00FF9F, #00D8FF);
+            animation: gradientPulse 3s ease-in-out infinite;
+        }
+
+        .drop-zone-shell::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 32px;
+            background: linear-gradient(135deg, #00FF9F, #00D8FF);
+            opacity: 0.25;
+            filter: blur(18px);
+            z-index: -1;
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.005); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.2; transform: scale(0.98); }
+            50% { opacity: 0.45; transform: scale(1.02); }
+        }
+
+        .drop-zone {
+            position: relative;
+            border-radius: 26px;
+            background: rgba(18, 18, 18, 0.72);
+            backdrop-filter: blur(48px) saturate(140%);
+            -webkit-backdrop-filter: blur(48px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 0 40px rgba(0, 255, 159, 0.02),
+                0 30px 80px rgba(0, 0, 0, 0.85);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .drop-zone.is-dragover {
+            background: rgba(0, 255, 159, 0.06);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                inset 0 0 60px rgba(0, 255, 159, 0.08),
+                0 30px 80px rgba(0, 0, 0, 0.85);
+        }
+
+        .drop-zone.has-files {
+            border-color: rgba(0, 255, 159, 0.2);
+        }
+
+        .format-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            flex: 1 1 90px;
+            min-width: 90px;
+            max-width: 120px;
+            padding: 18px 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .format-badge:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 159, 0.2);
+        }
+
+        .format-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0, 255, 159, 0.12), rgba(0, 216, 255, 0.08));
+            border: 1px solid rgba(0, 255, 159, 0.15);
+        }
+
+        .browse-btn {
             background: linear-gradient(135deg, #ffffff 0%, #d4d4d8 100%);
-            color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.2);
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), inset 0 -2px 0 rgba(0, 0, 0, 0.2);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .cinematic-btn:hover {
-            transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.3), inset 0 -2px 0 rgba(0,0,0,0.2);
+
+        .browse-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.25), inset 0 -2px 0 rgba(0, 0, 0, 0.2);
         }
 
-        /* --- CINEMATIC OCEAN REVEAL --- */
-        .ocean-reveal {
-            animation: oceanRise 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .file-queue-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.75rem;
         }
+
+        .file-queue-item .file-category {
+            font-size: 0.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(0, 255, 159, 0.12);
+            color: #00FF9F;
+            border: 1px solid rgba(0, 255, 159, 0.25);
+            flex-shrink: 0;
+        }
+
+        .ocean-reveal {
+            animation: oceanRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
         @keyframes oceanRise {
-            0% { opacity: 0; transform: translateY(120px) scale(0.70); filter: blur(20px); }
+            0% { opacity: 0; transform: translateY(40px) scale(0.96); filter: blur(8px); }
             100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
-
-        /* Overlays for the import progress */
-        .progress-overlay {
-            position: absolute; inset: 0; background: rgba(12,12,12,0.95); border-radius: 24px; z-index: 20;
-            display: flex; align-items: center; justify-content: center; flex-direction: column;
-            opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
-        }
-        .progress-overlay.active { opacity: 1; pointer-events: auto; }
-        
-        .progress-track { width: 80%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 30px; overflow: hidden; position: relative; }
-        .progress-fill { height: 100%; width: 0%; background: #00FF9F; border-radius: 4px; transition: width 0.4s ease; box-shadow: 0 0 15px #00FF9F; }
     </style>
 </head>
-<body class="flex flex-col relative">
-
-    <canvas id="forge-canvas" class="fixed inset-0 z-[-1] pointer-events-none w-full h-full"></canvas>
+<body class="flex flex-col">
 
     <nav class="glass-nav h-20 flex items-center justify-between px-8 w-full z-50 sticky top-0 shrink-0">
         <div class="flex items-center space-x-4">
@@ -102,7 +209,7 @@
                 Sales Dash
             </a>
             <h1 class="text-lg font-black tracking-widest text-white uppercase">Apex OS</h1>
-            <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5 ml-3 pl-3 border-l border-white/10">Data Import Engine</p>
+            <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5 ml-3 pl-3 border-l border-white/10">Lead Intake Forge</p>
         </div>
         <div class="flex items-center space-x-6">
             <div class="h-6 w-px bg-white/10 mx-3 hidden sm:block"></div>
@@ -112,507 +219,239 @@
         </div>
     </nav>
 
-    <main class="flex-1 flex items-center justify-center relative p-8">
-        <div class="glow-wrapper w-full max-w-2xl relative">
-            <div class="glass-panel p-12 text-center relative overflow-hidden">
-                
-                <div id="initial-state">
-                    <div class="w-20 h-20 mx-auto bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 shadow-2xl relative">
-                        <div class="absolute inset-0 rounded-full border border-white/20 animate-ping opacity-20"></div>
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                    </div>
-                    
-                    <h2 class="text-3xl font-black text-white uppercase tracking-tight mb-3">Sync Past CRM Data</h2>
-                    <p class="text-sm text-zinc-400 font-medium mb-10 max-w-md mx-auto leading-relaxed">
-                        Select your previous CRM database. Apex AI will extract raw, unstructured leads and forge them into perfectly structured deal desks in real-time.
-                    </p>
-                    
-                    <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-6" id="crm-grid">
-                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="VinSolutions" data-color="blue">
-                            <img src="assets/vinsolutions.png" onerror="this.style.display='none'" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
-                            <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">VinSolutions</span>
-                        </button>
-                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="CDK" data-color="yellow">
-                            <img src="assets/cdk.png" onerror="this.style.display='none'" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
-                            <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">CDK Global</span>
-                        </button>
-                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group" data-crm="DX1" data-color="rose">
-                            <img src="assets/dx1.png" onerror="this.style.display='none'" alt="" class="absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none">
-                            <span class="font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text">DX1</span>
-                        </button>
-                        <button type="button" class="crm-btn flex items-center justify-center p-4 rounded-xl border border-apex-primary/50 bg-apex-primary/10 shadow-[0_0_15px_rgba(0,255,159,0.15)] transition relative overflow-hidden h-16 group active-crm" data-crm="DP360" data-color="emerald">
-                            <img src="assets/dp360.png" onerror="this.style.display='none'" alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none">
-                            <span class="font-black text-apex-primary tracking-widest uppercase text-xs relative z-10 label-text">DP360</span>
-                        </button>
-                    </div>
+    <main class="flex-1 flex items-center justify-center p-6 sm:p-10">
+        <div id="forge-container" class="w-full max-w-xl ocean-reveal">
 
-                    <input type="hidden" id="selected-crm" value="DP360">
+            <div class="drop-zone-shell">
+                <div
+                    id="drop-zone"
+                    class="drop-zone p-10 sm:p-12 text-center"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Drag and drop lead files or click to browse"
+                >
+                    <input
+                        type="file"
+                        id="file-input"
+                        class="sr-only"
+                        multiple
+                        accept=".csv,.pdf,.json,.xml,.txt,text/csv,application/pdf,application/json,text/xml"
+                    >
 
-                    <div class="flex flex-col gap-4 max-w-sm mx-auto">
-                        <button onclick="triggerForgeImport()" class="cinematic-btn px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest w-full">
-                            Begin Synchronization
-                        </button>
-                    </div>
-                </div>
-
-                <div class="progress-overlay" id="progress-overlay">
-                    <div class="w-16 h-16 mb-6 relative">
-                        <svg class="w-full h-full text-apex-primary animate-spin" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center bg-white/5 border border-white/10 relative">
+                        <svg class="w-7 h-7 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                         </svg>
-                        <div class="absolute inset-0 flex items-center justify-center font-bold text-xs text-white" id="perc-text">0%</div>
-                    </div>
-                    <h2 id="progress-title" class="text-2xl font-black text-white uppercase tracking-tight mb-2">Forging Data...</h2>
-                    <p id="progress-subtitle" class="text-xs text-zinc-400 font-medium uppercase tracking-widest">Restructuring raw variables</p>
-                    
-                    <div class="progress-track">
-                        <div class="progress-fill" id="progress-fill"></div>
                     </div>
 
-                    <button id="finish-btn" onclick="window.location.href='index.html'" class="hidden cinematic-btn px-10 py-3 mt-10 rounded-xl text-xs font-black uppercase tracking-widest">
-                        Enter Sales Dashboard
+                    <h2 class="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight mb-2">Drop Lead Files Here</h2>
+                    <p class="text-sm text-zinc-400 font-medium mb-8 max-w-sm mx-auto leading-relaxed">
+                        Drag datasets into the forge or browse your drive. Files are staged for the Node parser pipeline.
+                    </p>
+
+                    <div class="flex flex-wrap justify-center gap-3 mb-8" aria-label="Supported file formats">
+                        <div class="format-badge">
+                            <div class="format-icon">
+                                <svg class="w-5 h-5 text-apex-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18M10 3v18M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6z"/>
+                                </svg>
+                            </div>
+                            <span class="text-[10px] font-black text-white uppercase tracking-widest leading-tight">CSV<br>Datasets</span>
+                        </div>
+                        <div class="format-badge">
+                            <div class="format-icon">
+                                <svg class="w-5 h-5 text-apex-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 3v6h6"/>
+                                </svg>
+                            </div>
+                            <span class="text-[10px] font-black text-white uppercase tracking-widest leading-tight">PDF<br>Deal Sheets</span>
+                        </div>
+                        <div class="format-badge">
+                            <div class="format-icon">
+                                <svg class="w-5 h-5 text-apex-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                                    <rect x="9" y="3" width="6" height="4" rx="1"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6M9 16h4"/>
+                                </svg>
+                            </div>
+                            <span class="text-[10px] font-black text-white uppercase tracking-widest leading-tight">Auction<br>Manifests</span>
+                        </div>
+                    </div>
+
+                    <button type="button" id="browse-btn" class="browse-btn px-8 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest">
+                        Browse Files
                     </button>
+
+                    <p id="drop-hint" class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-6">
+                        .csv &middot; .pdf &middot; .json &middot; .xml &middot; .txt
+                    </p>
+
+                    <div id="file-queue" class="hidden mt-8 text-left space-y-2" aria-live="polite"></div>
                 </div>
             </div>
+
         </div>
     </main>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const hasSeenReveal = sessionStorage.getItem('apex_ocean_reveal');
-            const glowWrapper = document.querySelector('.glow-wrapper');
-            
-            if (!hasSeenReveal && glowWrapper) {
-                glowWrapper.classList.add('ocean-reveal');
-                sessionStorage.setItem('apex_ocean_reveal', 'true');
-            } else if (glowWrapper) {
-                glowWrapper.style.opacity = '1';
+        /**
+         * LeadIntakeForge — frontend intake layer.
+         * Normalizes file payloads for future streaming to the Node backend parser.
+         */
+        const LeadIntakeForge = (() => {
+            const CATEGORY_RULES = [
+                { category: 'csv-dataset', extensions: ['.csv'], mimeTypes: ['text/csv', 'application/vnd.ms-excel'] },
+                { category: 'pdf-deal-sheet', extensions: ['.pdf'], mimeTypes: ['application/pdf'] },
+                { category: 'auction-manifest', extensions: ['.json', '.xml', '.txt'], mimeTypes: ['application/json', 'text/xml', 'text/plain'] }
+            ];
+
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const browseBtn = document.getElementById('browse-btn');
+            const fileQueue = document.getElementById('file-queue');
+            const dropHint = document.getElementById('drop-hint');
+
+            let dragDepth = 0;
+
+            function getExtension(filename) {
+                const dot = filename.lastIndexOf('.');
+                return dot >= 0 ? filename.slice(dot).toLowerCase() : '';
             }
-        });
 
-        // Bulletproof CRM Selection Logic
-        document.addEventListener("DOMContentLoaded", () => {
-            const crmBtns = document.querySelectorAll('.crm-btn');
-            const hiddenInput = document.getElementById('selected-crm');
+            function categorizeFile(file) {
+                const ext = getExtension(file.name);
+                const mime = (file.type || '').toLowerCase();
 
-            crmBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    // 1. Reset all buttons to default INACTIVE state (Grayscale)
-                    crmBtns.forEach(b => {
-                        b.className = "crm-btn flex items-center justify-center p-4 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition relative overflow-hidden h-16 group";
-                        b.style.boxShadow = 'none'; // Clear inline shadows
-                        
-                        const img = b.querySelector('img');
-                        if (img) img.className = "absolute inset-0 w-full h-full object-cover opacity-10 filter grayscale pointer-events-none transition-all duration-300";
-                        
-                        const span = b.querySelector('.label-text');
-                        // Ensure font-black stays locked
-                        if (span) span.className = "font-black text-white tracking-widest uppercase text-xs relative z-10 opacity-50 group-hover:opacity-100 transition label-text";
+                for (const rule of CATEGORY_RULES) {
+                    if (rule.extensions.includes(ext) || rule.mimeTypes.includes(mime)) {
+                        return rule.category;
+                    }
+                }
+                return 'unknown';
+            }
+
+            function formatBytes(bytes) {
+                if (bytes < 1024) return bytes + ' B';
+                if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+
+            function buildPayload(fileList) {
+                return Array.from(fileList).map((file) => ({
+                    name: file.name,
+                    size: file.size,
+                    type: file.type || 'application/octet-stream',
+                    lastModified: file.lastModified,
+                    category: categorizeFile(file),
+                    file
+                }));
+            }
+
+            function renderQueue(payload) {
+                if (!payload.length) {
+                    fileQueue.classList.add('hidden');
+                    fileQueue.innerHTML = '';
+                    dropZone.classList.remove('has-files');
+                    dropHint.classList.remove('hidden');
+                    return;
+                }
+
+                dropZone.classList.add('has-files');
+                dropHint.classList.add('hidden');
+                fileQueue.classList.remove('hidden');
+                fileQueue.innerHTML = payload.map((item) => `
+                    <div class="file-queue-item">
+                        <span class="file-category">${item.category.replace(/-/g, ' ')}</span>
+                        <span class="text-white font-semibold truncate flex-1">${item.name}</span>
+                        <span class="text-zinc-500 font-medium flex-shrink-0">${formatBytes(item.size)}</span>
+                    </div>
+                `).join('');
+            }
+
+            function dispatchPayload(payload) {
+                console.group('[LeadIntakeForge] Intake payload ready for Node parser stream');
+                console.log('fileCount:', payload.length);
+                console.log('files:', payload.map(({ name, size, type, category, lastModified }) => ({
+                    name, size, type, category, lastModified
+                })));
+                console.log('rawFileRefs:', payload.map((p) => p.file));
+                console.groupEnd();
+
+                // Future backend hook:
+                // const formData = new FormData();
+                // payload.forEach((item, i) => formData.append('files', item.file, item.name));
+                // fetch('/api/import-leads', { method: 'POST', body: formData });
+
+                window.dispatchEvent(new CustomEvent('lead-intake:files', { detail: { payload } }));
+                return payload;
+            }
+
+            function handleFiles(fileList) {
+                if (!fileList || !fileList.length) return [];
+                const payload = buildPayload(fileList);
+                renderQueue(payload);
+                return dispatchPayload(payload);
+            }
+
+            function setDragOver(active) {
+                dropZone.classList.toggle('is-dragover', active);
+            }
+
+            function bindEvents() {
+                browseBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fileInput.click();
+                });
+
+                dropZone.addEventListener('click', () => fileInput.click());
+
+                dropZone.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        fileInput.click();
+                    }
+                });
+
+                fileInput.addEventListener('change', (e) => {
+                    handleFiles(e.target.files);
+                    e.target.value = '';
+                });
+
+                ['dragenter', 'dragover'].forEach((evt) => {
+                    dropZone.addEventListener(evt, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dragDepth++;
+                        setDragOver(true);
                     });
-                    
-                    // 2. Get specific color theme
-                    const color = btn.getAttribute('data-color');
-                    
-                    // 3. Set ACTIVE state (Full Color)
-                    btn.className = `crm-btn flex items-center justify-center p-4 rounded-xl border border-${color}-500/50 bg-${color}-500/10 transition relative overflow-hidden h-16 group active-crm`;
-                    
-                    if(color === 'blue') btn.style.boxShadow = '0 0 15px rgba(59,130,246,0.15)';
-                    if(color === 'yellow') btn.style.boxShadow = '0 0 15px rgba(234,179,8,0.15)';
-                    if(color === 'rose') btn.style.boxShadow = '0 0 15px rgba(244,63,94,0.15)';
-                    if(color === 'emerald') btn.style.boxShadow = '0 0 15px rgba(0,255,159,0.15)';
-
-                    const activeImg = btn.querySelector('img');
-                    // Remove grayscale (filter-none) and boost opacity slightly for the active state
-                    if (activeImg) activeImg.className = "absolute inset-0 w-full h-full object-cover opacity-30 filter-none pointer-events-none transition-all duration-300";
-                    
-                    const activeSpan = btn.querySelector('.label-text');
-                    // Lock font-black and apply active color
-                    if (activeSpan) activeSpan.className = `font-black text-${color}-400 tracking-widest uppercase text-xs relative z-10 label-text transition-colors`;
-                    
-                    // 4. Update hidden input
-                    if (hiddenInput) hiddenInput.value = btn.getAttribute('data-crm');
                 });
-            });
-        });
 
-        // UI Transition Logic
-        function triggerForgeImport() {
-            const crmName = document.getElementById('selected-crm').value;
-            document.getElementById('progress-overlay').classList.add('active');
-            
-            if(window.apexForge) window.apexForge.startImport();
-
-            const title = document.getElementById('progress-title');
-            const sub = document.getElementById('progress-subtitle');
-            const fill = document.getElementById('progress-fill');
-            const perc = document.getElementById('perc-text');
-            const btn = document.getElementById('finish-btn');
-            
-            setTimeout(() => { fill.style.width = '25%'; perc.innerText = '25%'; title.innerText = `Ingesting ${crmName}`; sub.innerText = "Extracting unstructured arrays..."; }, 800);
-            setTimeout(() => { fill.style.width = '65%'; perc.innerText = '65%'; title.innerText = "AI Restructuring"; sub.innerText = "Mapping custom fields to Apex DB..."; }, 2800);
-            setTimeout(() => { fill.style.width = '85%'; perc.innerText = '85%'; title.innerText = "Purifying Leads"; sub.innerText = "Removing duplicates and dead data..."; }, 5000);
-            setTimeout(() => { 
-                fill.style.width = '100%'; 
-                perc.innerText = '100%'; 
-                title.innerText = "Forge Complete"; 
-                        title.classList.add('text-[#00FF9F]');
-                sub.innerText = "All records structured and secured."; 
-                btn.classList.remove('hidden');
-                
-                if(window.apexForge) window.apexForge.completeImport();
-            }, 7500);
-        }
-    </script>
-
-    <script>
-        class ApexDataForge {
-            constructor(canvasId) {
-                this.canvas = document.getElementById(canvasId);
-                this.ctx = this.canvas.getContext('2d', { alpha: false }); // Optimize performance
-                this.width = window.innerWidth;
-                this.height = window.innerHeight;
-                
-                // State Management
-                this.state = 'IDLE'; // IDLE, IMPORTING, COMPLETE
-                this.particles = {
-                    raw: [],       // Red embers entering
-                    processed: [], // Green streams exiting
-                    shockwaves: [] // Final burst
-                };
-                
-                // Engine Configuration
-                this.config = {
-                    coreX: this.width / 2,
-                    coreY: this.height / 2,
-                    rawSpawnRateIdle: 0.05,
-                    rawSpawnRateActive: 0.8, // Heavy influx
-                    coreRotation: 0,
-                    corePulse: 0
-                };
-
-                this.resize();
-                window.addEventListener('resize', () => this.resize());
-                
-                // Start Loop
-                this.lastTime = performance.now();
-                requestAnimationFrame((t) => this.render(t));
-                
-                // Expose globally for UI triggers
-                window.apexForge = this;
-            }
-
-            resize() {
-                this.width = window.innerWidth;
-                this.height = window.innerHeight;
-                // High DPI support for sharp rendering
-                const dpr = window.devicePixelRatio || 1;
-                this.canvas.width = this.width * dpr;
-                this.canvas.height = this.height * dpr;
-                this.ctx.scale(dpr, dpr);
-                this.config.coreX = this.width / 2;
-                this.config.coreY = this.height / 2;
-            }
-
-            startImport() {
-                this.state = 'IMPORTING';
-                // Burst spawn raw data
-                for(let i=0; i<50; i++) this.spawnRawData(true);
-            }
-
-            completeImport() {
-                this.state = 'COMPLETE';
-                this.particles.raw = []; // Vaporize remaining raw
-                // Create massive shockwave
-                this.particles.shockwaves.push({ radius: 10, alpha: 1, speed: 15 });
-                setTimeout(() => { this.state = 'IDLE'; }, 2000);
-            }
-
-            spawnRawData(isBurst = false) {
-                const startY = (Math.random() * this.height * 1.5) - (this.height * 0.25);
-                const startX = -50 - (Math.random() * 200);
-                
-                this.particles.raw.push({
-                    x: startX,
-                    y: startY,
-                    vx: 1 + Math.random() * 2,
-                    vy: (Math.random() - 0.5) * 2,
-                    radius: 1.5 + Math.random() * 2,
-                    life: 0,
-                    wobbleSpeed: 0.02 + Math.random() * 0.05,
-                    wobbleAmp: 1 + Math.random() * 3,
-                    baseY: startY,
-                    caught: false // True when it enters the gravity well
+                ['dragleave', 'drop'].forEach((evt) => {
+                    dropZone.addEventListener(evt, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (evt === 'dragleave') {
+                            dragDepth = Math.max(0, dragDepth - 1);
+                            if (dragDepth === 0) setDragOver(false);
+                        }
+                        if (evt === 'drop') {
+                            dragDepth = 0;
+                            setDragOver(false);
+                            handleFiles(e.dataTransfer.files);
+                        }
+                    });
                 });
+
+                document.addEventListener('dragover', (e) => e.preventDefault());
+                document.addEventListener('drop', (e) => e.preventDefault());
             }
 
-            spawnProcessedData() {
-                // Eject from the core to the right
-                const angle = (Math.random() * Math.PI/2) - (Math.PI/4); // Fan out to the right
-                const speed = 15 + Math.random() * 15;
-                
-                this.particles.processed.push({
-                    x: this.config.coreX,
-                    y: this.config.coreY,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    history: [], // For trailing light effect
-                    life: 1.0,
-                    size: 2 + Math.random() * 2
-                });
-            }
+            return { init: bindEvents, handleFiles, buildPayload, categorizeFile };
+        })();
 
-            drawBackground(dt) {
-                // Deep dark space background
-                this.ctx.fillStyle = '#050505';
-                this.ctx.fillRect(0, 0, this.width, this.height);
-
-                // Ambient colored orbs (simulates the session color glow)
-                const driftX = this.config.coreX + Math.sin(Date.now() * 0.0005) * 100;
-                const driftY = this.config.coreY + Math.cos(Date.now() * 0.0004) * 100;
-
-                const bgGlow = this.ctx.createRadialGradient(driftX, driftY, 0, driftX, driftY, this.width * 0.6);
-                bgGlow.addColorStop(0, this.state === 'IMPORTING' ? 'rgba(0, 255, 159, 0.08)' : 'rgba(255, 255, 255, 0.03)');
-                bgGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                
-                this.ctx.fillStyle = bgGlow;
-                this.ctx.fillRect(0, 0, this.width, this.height);
-            }
-
-            drawCore(dt) {
-                const cx = this.config.coreX;
-                const cy = this.config.coreY;
-                
-                // Spin calculations
-                const spinSpeed = this.state === 'IMPORTING' ? 0.05 : 0.005;
-                this.config.coreRotation += spinSpeed;
-                
-                // Pulse calculations
-                const targetPulse = this.state === 'IMPORTING' ? 1.5 : 1.0;
-                this.config.corePulse += (targetPulse - this.config.corePulse) * 0.05;
-                const pulse = this.config.corePulse + Math.sin(Date.now() * 0.01) * 0.05;
-
-                this.ctx.save();
-                this.ctx.translate(cx, cy);
-                this.ctx.rotate(this.config.coreRotation);
-                this.ctx.scale(pulse, pulse);
-
-                // Draw Outer Containment Ring
-                this.ctx.beginPath();
-                this.ctx.arc(0, 0, 180, 0, Math.PI * 2);
-                this.ctx.strokeStyle = this.state === 'IMPORTING' ? 'rgba(0, 255, 159, 0.1)' : 'rgba(255, 255, 255, 0.05)';
-                this.ctx.lineWidth = 1;
-                this.ctx.stroke();
-
-                // Draw Dashed Processing Ring
-                this.ctx.beginPath();
-                this.ctx.arc(0, 0, 140, 0, Math.PI * 2);
-                this.ctx.setLineDash([15, 20]);
-                this.ctx.strokeStyle = this.state === 'IMPORTING' ? 'rgba(0, 255, 159, 0.3)' : 'rgba(255, 255, 255, 0.1)';
-                this.ctx.lineWidth = 2;
-                this.ctx.stroke();
-                this.ctx.setLineDash([]); // Reset
-
-                // Draw Inner Core Glow
-                const coreGlow = this.ctx.createRadialGradient(0, 0, 0, 0, 0, 80);
-                if (this.state === 'IMPORTING') {
-                    coreGlow.addColorStop(0, 'rgba(0, 255, 159, 0.8)');
-                    coreGlow.addColorStop(0.5, 'rgba(0, 255, 159, 0.2)');
-                    coreGlow.addColorStop(1, 'rgba(0,0,0,0)');
-                } else {
-                    coreGlow.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
-                    coreGlow.addColorStop(1, 'rgba(0,0,0,0)');
-                }
-                this.ctx.fillStyle = coreGlow;
-                this.ctx.fill();
-
-                // Constellation Math inside the core (Draws geometric lines to look like AI processing)
-                if (this.state === 'IMPORTING') {
-                    this.ctx.beginPath();
-                    for(let i=0; i<8; i++) {
-                        const a1 = (Math.PI*2/8) * i + this.config.coreRotation * 2;
-                        const a2 = (Math.PI*2/8) * ((i+3)%8) + this.config.coreRotation * 2;
-                        const r1 = 20 + Math.random() * 60;
-                        const r2 = 20 + Math.random() * 60;
-                        this.ctx.moveTo(Math.cos(a1)*r1, Math.sin(a1)*r1);
-                        this.ctx.lineTo(Math.cos(a2)*r2, Math.sin(a2)*r2);
-                    }
-                    this.ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-                    this.ctx.lineWidth = 0.5;
-                    this.ctx.stroke();
-                }
-
-                this.ctx.restore();
-            }
-
-            updateAndDrawRaw(dt) {
-                const cx = this.config.coreX;
-                const cy = this.config.coreY;
-                const gravityZone = 400; // Distance at which embers get sucked in
-
-                for (let i = this.particles.raw.length - 1; i >= 0; i--) {
-                    let p = this.particles.raw[i];
-                    p.life += dt;
-                    
-                    // Distance to core
-                    const dx = cx - p.x;
-                    const dy = cy - p.y;
-                    const dist = Math.sqrt(dx*dx + dy*dy);
-
-                    if (this.state === 'IMPORTING' && dist < gravityZone) {
-                        p.caught = true;
-                    }
-
-                    if (p.caught) {
-                        // Extreme gravity pull
-                        const force = (gravityZone - dist) / gravityZone; // 0 to 1
-                        p.vx += (dx / dist) * force * 1.5;
-                        p.vy += (dy / dist) * force * 1.5;
-                        // Add orbital swirl
-                        p.vx += (dy / dist) * 0.5;
-                        p.vy -= (dx / dist) * 0.5;
-                    } else {
-                        // Wandering logic
-                        p.y = p.baseY + Math.sin(p.life * p.wobbleSpeed) * p.wobbleAmp;
-                        if (this.state === 'IMPORTING') {
-                            p.vx += 0.05; // Accelerate towards center
-                        }
-                    }
-
-                    p.x += p.vx;
-                    p.y += p.vy;
-
-                    // Rendering the red ember
-                    this.ctx.beginPath();
-                    this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    this.ctx.fillStyle = `rgba(255, 46, 99, ${p.caught ? 0.8 : 0.4})`; // Hot Magenta raw data
-                    this.ctx.shadowBlur = 15;
-                    this.ctx.shadowColor = '#FF2E63';
-                    this.ctx.fill();
-                    this.ctx.shadowBlur = 0; // Reset
-
-                    // If it hits the absolute core, forge it into green data
-                    if (dist < 40) {
-                        this.particles.raw.splice(i, 1);
-                        if (this.state === 'IMPORTING') {
-                            // 30% chance to immediately spawn a green outgoing stream
-                            if (Math.random() > 0.7) this.spawnProcessedData();
-                        }
-                    } else if (p.x > this.width + 100) {
-                        // Flew off screen (if not caught)
-                        this.particles.raw.splice(i, 1);
-                    }
-                }
-            }
-
-            updateAndDrawProcessed(dt) {
-                for (let i = this.particles.processed.length - 1; i >= 0; i--) {
-                    let p = this.particles.processed[i];
-                    
-                    // Record history for the crystalline light trail
-                    p.history.push({x: p.x, y: p.y});
-                    if (p.history.length > 20) p.history.shift(); // Keep trail length limited
-
-                    // Accelerate outwards
-                    p.vx *= 1.02;
-                    p.vy *= 1.02;
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.life -= 0.01;
-
-                    // Draw the crystalline trail
-                    if (p.history.length > 1) {
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(p.history[0].x, p.history[0].y);
-                        for (let j = 1; j < p.history.length; j++) {
-                            // Quadratic bezier for smooth curves
-                            const curr = p.history[j];
-                            const prev = p.history[j-1];
-                            const xc = (prev.x + curr.x) / 2;
-                            const yc = (prev.y + curr.y) / 2;
-                            this.ctx.quadraticCurveTo(prev.x, prev.y, xc, yc);
-                        }
-                        this.ctx.lineTo(p.x, p.y);
-                        
-                        // Electric Teal Trail
-                        this.ctx.strokeStyle = `rgba(0, 255, 159, ${p.life})`;
-                        this.ctx.lineWidth = p.size;
-                        this.ctx.lineCap = 'round';
-                        this.ctx.shadowBlur = 20;
-                        this.ctx.shadowColor = '#00FF9F';
-                        this.ctx.stroke();
-                        this.ctx.shadowBlur = 0; // Reset
-                    }
-
-                    // Draw leading bright node
-                    this.ctx.beginPath();
-                    this.ctx.arc(p.x, p.y, p.size * 1.5, 0, Math.PI * 2);
-                    this.ctx.fillStyle = '#ffffff';
-                    this.ctx.fill();
-
-                    // Cleanup
-                    if (p.x > this.width + 200 || p.life <= 0) {
-                        this.particles.processed.splice(i, 1);
-                    }
-                }
-            }
-
-            updateAndDrawShockwaves() {
-                const cx = this.config.coreX;
-                const cy = this.config.coreY;
-
-                for (let i = this.particles.shockwaves.length - 1; i >= 0; i--) {
-                    let s = this.particles.shockwaves[i];
-                    s.radius += s.speed;
-                    s.alpha -= 0.02;
-
-                    if (s.alpha <= 0) {
-                        this.particles.shockwaves.splice(i, 1);
-                        continue;
-                    }
-
-                    this.ctx.beginPath();
-                    this.ctx.arc(cx, cy, s.radius, 0, Math.PI * 2);
-                    this.ctx.strokeStyle = `rgba(0, 255, 159, ${s.alpha})`;
-                    this.ctx.lineWidth = 10 * s.alpha;
-                    this.ctx.stroke();
-                }
-            }
-
-            render(timestamp) {
-                // Delta time calculations
-                let dt = timestamp - this.lastTime;
-                this.lastTime = timestamp;
-
-                // Spawn Logic based on state
-                const spawnChance = this.state === 'IMPORTING' ? this.config.rawSpawnRateActive : this.config.rawSpawnRateIdle;
-                if (Math.random() < spawnChance) this.spawnRawData();
-
-                // 1. Draw Background
-                this.drawBackground(dt);
-                
-                // 2. Draw Raw Incoming Embers
-                this.updateAndDrawRaw(dt);
-                
-                // 3. Draw The Core Forge
-                this.drawCore(dt);
-                
-                // 4. Draw Processed Outgoing Streams
-                this.updateAndDrawProcessed(dt);
-
-                // 5. Draw Final Shockwaves
-                this.updateAndDrawShockwaves();
-
-                // Loop
-                requestAnimationFrame((t) => this.render(t));
-            }
-        }
-
-        // Initialize the Forge on Load
         document.addEventListener('DOMContentLoaded', () => {
-            new ApexDataForge('forge-canvas');
+            LeadIntakeForge.init();
         });
     </script>
 </body>

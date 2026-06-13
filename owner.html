@@ -25,8 +25,9 @@
                             primary: '#00FF9F',    /* Electric Teal */
                             secondary: '#FF2E63',  /* Hot Magenta */
                             premium: '#FFD700',    /* Gold */
-                            text: '#E0E0E0',
-                            muted: '#666666'
+                            text: '#E0E0E0',       /* Typography Primary */
+                            subtext: '#AAAAAA',    /* Typography Secondary */
+                            muted: '#666666'       /* Typography Muted */
                         }
                     }
                 }
@@ -35,7 +36,7 @@
     </script>
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
-        body { background-color: #0A0A0A !important; color: #f1f5f9 !important; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body { background-color: #0A0A0A !important; color: #E0E0E0 !important; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         .glass-nav { background: linear-gradient(to bottom, rgba(20,20,20,0.6) 0%, rgba(10,10,10,0.7) 100%) !important; backdrop-filter: blur(40px) saturate(120%); border-bottom: 1px solid rgba(255,255,255,0.08); }
         .glass-panel { background-color: rgba(26, 26, 26, 0.85) !important; /* #1A1A1A equivalent */ backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(255,255,255,0.02), 0 30px 65px rgba(0,0,0,0.95); border-radius: 24px; }
         .health-ring { stroke-dasharray: 100; stroke-dashoffset: 12; transition: stroke-dashoffset 1s ease-out; }
@@ -49,7 +50,7 @@
                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             </div>
             <div>
-                <h1 class="text-lg font-black tracking-widest text-white uppercase">Apex OS</h1>
+                <h1 class="text-lg font-black tracking-widest uppercase bg-gradient-to-r from-[#FFD700] to-[#C5A059] bg-clip-text text-transparent">Apex OS</h1>
                 <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5">Executive Command</p>
             </div>
         </div>
@@ -115,7 +116,7 @@
             </div>
             <div class="glass-panel p-6 border border-apex-primary/20 bg-apex-primary/5">
                 <div class="text-[10px] font-bold text-apex-primary uppercase tracking-widest mb-1">Store RRS Compliance</div>
-                <div class="text-2xl font-black text-apex-primary">94%</div>
+                <div class="text-2xl font-black bg-gradient-to-r from-[#00FF9F] to-[#00D8FF] bg-clip-text text-transparent">94%</div>
             </div>
         </div>
 
@@ -136,7 +137,7 @@
                 <h3 class="text-sm font-bold text-white uppercase tracking-widest mb-6 border-b border-white/10 pb-4">Attention Required</h3>
                 <div class="flex justify-between items-center mb-4">
                     <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-apex-secondary/20 text-apex-secondary flex items-center justify-center font-bold text-xs">MJ</div><span class="font-bold text-white text-sm uppercase">Mike J.</span></div>
-                    <div class="text-apex-secondary font-bold text-xs uppercase tracking-widest bg-apex-secondary/10 px-3 py-1 rounded-full border border-apex-secondary/20">Low RRS Compliance (62%)</div>
+                    <div class="!text-white font-bold text-xs uppercase tracking-widest bg-gradient-to-r from-[#FF2E63] to-[#FF6B6B] px-3 py-1 rounded-full shadow-[0_0_10px_rgba(255,46,99,0.3)]">Low RRS Compliance (62%)</div>
                 </div>
             </div>
         </div>

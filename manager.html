@@ -26,8 +26,9 @@
                             primary: '#00FF9F',    /* Electric Teal */
                             secondary: '#FF2E63',  /* Hot Magenta */
                             premium: '#FFD700',    /* Gold */
-                            text: '#E0E0E0',
-                            muted: '#666666'
+                            text: '#E0E0E0',       /* Typography Primary */
+                            subtext: '#AAAAAA',    /* Typography Secondary */
+                            muted: '#666666'       /* Typography Muted */
                         }
                     }
                 }
@@ -39,7 +40,7 @@
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
         
         body { 
-            background-color: #0A0A0A !important; color: #f1f5f9 !important; 
+            background-color: #0A0A0A !important; color: #E0E0E0 !important; 
             margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; overflow-y: auto;
         }
 
@@ -164,7 +165,7 @@
                                     </div>
                                 </td>
                                 <td class="p-4">
-                                    <span class="bg-apex-secondary/10 text-apex-secondary border border-apex-secondary/20 px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest animate-pulse">Missed Deadline</span>
+                                    <span class="bg-gradient-to-r from-[#FF2E63] to-[#FF6B6B] !text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest animate-pulse shadow-[0_0_10px_rgba(255,46,99,0.3)]">Missed Deadline</span>
                                 </td>
                                 <td class="p-4 font-mono text-apex-secondary font-bold text-xs">- 12m 45s</td>
                             </tr>
@@ -181,7 +182,7 @@
                                     </div>
                                 </td>
                                 <td class="p-4">
-                                    <span class="bg-apex-premium/10 text-apex-premium border border-apex-premium/20 px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">Approaching</span>
+                                    <span class="bg-gradient-to-r from-[#FFD700] to-[#C5A059] !text-black px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">Approaching</span>
                                 </td>
                                 <td class="p-4 font-mono text-apex-premium font-bold text-xs">04m 12s</td>
                             </tr>
@@ -193,7 +194,7 @@
 
         <div class="col-span-4 flex flex-col gap-8">
             <div class="glass-panel p-6 border-t border-blue-500/30 relative overflow-hidden group">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#00FF9F] to-[#00D8FF]"></div>
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-sm font-black text-white uppercase tracking-widest flex items-center">
                         <svg class="w-4 h-4 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -245,7 +246,7 @@
                 </div>
 
                 <div class="bg-blue-500/5 border border-blue-500/20 rounded-xl p-6 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/10 to-transparent pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-tr from-[#00FF9F]/10 to-transparent pointer-events-none"></div>
                     <div class="flex justify-between items-center mb-4 relative z-10">
                         <h4 class="font-bold text-blue-400 uppercase tracking-widest text-sm flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> AI Auto-Coverage</h4>
                         <div class="w-10 h-5 bg-blue-500 rounded-full relative cursor-pointer"><div class="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5"></div></div>
