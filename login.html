@@ -47,8 +47,8 @@
 
         <form id="login-form" class="max-w-md mx-auto space-y-4">
             <div>
-                <label for="username" class="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Username</label>
-                <input type="text" id="username" name="username" required autocomplete="username"
+                <label for="email" class="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email"
                     class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00FF9F]/50 transition">
             </div>
             <div>
@@ -64,5 +64,65 @@
         </form>
     </div>
     <script src="apex-core.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const emailInput = document.getElementById('email');
+            const errorEl = document.getElementById('login-error');
+            const submitBtn = document.querySelector('#login-form button[type="submit"]');
+            const email = emailInput.value.trim();
+            const payload = { email };
+
+            console.log('[LOGIN] Submit intercepted — sending payload:', payload);
+
+            if (errorEl) {
+                errorEl.classList.add('hidden');
+                errorEl.textContent = '';
+            }
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'AUTHENTICATING...';
+            }
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                console.log('[LOGIN] Server response:', { status: response.status, data });
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Authentication failed');
+                }
+
+                const role = data.role;
+                console.log('[LOGIN] Routing user with role:', role);
+
+                if (role === 'EXECUTIVE' || role === 'ADMINISTRATOR') {
+                    window.location.href = 'owner.html';
+                } else if (role === 'MANAGER') {
+                    window.location.href = 'manager.html';
+                } else if (role === 'STAFF' || role === 'SALESPERSON') {
+                    window.location.href = 'index.html';
+                } else {
+                    throw new Error('Unknown role: ' + role);
+                }
+            } catch (err) {
+                console.error('[LOGIN] Authentication error:', err);
+                if (errorEl) {
+                    errorEl.textContent = err.message || 'Authentication failed';
+                    errorEl.classList.remove('hidden');
+                }
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Sign In';
+                }
+            }
+        });
+    </script>
 </body>
 </html>

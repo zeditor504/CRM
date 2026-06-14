@@ -394,63 +394,7 @@ function normalizeApexSessionRole(role) {
 }
 
 function initLoginAuth() {
-    if (!window.location.pathname.includes('login.html')) return;
-
-    const form = document.getElementById('login-form');
-    if (!form) return;
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const username = form.username.value.trim();
-        const password = form.password.value;
-        const errorEl = document.getElementById('login-error');
-        const submitBtn = form.querySelector('button[type="submit"]');
-
-        if (errorEl) {
-            errorEl.classList.add('hidden');
-            errorEl.textContent = '';
-        }
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'AUTHENTICATING...';
-        }
-
-        try {
-            const response = await fetch('http://localhost:3000/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-
-            if (!response.ok) {
-                throw new Error('Invalid credentials');
-            }
-
-            const { accessToken, user } = await response.json();
-
-            sessionStorage.setItem('accessToken', accessToken);
-            sessionStorage.setItem('user', JSON.stringify(user));
-            sessionStorage.setItem('apex_session', JSON.stringify({
-                dealer: 'Apex Dealer',
-                color: '#34d399',
-                role: normalizeApexSessionRole(user.role)
-            }));
-
-            window.location.href = getAuthRedirectPath(user.role);
-        } catch (err) {
-            if (errorEl) {
-                errorEl.textContent = err.message || 'Authentication failed';
-                errorEl.classList.remove('hidden');
-            }
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Sign In';
-            }
-        }
-    });
-
-    apexLog("Auth", "Login form wired to backend pipeline");
+    // login.html uses an inline submit handler for /api/login
 }
 
 /* ==========================================================================
