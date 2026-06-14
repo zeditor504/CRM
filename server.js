@@ -14,6 +14,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// --- HTML PAGE ROUTES ---
+app.get('/owner.html', (req, res) => res.sendFile(path.join(__dirname, 'owner.html')));
+app.get('/manager.html', (req, res) => res.sendFile(path.join(__dirname, 'manager.html')));
+app.get('/index.html', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/importleads.html', (req, res) => res.sendFile(path.join(__dirname, 'importleads.html')));
+app.get('/deal-desk.html', (req, res) => res.sendFile(path.join(__dirname, 'deal-desk.html')));
+
 const prisma = new PrismaClient();
 
 const JWT_SECRET = 'apex_super_secret_key_change_in_production';

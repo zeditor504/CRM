@@ -99,8 +99,10 @@
                     throw new Error(data.error || 'Authentication failed');
                 }
 
-                const role = data.role;
-                console.log('[LOGIN] Routing user with role:', role);
+                const role = String(data.role).toUpperCase();
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userRole', role);
+                console.log('[LOGIN] Session saved — routing user with role:', role);
 
                 if (role === 'EXECUTIVE' || role === 'ADMINISTRATOR' || role === 'OWNER') {
                     window.location.href = 'owner.html';
