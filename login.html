@@ -100,7 +100,15 @@
                 }
 
                 const role = data.role;
+                const email = data.email || emailInput.value.trim();
+                const username = data.username || email.split('@')[0];
                 console.log('[LOGIN] Routing user with role:', role);
+
+                localStorage.setItem('apex_user', JSON.stringify({ email, username, role }));
+                sessionStorage.setItem('apex_session', JSON.stringify({ email, username, role }));
+                if (data.token) {
+                    sessionStorage.setItem('accessToken', data.token);
+                }
 
                 if (role === 'EXECUTIVE' || role === 'ADMINISTRATOR' || role === 'OWNER') {
                     window.location.href = 'owner.html';

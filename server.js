@@ -49,12 +49,41 @@ app.post('/api/login', async (req, res) => {
 
     if (user) {
         const role = String(user.role).toUpperCase();
+        const username = user.email.split('@')[0];
+        const token = jwt.sign(
+            { userId: user.id, email: user.email, role },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+        );
         console.log('[LOGIN] Verified user:', { email: user.email, role });
-        res.json({ success: true, role });
+        res.json({ success: true, role, token, email: user.email, username });
     } else {
         console.log('[LOGIN] No user found for email:', email);
         res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
+});
+
+// Profile Endpoint — token-validated user lookup for dashboard header fallback
+app.get('/api/profile', authenticateToken, async (req, res) => {
+    const user = await prisma.user.findUnique({
+        where: { id: req.user.userId },
+        select: { email: true, first_name: true, last_name: true, role: true }
+    });
+
+    if (!user) {
+        console.log('[PROFILE] No user found for token subject:', req.user.userId);
+        return res.status(404).json({ error: 'User not found' });
+    }
+
+    const username = user.email.split('@')[0];
+    const displayName = `${user.first_name} ${user.last_name}`.trim() || username;
+
+    res.json({
+        email: user.email,
+        username,
+        displayName,
+        role: String(user.role).toUpperCase()
+    });
 });
 
 // --- WEBSOCKETS (Real-Time Engine) ---
