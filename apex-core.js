@@ -295,6 +295,8 @@ function initGlobalButtonRouting() {
         if (btn.classList.contains('send-btn')) btn.removeAttribute('onclick');
         
         // Make ALL unlinked buttons functional
+        if (btn.closest('#login-form')) return;
+
         if (!btn.hasAttribute('onclick') && !btn.hasAttribute('href') && !btn.getAttribute('data-wired')) {
             btn.setAttribute('data-wired', 'true'); // Prevent double-wiring
             btn.addEventListener('click', (e) => {
@@ -380,16 +382,38 @@ function initCommandPalette() {
 /* ==========================================================================
    8. LOGIN AUTH PIPELINE
    ========================================================================== */
+const APEX_ROLES = Object.freeze({
+    SALESMAN: 'SALESMAN',
+    MANAGER: 'MANAGER',
+    OWNER: 'OWNER'
+});
+
+function normalizeLoginRole(role) {
+    if (role === APEX_ROLES.OWNER || role === 'Executive' || role === 'Executive/Owner') {
+        return APEX_ROLES.OWNER;
+    }
+    if (role === APEX_ROLES.MANAGER || role === 'Manager') {
+        return APEX_ROLES.MANAGER;
+    }
+    if (role === APEX_ROLES.SALESMAN || role === 'Staff' || role === 'Staff/Sales') {
+        return APEX_ROLES.SALESMAN;
+    }
+    return null;
+}
+
 function getAuthRedirectPath(role) {
-    if (role === 'Executive/Owner' || role === 'Executive') return 'owner.html';
-    if (role === 'Manager') return 'manager.html';
-    if (role === 'Staff/Sales' || role === 'Staff') return 'index.html';
-    return 'index.html';
+    const normalizedRole = normalizeLoginRole(role);
+    if (normalizedRole === APEX_ROLES.SALESMAN) return 'index.html';
+    if (normalizedRole === APEX_ROLES.MANAGER) return 'manager.html';
+    if (normalizedRole === APEX_ROLES.OWNER) return 'owner.html';
+    return null;
 }
 
 function normalizeApexSessionRole(role) {
-    if (role === 'Executive/Owner' || role === 'Executive') return 'Executive';
-    if (role === 'Manager') return 'Manager';
+    const normalizedRole = normalizeLoginRole(role);
+    if (normalizedRole === APEX_ROLES.OWNER) return 'Executive';
+    if (normalizedRole === APEX_ROLES.MANAGER) return 'Manager';
+    if (normalizedRole === APEX_ROLES.SALESMAN) return 'Staff';
     return 'Staff';
 }
 
@@ -402,8 +426,7 @@ function initLoginAuth() {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const username = form.username.value.trim();
-        const password = form.password.value;
+        const email = form.email.value.trim();
         const errorEl = document.getElementById('login-error');
         const submitBtn = form.querySelector('button[type="submit"]');
 
@@ -417,17 +440,23 @@ function initLoginAuth() {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/api/login', {
+            const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ email })
             });
 
             if (!response.ok) {
                 throw new Error('Invalid credentials');
             }
 
-            const { accessToken, user } = await response.json();
+            const data = await response.json();
+            const { accessToken, user } = data;
+            const redirectPath = getAuthRedirectPath(user.role);
+
+            if (!redirectPath) {
+                throw new Error('Unrecognized role');
+            }
 
             sessionStorage.setItem('accessToken', accessToken);
             sessionStorage.setItem('user', JSON.stringify(user));
@@ -437,7 +466,7 @@ function initLoginAuth() {
                 role: normalizeApexSessionRole(user.role)
             }));
 
-            window.location.href = getAuthRedirectPath(user.role);
+            window.location.href = redirectPath;
         } catch (err) {
             if (errorEl) {
                 errorEl.textContent = err.message || 'Authentication failed';
