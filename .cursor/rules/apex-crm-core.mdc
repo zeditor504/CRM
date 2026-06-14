@@ -1,0 +1,14 @@
+---
+description: Core engineering rules for the Apex CRM monolith — backend, frontend, and database tiers.
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Apex CRM Core Rules
+
+## Backend Tier
+
+Express server (`server.js`) serves the static HTML frontend and JSON API from the project root.
+
+- **CRITICAL PRESERVATION:** Never remove, overwrite, or simplify the global dynamic HTML file serving fallback route or static asset middleware in `server.js`. All routing modifications must append new API endpoints strictly without cleaning or touching static file delivery loops.
