@@ -102,11 +102,13 @@
                 const role = data.role;
                 console.log('[LOGIN] Routing user with role:', role);
 
-                if (role === 'EXECUTIVE' || role === 'ADMINISTRATOR' || role === 'OWNER') {
+                sessionStorage.setItem('apex_session', JSON.stringify({ email, role }));
+
+                if (role === 'OWNER') {
                     window.location.href = 'owner.html';
                 } else if (role === 'MANAGER') {
                     window.location.href = 'manager.html';
-                } else if (role === 'STAFF' || role === 'SALESPERSON' || role === 'SALESMAN') {
+                } else if (role === 'STAFF') {
                     window.location.href = 'index.html';
                 } else {
                     throw new Error('Unknown role: ' + role);

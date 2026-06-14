@@ -48,7 +48,13 @@ app.post('/api/login', async (req, res) => {
     });
 
     if (user) {
-        const role = String(user.role).toUpperCase();
+        const roleMap = {
+            OWNER: 'OWNER',
+            Executive: 'EXECUTIVE',
+            Manager: 'MANAGER',
+            Staff: 'STAFF'
+        };
+        const role = roleMap[user.role] || String(user.role).toUpperCase();
         console.log('[LOGIN] Verified user:', { email: user.email, role });
         res.json({ success: true, role });
     } else {
@@ -79,6 +85,18 @@ io.on('connection', (socket) => {
 // --- STATIC FILES & ROOT ROUTE ---
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+app.get('/owner.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'owner.html'));
+});
+
+app.get('/manager.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'manager.html'));
+});
+
+app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.use(express.static(path.join(__dirname)));

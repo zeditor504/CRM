@@ -7,7 +7,7 @@
     <title>Apex Dealer Systems | Manager Hub</title>
     <script>
         const session = JSON.parse(sessionStorage.getItem('apex_session') || '{}');
-        if (session.role !== 'Executive' && session.role !== 'Manager') {
+        if (session.role !== 'OWNER' && session.role !== 'MANAGER') {
             alert('SECURITY CLEARANCE DENIED: Management Access Required.');
             window.location.replace('login.html');
         }

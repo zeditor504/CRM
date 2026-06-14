@@ -411,10 +411,10 @@ function getAuthRedirectPath(role) {
 
 function normalizeApexSessionRole(role) {
     const normalizedRole = normalizeLoginRole(role);
-    if (normalizedRole === APEX_ROLES.OWNER) return 'Executive';
-    if (normalizedRole === APEX_ROLES.MANAGER) return 'Manager';
-    if (normalizedRole === APEX_ROLES.SALESMAN) return 'Staff';
-    return 'Staff';
+    if (normalizedRole === APEX_ROLES.OWNER) return 'OWNER';
+    if (normalizedRole === APEX_ROLES.MANAGER) return 'MANAGER';
+    if (normalizedRole === APEX_ROLES.SALESMAN) return 'STAFF';
+    return 'STAFF';
 }
 
 function initLoginAuth() {
