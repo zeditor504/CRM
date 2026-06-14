@@ -12,6 +12,7 @@ const io = new Server(server, { cors: { origin: '*' } });
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const prisma = new PrismaClient();
 
@@ -31,17 +32,28 @@ const authenticateToken = (req, res, next) => {
 };
 
 // --- API ENDPOINTS ---
+// Login Endpoint — verify email and return uppercase role for client routing
 app.post('/api/login', async (req, res) => {
+    console.log('[LOGIN] Incoming request body:', req.body);
+
     const { email } = req.body;
+    if (!email) {
+        console.log('[LOGIN] Rejected: missing email in payload');
+        return res.status(400).json({ error: 'Email is required' });
+    }
+
     const user = await prisma.user.findUnique({
         where: { email },
-        select: { role: true }
+        select: { id: true, role: true, email: true, first_name: true }
     });
 
     if (user) {
-        res.json({ success: true, role: user.role });
+        const role = String(user.role).toUpperCase();
+        console.log('[LOGIN] Verified user:', { email: user.email, role });
+        res.json({ success: true, role });
     } else {
-        res.status(401).json({ success: false });
+        console.log('[LOGIN] No user found for email:', email);
+        res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
 });
 

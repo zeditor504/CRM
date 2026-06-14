@@ -418,68 +418,7 @@ function normalizeApexSessionRole(role) {
 }
 
 function initLoginAuth() {
-    if (!window.location.pathname.includes('login.html')) return;
-
-    const form = document.getElementById('login-form');
-    if (!form) return;
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const email = form.email.value.trim();
-        const errorEl = document.getElementById('login-error');
-        const submitBtn = form.querySelector('button[type="submit"]');
-
-        if (errorEl) {
-            errorEl.classList.add('hidden');
-            errorEl.textContent = '';
-        }
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'AUTHENTICATING...';
-        }
-
-        try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            });
-
-            if (!response.ok) {
-                throw new Error('Invalid credentials');
-            }
-
-            const data = await response.json();
-            const { accessToken, user } = data;
-            const redirectPath = getAuthRedirectPath(user.role);
-
-            if (!redirectPath) {
-                throw new Error('Unrecognized role');
-            }
-
-            sessionStorage.setItem('accessToken', accessToken);
-            sessionStorage.setItem('user', JSON.stringify(user));
-            sessionStorage.setItem('apex_session', JSON.stringify({
-                dealer: 'Apex Dealer',
-                color: '#34d399',
-                role: normalizeApexSessionRole(user.role)
-            }));
-
-            window.location.href = redirectPath;
-        } catch (err) {
-            if (errorEl) {
-                errorEl.textContent = err.message || 'Authentication failed';
-                errorEl.classList.remove('hidden');
-            }
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Sign In';
-            }
-        }
-    });
-
-    apexLog("Auth", "Login form wired to backend pipeline");
+    // login.html uses an inline submit handler for /api/login
 }
 
 /* ==========================================================================
