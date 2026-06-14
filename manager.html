@@ -235,13 +235,18 @@
                 <div class="bg-white/5 border border-white/10 rounded-xl p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h4 class="font-bold text-white uppercase tracking-widest text-sm">Round Robin Routing</h4>
-                        <div class="w-10 h-5 bg-apex-primary rounded-full relative cursor-pointer"><div class="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5"></div></div>
+                        <label for="toggle-round-robin" class="cursor-pointer">
+                            <input type="checkbox" id="toggle-round-robin" class="sr-only" checked>
+                            <span id="toggle-round-robin-track" class="w-10 h-5 bg-apex-primary rounded-full relative inline-block transition-colors">
+                                <span id="toggle-round-robin-knob" class="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></span>
+                            </span>
+                        </label>
                     </div>
                     <p class="text-xs text-zinc-400 mb-4">Automatically distribute incoming web leads sequentially.</p>
                     <div class="space-y-2">
-                        <label class="flex items-center text-xs font-bold text-zinc-300 uppercase tracking-widest"><input type="checkbox" checked class="mr-2 accent-apex-primary"> Skip Offline Employees</label>
-                        <label class="flex items-center text-xs font-bold text-zinc-300 uppercase tracking-widest"><input type="checkbox" checked class="mr-2 accent-apex-primary"> Skip Employees on Vacation</label>
-                        <label class="flex items-center text-xs font-bold text-zinc-300 uppercase tracking-widest"><input type="checkbox" class="mr-2 accent-apex-primary"> Prioritize High Converters</label>
+                        <label class="flex items-center text-xs font-bold text-zinc-300 uppercase tracking-widest"><input type="checkbox" id="checkbox-skip-offline" checked class="mr-2 accent-apex-primary"> Skip Offline Employees</label>
+                        <label class="flex items-center text-xs font-bold text-zinc-300 uppercase tracking-widest"><input type="checkbox" id="checkbox-skip-vacation" checked class="mr-2 accent-apex-primary"> Skip Employees on Vacation</label>
+                        <label class="flex items-center text-xs font-bold text-zinc-300 uppercase tracking-widest"><input type="checkbox" id="checkbox-prioritize-high-converters" class="mr-2 accent-apex-primary"> Prioritize High Converters</label>
                     </div>
                 </div>
 
@@ -249,7 +254,12 @@
                     <div class="absolute inset-0 bg-gradient-to-tr from-[#00FF9F]/10 to-transparent pointer-events-none"></div>
                     <div class="flex justify-between items-center mb-4 relative z-10">
                         <h4 class="font-bold text-blue-400 uppercase tracking-widest text-sm flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> AI Auto-Coverage</h4>
-                        <div class="w-10 h-5 bg-blue-500 rounded-full relative cursor-pointer"><div class="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5"></div></div>
+                        <label for="toggle-ai-auto-coverage" class="cursor-pointer relative z-10">
+                            <input type="checkbox" id="toggle-ai-auto-coverage" class="sr-only" checked>
+                            <span id="toggle-ai-auto-coverage-track" class="w-10 h-5 bg-blue-500 rounded-full relative inline-block transition-colors">
+                                <span id="toggle-ai-auto-coverage-knob" class="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></span>
+                            </span>
+                        </label>
                     </div>
                     <p class="text-xs text-zinc-400 mb-4 relative z-10">If a rep is off-shift, at lunch, or misses the RRS deadline, the AI assumes control of the chat to collect data and schedule appointments.</p>
                     <div class="text-[10px] text-blue-500 font-bold uppercase tracking-widest bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded inline-block relative z-10">Active on 3 Open Leads</div>
@@ -266,6 +276,95 @@
             
             let session;
             try { session = JSON.parse(sessionData); } catch (error) { return; }
+
+            // --- Automation Engine Settings ---
+            const settingsControls = {
+                roundRobin: document.getElementById('toggle-round-robin'),
+                skipOffline: document.getElementById('checkbox-skip-offline'),
+                skipVacation: document.getElementById('checkbox-skip-vacation'),
+                prioritizeHighConverters: document.getElementById('checkbox-prioritize-high-converters'),
+                aiAutoCoverage: document.getElementById('toggle-ai-auto-coverage')
+            };
+
+            const toggleVisuals = {
+                roundRobin: {
+                    track: document.getElementById('toggle-round-robin-track'),
+                    knob: document.getElementById('toggle-round-robin-knob'),
+                    activeClass: 'bg-apex-primary',
+                    inactiveClass: 'bg-zinc-600'
+                },
+                aiAutoCoverage: {
+                    track: document.getElementById('toggle-ai-auto-coverage-track'),
+                    knob: document.getElementById('toggle-ai-auto-coverage-knob'),
+                    activeClass: 'bg-blue-500',
+                    inactiveClass: 'bg-zinc-600'
+                }
+            };
+
+            function updateToggleVisual(key) {
+                const checkbox = settingsControls[key];
+                const visual = toggleVisuals[key];
+                if (!checkbox || !visual) return;
+
+                const isOn = checkbox.checked;
+                visual.track.classList.toggle(visual.activeClass, isOn);
+                visual.track.classList.toggle(visual.inactiveClass, !isOn);
+                visual.knob.classList.toggle('right-0.5', isOn);
+                visual.knob.classList.toggle('left-0.5', !isOn);
+            }
+
+            function getSettingsState() {
+                return {
+                    roundRobin: settingsControls.roundRobin.checked,
+                    skipOffline: settingsControls.skipOffline.checked,
+                    skipVacation: settingsControls.skipVacation.checked,
+                    prioritizeHighConverters: settingsControls.prioritizeHighConverters.checked,
+                    aiAutoCoverage: settingsControls.aiAutoCoverage.checked
+                };
+            }
+
+            function applySettings(settings) {
+                settingsControls.roundRobin.checked = settings.roundRobin;
+                settingsControls.skipOffline.checked = settings.skipOffline;
+                settingsControls.skipVacation.checked = settings.skipVacation;
+                settingsControls.prioritizeHighConverters.checked = settings.prioritizeHighConverters;
+                settingsControls.aiAutoCoverage.checked = settings.aiAutoCoverage;
+                updateToggleVisual('roundRobin');
+                updateToggleVisual('aiAutoCoverage');
+            }
+
+            async function saveSettings() {
+                try {
+                    await fetch('/api/settings', {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(getSettingsState())
+                    });
+                } catch (error) {
+                    console.error('Failed to save settings:', error);
+                }
+            }
+
+            async function loadSettings() {
+                try {
+                    const response = await fetch('/api/settings');
+                    if (!response.ok) return;
+                    const settings = await response.json();
+                    applySettings(settings);
+                } catch (error) {
+                    console.error('Failed to load settings:', error);
+                }
+            }
+
+            Object.values(settingsControls).forEach((control) => {
+                control.addEventListener('change', () => {
+                    if (control.id === 'toggle-round-robin') updateToggleVisual('roundRobin');
+                    if (control.id === 'toggle-ai-auto-coverage') updateToggleVisual('aiAutoCoverage');
+                    saveSettings();
+                });
+            });
+
+            loadSettings();
             
             const mainHeader = document.querySelector('h1');
             if (mainHeader && mainHeader.innerText.toUpperCase().includes('APEX')) {

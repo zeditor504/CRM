@@ -18,6 +18,28 @@ const prisma = new PrismaClient();
 
 const JWT_SECRET = 'apex_super_secret_key_change_in_production';
 
+// --- APP SETTINGS (in-memory store) ---
+const defaultSettings = {
+    roundRobin: true,
+    skipOffline: true,
+    skipVacation: true,
+    prioritizeHighConverters: false,
+    aiAutoCoverage: true
+};
+
+let appSettings = { ...defaultSettings };
+
+const SETTINGS_KEYS = Object.keys(defaultSettings);
+
+function mergeSettings(body) {
+    for (const key of SETTINGS_KEYS) {
+        if (typeof body[key] === 'boolean') {
+            appSettings[key] = body[key];
+        }
+    }
+    return appSettings;
+}
+
 // --- AUTHENTICATION MIDDLEWARE ---
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -55,6 +77,19 @@ app.post('/api/login', async (req, res) => {
         console.log('[LOGIN] No user found for email:', email);
         res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
+});
+
+// Settings — load and persist automation engine toggles
+app.get('/api/settings', (req, res) => {
+    res.json(appSettings);
+});
+
+app.patch('/api/settings', (req, res) => {
+    res.json(mergeSettings(req.body));
+});
+
+app.post('/api/settings', (req, res) => {
+    res.json(mergeSettings(req.body));
 });
 
 // --- WEBSOCKETS (Real-Time Engine) ---
