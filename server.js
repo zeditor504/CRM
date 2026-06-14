@@ -31,20 +31,17 @@ const authenticateToken = (req, res, next) => {
 };
 
 // --- API ENDPOINTS ---
-// Login Endpoint (Generates JWT)
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
-    // Note: In production, hash passwords with bcrypt
+    const { email } = req.body;
     const user = await prisma.user.findUnique({
         where: { email },
-        select: { id: true, role: true, first_name: true }
+        select: { role: true }
     });
 
     if (user) {
-        const accessToken = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '12h' });
-        res.json({ accessToken, user });
+        res.json({ success: true, role: user.role });
     } else {
-        res.status(401).send('Invalid credentials');
+        res.status(401).json({ success: false });
     }
 });
 
