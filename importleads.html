@@ -1,458 +1,506 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="apex-core.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Dealer Systems | Lead Intake Forge</title>
+    <title>Apex OS | Lead Intake Forge</title>
+    <script src="apex-core.js"></script>
     <script>
         if (!sessionStorage.getItem('apex_session')) {
             window.location.replace('login.html');
         }
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         apex: {
-                            bg: '#0A0A0A',
-                            panel: '#1A1A1A',
-                            primary: '#00FF9F',
-                            cyan: '#00D8FF',
-                            secondary: '#FF2E63',
-                            premium: '#FFD700',
-                            text: '#E0E0E0',
-                            muted: '#666666'
+                            bg: '#141414',
+                            panel: '#1C1C1C',
+                            primary: '#00E676',
+                            text: '#F5F5F5',
+                            subtext: '#A3A3A3',
+                            muted: '#737373',
+                            border: 'rgba(255,255,255,0.08)'
                         }
                     }
                 }
             }
-        }
+        };
     </script>
-
     <style>
         * { font-family: 'Inter Tight', sans-serif !important; box-sizing: border-box; }
 
         body {
-            background-color: #0A0A0A !important;
-            color: #f1f5f9 !important;
+            background-color: #141414 !important;
+            color: #F5F5F5 !important;
             margin: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-            background:
-                radial-gradient(ellipse 80% 50% at 50% 40%, rgba(0, 255, 159, 0.04) 0%, transparent 70%),
-                radial-gradient(ellipse 60% 40% at 50% 60%, rgba(0, 216, 255, 0.03) 0%, transparent 70%);
-        }
-
         .glass-nav {
-            background: linear-gradient(to bottom, rgba(20, 20, 20, 0.6) 0%, rgba(10, 10, 10, 0.7) 100%) !important;
-            backdrop-filter: blur(40px) saturate(120%);
-            -webkit-backdrop-filter: blur(40px) saturate(120%);
+            background: rgba(20, 20, 20, 0.92);
+            backdrop-filter: blur(24px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: inset 0 -1px 10px rgba(255, 255, 255, 0.02), 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
-        /* Pulsing Core Brand Gradient border shell */
-        .drop-zone-shell {
-            position: relative;
-            border-radius: 28px;
-            padding: 2px;
-            background: linear-gradient(135deg, #00FF9F, #00D8FF);
-            animation: gradientPulse 3s ease-in-out infinite;
-        }
-
-        .drop-zone-shell::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 32px;
-            background: linear-gradient(135deg, #00FF9F, #00D8FF);
-            opacity: 0.25;
-            filter: blur(18px);
-            z-index: -1;
-            animation: glowPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes gradientPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.75; transform: scale(1.005); }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { opacity: 0.2; transform: scale(0.98); }
-            50% { opacity: 0.45; transform: scale(1.02); }
+        .matte-panel {
+            background: #1C1C1C;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
         }
 
         .drop-zone {
             position: relative;
-            border-radius: 26px;
-            background: rgba(18, 18, 18, 0.72);
-            backdrop-filter: blur(48px) saturate(140%);
-            -webkit-backdrop-filter: blur(48px) saturate(140%);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.08),
-                inset 0 0 40px rgba(0, 255, 159, 0.02),
-                0 30px 80px rgba(0, 0, 0, 0.85);
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+            border: 1px dashed rgba(255, 255, 255, 0.14);
+            border-radius: 18px;
+            background: rgba(0, 0, 0, 0.28);
+            transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
             cursor: pointer;
         }
 
         .drop-zone.is-dragover {
-            background: rgba(0, 255, 159, 0.06);
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.12),
-                inset 0 0 60px rgba(0, 255, 159, 0.08),
-                0 30px 80px rgba(0, 0, 0, 0.85);
+            border-color: #00E676;
+            background: rgba(0, 230, 118, 0.06);
+            box-shadow: inset 0 0 0 1px rgba(0, 230, 118, 0.25), 0 0 40px rgba(0, 230, 118, 0.08);
         }
 
-        .drop-zone.has-files {
-            border-color: rgba(0, 255, 159, 0.2);
+        .drop-zone.has-file {
+            border-style: solid;
+            border-color: rgba(0, 230, 118, 0.35);
         }
 
-        .format-badge {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            flex: 1 1 90px;
-            min-width: 90px;
-            max-width: 120px;
-            padding: 18px 14px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: border-color 0.25s ease, background 0.25s ease;
+        .action-primary {
+            background: #00E676;
+            color: #0A0A0A;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
         }
 
-        .format-badge:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(0, 255, 159, 0.2);
+        .action-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 30px rgba(0, 230, 118, 0.25);
         }
 
-        .format-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(0, 255, 159, 0.12), rgba(0, 216, 255, 0.08));
-            border: 1px solid rgba(0, 255, 159, 0.15);
+        .action-primary:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
         }
 
-        .browse-btn {
-            background: linear-gradient(135deg, #ffffff 0%, #d4d4d8 100%);
-            color: #000;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), inset 0 -2px 0 rgba(0, 0, 0, 0.2);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .browse-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.25), inset 0 -2px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        .file-queue-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+        .preview-table th,
+        .preview-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 12px;
             font-size: 0.75rem;
+            text-align: left;
         }
 
-        .file-queue-item .file-category {
-            font-size: 0.6rem;
-            font-weight: 800;
+        .preview-table th {
+            color: #737373;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            padding: 3px 8px;
-            border-radius: 6px;
-            background: rgba(0, 255, 159, 0.12);
-            color: #00FF9F;
-            border: 1px solid rgba(0, 255, 159, 0.25);
-            flex-shrink: 0;
         }
 
-        .ocean-reveal {
-            animation: oceanRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
-        @keyframes oceanRise {
-            0% { opacity: 0; transform: translateY(40px) scale(0.96); filter: blur(8px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        .status-pill.success {
+            color: #00E676;
+            border-color: rgba(0, 230, 118, 0.25);
+            background: rgba(0, 230, 118, 0.08);
+        }
+
+        .status-pill.error {
+            color: #FF5252;
+            border-color: rgba(255, 82, 82, 0.25);
+            background: rgba(255, 82, 82, 0.08);
+        }
+
+        .status-pill.pending {
+            color: #A3A3A3;
+            background: rgba(255, 255, 255, 0.03);
         }
     </style>
 </head>
 <body class="flex flex-col">
 
     <nav class="glass-nav h-20 flex items-center justify-between px-8 w-full z-50 sticky top-0 shrink-0">
-        <div class="flex items-center space-x-4">
-            <a href="index.html" class="text-zinc-400 hover:text-white transition flex items-center text-sm font-medium border-r border-white/10 pr-4 mr-2 uppercase tracking-widest">
-                <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <div class="flex items-center gap-4">
+            <a href="index.html" class="text-zinc-500 hover:text-white transition text-xs font-bold uppercase tracking-widest border-r border-white/10 pr-4">
                 Sales Dash
             </a>
-            <h1 class="text-lg font-black tracking-widest text-white uppercase">Apex OS</h1>
-            <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5 ml-3 pl-3 border-l border-white/10">Lead Intake Forge</p>
+            <div>
+                <h1 class="text-lg font-black tracking-widest uppercase text-white">Apex OS</h1>
+                <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Lead Intake Forge</p>
+            </div>
         </div>
-        <div class="flex items-center space-x-6">
-            <div class="h-6 w-px bg-white/10 mx-3 hidden sm:block"></div>
-            <button onclick="sessionStorage.removeItem('apex_session'); window.location.replace('login.html');" class="text-zinc-500 hover:text-white transition font-bold text-xs uppercase tracking-widest cursor-pointer bg-transparent border-none">
-                Log Out
-            </button>
-        </div>
+        <button onclick="sessionStorage.removeItem('apex_session'); window.location.replace('login.html');" class="text-zinc-500 hover:text-white transition font-bold text-xs uppercase tracking-widest bg-transparent border-none cursor-pointer">
+            Log Out
+        </button>
     </nav>
 
-    <main class="flex-1 flex items-center justify-center p-6 sm:p-10">
-        <div id="forge-container" class="w-full max-w-xl ocean-reveal">
-
-            <div class="drop-zone-shell">
-                <div
-                    id="drop-zone"
-                    class="drop-zone p-10 sm:p-12 text-center"
-                    role="button"
-                    tabindex="0"
-                    aria-label="Drag and drop lead files or click to browse"
-                >
-                    <input
-                        type="file"
-                        id="file-input"
-                        class="sr-only"
-                        multiple
-                        accept=".csv,.pdf,.json,.xml,.txt,text/csv,application/pdf,application/json,text/xml"
-                    >
-
-                    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center bg-white/5 border border-white/10 relative">
-                        <svg class="w-7 h-7 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                        </svg>
-                    </div>
-
-                    <h2 class="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight mb-2">Drop Lead Files Here</h2>
-                    <p class="text-sm text-zinc-400 font-medium mb-8 max-w-sm mx-auto leading-relaxed">
-                        Drag datasets into the forge or browse your drive. Files are staged for the Node parser pipeline.
+    <main class="flex-1 w-full max-w-5xl mx-auto p-8 flex flex-col gap-8">
+        <section class="matte-panel p-8">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+                <div>
+                    <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">Bulk Intake Pipeline</p>
+                    <h2 class="text-3xl font-black text-white uppercase tracking-tight">Import Lead CSV</h2>
+                    <p class="text-sm text-zinc-400 mt-2 max-w-xl">
+                        Drop a mock CSV export to parse lead objects client-side and persist the batch to the Prisma backend.
                     </p>
-
-                    <div class="flex flex-wrap justify-center gap-3 mb-8" aria-label="Supported file formats">
-                        <div class="format-badge">
-                            <div class="format-icon">
-                                <svg class="w-5 h-5 text-apex-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18M10 3v18M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6z"/>
-                                </svg>
-                            </div>
-                            <span class="text-[10px] font-black text-white uppercase tracking-widest leading-tight">CSV<br>Datasets</span>
-                        </div>
-                        <div class="format-badge">
-                            <div class="format-icon">
-                                <svg class="w-5 h-5 text-apex-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 3v6h6"/>
-                                </svg>
-                            </div>
-                            <span class="text-[10px] font-black text-white uppercase tracking-widest leading-tight">PDF<br>Deal Sheets</span>
-                        </div>
-                        <div class="format-badge">
-                            <div class="format-icon">
-                                <svg class="w-5 h-5 text-apex-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
-                                    <rect x="9" y="3" width="6" height="4" rx="1"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6M9 16h4"/>
-                                </svg>
-                            </div>
-                            <span class="text-[10px] font-black text-white uppercase tracking-widest leading-tight">Auction<br>Manifests</span>
-                        </div>
-                    </div>
-
-                    <button type="button" id="browse-btn" class="browse-btn px-8 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest">
-                        Browse Files
-                    </button>
-
-                    <p id="drop-hint" class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-6">
-                        .csv &middot; .pdf &middot; .json &middot; .xml &middot; .txt
-                    </p>
-
-                    <div id="file-queue" class="hidden mt-8 text-left space-y-2" aria-live="polite"></div>
+                </div>
+                <div id="import-status" class="status-pill pending">
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>
+                    Awaiting File
                 </div>
             </div>
 
-        </div>
+            <div
+                id="drop-zone"
+                class="drop-zone p-10 text-center"
+                role="button"
+                tabindex="0"
+                aria-label="Drag and drop CSV lead file or click to browse"
+            >
+                <input type="file" id="file-input" class="sr-only" accept=".csv,text/csv,application/vnd.ms-excel">
+
+                <div class="w-16 h-16 mx-auto mb-5 rounded-2xl border border-white/10 bg-black/40 flex items-center justify-center">
+                    <svg class="w-7 h-7 text-apex-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                </div>
+
+                <h3 class="text-xl font-black text-white uppercase tracking-wide mb-2">Drop CSV Lead File Here</h3>
+                <p class="text-sm text-zinc-400 mb-6">Supported columns: first_name, last_name, phone, email, lead_score, interested_vin</p>
+
+                <button type="button" id="browse-btn" class="action-primary px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest">
+                    Browse CSV
+                </button>
+
+                <p id="file-meta" class="hidden text-xs text-zinc-500 font-semibold mt-5 uppercase tracking-widest"></p>
+            </div>
+
+            <div class="flex flex-wrap gap-3 mt-6">
+                <button type="button" id="submit-btn" class="action-primary px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest" disabled>
+                    Push to Database
+                </button>
+                <button type="button" id="clear-btn" class="px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest border border-white/10 text-zinc-400 hover:text-white hover:border-white/20 transition" disabled>
+                    Clear Staged File
+                </button>
+            </div>
+        </section>
+
+        <section id="preview-section" class="matte-panel p-8 hidden">
+            <div class="flex items-center justify-between mb-6 border-b border-white/8 pb-4">
+                <h3 class="text-sm font-black text-white uppercase tracking-widest">Parsed Preview</h3>
+                <span id="preview-count" class="text-xs font-bold text-apex-primary uppercase tracking-widest">0 Records</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="preview-table w-full">
+                    <thead>
+                        <tr>
+                            <th>First</th>
+                            <th>Last</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Score</th>
+                            <th>VIN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="preview-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="matte-panel p-6">
+            <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Sample CSV Template</p>
+            <pre class="text-xs text-zinc-400 overflow-x-auto leading-relaxed">first_name,last_name,phone,email,lead_score,interested_vin
+Carl,Johnson,555-019-8822,carl@example.com,94,
+Sarah,Mitchell,555-014-2201,sarah@example.com,78,1HD1KRM15GB123456</pre>
+        </section>
     </main>
 
     <script>
-        /**
-         * LeadIntakeForge — frontend intake layer.
-         * Normalizes file payloads for future streaming to the Node backend parser.
-         */
         const LeadIntakeForge = (() => {
-            const CATEGORY_RULES = [
-                { category: 'csv-dataset', extensions: ['.csv'], mimeTypes: ['text/csv', 'application/vnd.ms-excel'] },
-                { category: 'pdf-deal-sheet', extensions: ['.pdf'], mimeTypes: ['application/pdf'] },
-                { category: 'auction-manifest', extensions: ['.json', '.xml', '.txt'], mimeTypes: ['application/json', 'text/xml', 'text/plain'] }
-            ];
+            const HEADER_ALIASES = {
+                first_name: ['first_name', 'firstname', 'first name', 'fname'],
+                last_name: ['last_name', 'lastname', 'last name', 'lname'],
+                phone: ['phone', 'mobile', 'cell'],
+                email: ['email', 'email address'],
+                lead_score: ['lead_score', 'score', 'lead score'],
+                interested_vin: ['interested_vin', 'vin', 'interested vin']
+            };
 
             const dropZone = document.getElementById('drop-zone');
             const fileInput = document.getElementById('file-input');
             const browseBtn = document.getElementById('browse-btn');
-            const fileQueue = document.getElementById('file-queue');
-            const dropHint = document.getElementById('drop-hint');
+            const submitBtn = document.getElementById('submit-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const fileMeta = document.getElementById('file-meta');
+            const previewSection = document.getElementById('preview-section');
+            const previewBody = document.getElementById('preview-body');
+            const previewCount = document.getElementById('preview-count');
+            const importStatus = document.getElementById('import-status');
 
             let dragDepth = 0;
+            let stagedFile = null;
+            let parsedLeads = [];
 
-            function getExtension(filename) {
-                const dot = filename.lastIndexOf('.');
-                return dot >= 0 ? filename.slice(dot).toLowerCase() : '';
-            }
+            const normalizeHeader = (value) => String(value || '').trim().toLowerCase();
 
-            function categorizeFile(file) {
-                const ext = getExtension(file.name);
-                const mime = (file.type || '').toLowerCase();
-
-                for (const rule of CATEGORY_RULES) {
-                    if (rule.extensions.includes(ext) || rule.mimeTypes.includes(mime)) {
-                        return rule.category;
-                    }
+            const mapHeader = (header) => {
+                const normalized = normalizeHeader(header);
+                for (const [field, aliases] of Object.entries(HEADER_ALIASES)) {
+                    if (aliases.includes(normalized)) return field;
                 }
-                return 'unknown';
-            }
+                return null;
+            };
 
-            function formatBytes(bytes) {
-                if (bytes < 1024) return bytes + ' B';
-                if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-                return (bytes / 1048576).toFixed(1) + ' MB';
-            }
+            const parseCsvLine = (line) => {
+                const cells = [];
+                let current = '';
+                let inQuotes = false;
 
-            function buildPayload(fileList) {
-                return Array.from(fileList).map((file) => ({
-                    name: file.name,
-                    size: file.size,
-                    type: file.type || 'application/octet-stream',
-                    lastModified: file.lastModified,
-                    category: categorizeFile(file),
-                    file
-                }));
-            }
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    const next = line[i + 1];
 
-            function renderQueue(payload) {
-                if (!payload.length) {
-                    fileQueue.classList.add('hidden');
-                    fileQueue.innerHTML = '';
-                    dropZone.classList.remove('has-files');
-                    dropHint.classList.remove('hidden');
+                    if (char === '"') {
+                        if (inQuotes && next === '"') {
+                            current += '"';
+                            i++;
+                        } else {
+                            inQuotes = !inQuotes;
+                        }
+                        continue;
+                    }
+
+                    if (char === ',' && !inQuotes) {
+                        cells.push(current.trim());
+                        current = '';
+                        continue;
+                    }
+
+                    current += char;
+                }
+
+                cells.push(current.trim());
+                return cells;
+            };
+
+            const parseCsv = (text) => {
+                const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter((line) => line.trim());
+                if (lines.length < 2) {
+                    throw new Error('CSV must include a header row and at least one data row.');
+                }
+
+                const headers = parseCsvLine(lines[0]).map(mapHeader);
+                const mappedIndexes = headers.map((field, index) => ({ field, index })).filter((entry) => entry.field);
+
+                if (!mappedIndexes.some((entry) => entry.field === 'first_name') || !mappedIndexes.some((entry) => entry.field === 'last_name')) {
+                    throw new Error('CSV must include first_name and last_name columns.');
+                }
+
+                return lines.slice(1).map((line) => {
+                    const cells = parseCsvLine(line);
+                    const lead = {};
+
+                    mappedIndexes.forEach(({ field, index }) => {
+                        lead[field] = cells[index] || '';
+                    });
+
+                    return lead;
+                }).filter((lead) => lead.first_name || lead.last_name);
+            };
+
+            const formatBytes = (bytes) => {
+                if (bytes < 1024) return `${bytes} B`;
+                if (bytes < 1048576) return `${(bytes / 1024).toFixed(1)} KB`;
+                return `${(bytes / 1048576).toFixed(1)} MB`;
+            };
+
+            const setStatus = (state, label) => {
+                importStatus.className = `status-pill ${state}`;
+                importStatus.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${state === 'success' ? 'bg-apex-primary' : state === 'error' ? 'bg-red-500' : 'bg-zinc-500'}"></span>${label}`;
+            };
+
+            const renderPreview = () => {
+                if (!parsedLeads.length) {
+                    previewSection.classList.add('hidden');
+                    previewBody.innerHTML = '';
+                    previewCount.textContent = '0 Records';
                     return;
                 }
 
-                dropZone.classList.add('has-files');
-                dropHint.classList.add('hidden');
-                fileQueue.classList.remove('hidden');
-                fileQueue.innerHTML = payload.map((item) => `
-                    <div class="file-queue-item">
-                        <span class="file-category">${item.category.replace(/-/g, ' ')}</span>
-                        <span class="text-white font-semibold truncate flex-1">${item.name}</span>
-                        <span class="text-zinc-500 font-medium flex-shrink-0">${formatBytes(item.size)}</span>
-                    </div>
+                previewSection.classList.remove('hidden');
+                previewCount.textContent = `${parsedLeads.length} Record${parsedLeads.length === 1 ? '' : 's'}`;
+                previewBody.innerHTML = parsedLeads.slice(0, 12).map((lead) => `
+                    <tr>
+                        <td class="text-white font-semibold">${lead.first_name || '—'}</td>
+                        <td class="text-white font-semibold">${lead.last_name || '—'}</td>
+                        <td class="text-zinc-400">${lead.phone || '—'}</td>
+                        <td class="text-zinc-400">${lead.email || '—'}</td>
+                        <td class="text-apex-primary font-bold">${lead.lead_score || '0'}</td>
+                        <td class="text-zinc-500 font-mono text-[10px]">${lead.interested_vin || '—'}</td>
+                    </tr>
                 `).join('');
-            }
 
-            function dispatchPayload(payload) {
-                console.group('[LeadIntakeForge] Intake payload ready for Node parser stream');
-                console.log('fileCount:', payload.length);
-                console.log('files:', payload.map(({ name, size, type, category, lastModified }) => ({
-                    name, size, type, category, lastModified
-                })));
-                console.log('rawFileRefs:', payload.map((p) => p.file));
-                console.groupEnd();
+                if (parsedLeads.length > 12) {
+                    previewBody.innerHTML += `<tr><td colspan="6" class="text-zinc-500 italic">+ ${parsedLeads.length - 12} additional record(s) staged</td></tr>`;
+                }
+            };
 
-                // Future backend hook:
-                // const formData = new FormData();
-                // payload.forEach((item, i) => formData.append('files', item.file, item.name));
-                // fetch('/api/import-leads', { method: 'POST', body: formData });
+            const resetState = () => {
+                stagedFile = null;
+                parsedLeads = [];
+                fileInput.value = '';
+                dropZone.classList.remove('has-file');
+                fileMeta.classList.add('hidden');
+                submitBtn.disabled = true;
+                clearBtn.disabled = true;
+                setStatus('pending', 'Awaiting File');
+                renderPreview();
+            };
 
-                window.dispatchEvent(new CustomEvent('lead-intake:files', { detail: { payload } }));
-                return payload;
-            }
+            const stageFile = async (file) => {
+                if (!file) return;
 
-            function handleFiles(fileList) {
-                if (!fileList || !fileList.length) return [];
-                const payload = buildPayload(fileList);
-                renderQueue(payload);
-                return dispatchPayload(payload);
-            }
+                const extension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
+                if (extension !== '.csv') {
+                    setStatus('error', 'CSV Only');
+                    if (typeof apexToast === 'function') apexToast('Only .csv lead files are supported.', 'error');
+                    return;
+                }
 
-            function setDragOver(active) {
-                dropZone.classList.toggle('is-dragover', active);
-            }
+                try {
+                    const text = await file.text();
+                    parsedLeads = parseCsv(text);
+                    stagedFile = file;
 
-            function bindEvents() {
-                browseBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
+                    dropZone.classList.add('has-file');
+                    fileMeta.textContent = `${file.name} • ${formatBytes(file.size)} • ${parsedLeads.length} parsed record(s)`;
+                    fileMeta.classList.remove('hidden');
+                    submitBtn.disabled = parsedLeads.length === 0;
+                    clearBtn.disabled = false;
+                    setStatus('pending', `${parsedLeads.length} Staged`);
+                    renderPreview();
+
+                    if (typeof apexToast === 'function') {
+                        apexToast(`Parsed ${parsedLeads.length} lead record(s) from CSV.`, 'success');
+                    }
+                } catch (error) {
+                    resetState();
+                    setStatus('error', 'Parse Failed');
+                    if (typeof apexToast === 'function') apexToast(error.message, 'error');
+                }
+            };
+
+            const submitLeads = async () => {
+                if (!parsedLeads.length) return;
+
+                submitBtn.disabled = true;
+                setStatus('pending', 'Uploading...');
+
+                try {
+                    const response = await fetch('/api/import-leads', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ leads: parsedLeads })
+                    });
+
+                    const payload = await response.json();
+                    if (!response.ok) {
+                        throw new Error(payload.error || 'Import request failed.');
+                    }
+
+                    setStatus('success', `${payload.imported} Imported`);
+                    if (typeof apexToast === 'function') {
+                        apexToast(`Successfully persisted ${payload.imported} lead(s) to Prisma.`, 'success');
+                    }
+
+                    resetState();
+                } catch (error) {
+                    setStatus('error', 'Import Failed');
+                    submitBtn.disabled = parsedLeads.length > 0;
+                    if (typeof apexToast === 'function') apexToast(error.message, 'error');
+                }
+            };
+
+            const bindEvents = () => {
+                browseBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
                     fileInput.click();
                 });
 
                 dropZone.addEventListener('click', () => fileInput.click());
 
-                dropZone.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
+                dropZone.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
                         fileInput.click();
                     }
                 });
 
-                fileInput.addEventListener('change', (e) => {
-                    handleFiles(e.target.files);
-                    e.target.value = '';
+                fileInput.addEventListener('change', (event) => {
+                    const [file] = event.target.files || [];
+                    stageFile(file);
                 });
 
-                ['dragenter', 'dragover'].forEach((evt) => {
-                    dropZone.addEventListener(evt, (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                submitBtn.addEventListener('click', submitLeads);
+                clearBtn.addEventListener('click', resetState);
+
+                ['dragenter', 'dragover'].forEach((eventName) => {
+                    dropZone.addEventListener(eventName, (event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
                         dragDepth++;
-                        setDragOver(true);
+                        dropZone.classList.add('is-dragover');
                     });
                 });
 
-                ['dragleave', 'drop'].forEach((evt) => {
-                    dropZone.addEventListener(evt, (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (evt === 'dragleave') {
+                ['dragleave', 'drop'].forEach((eventName) => {
+                    dropZone.addEventListener(eventName, (event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        if (eventName === 'dragleave') {
                             dragDepth = Math.max(0, dragDepth - 1);
-                            if (dragDepth === 0) setDragOver(false);
+                            if (dragDepth === 0) dropZone.classList.remove('is-dragover');
                         }
-                        if (evt === 'drop') {
+
+                        if (eventName === 'drop') {
                             dragDepth = 0;
-                            setDragOver(false);
-                            handleFiles(e.dataTransfer.files);
+                            dropZone.classList.remove('is-dragover');
+                            const [file] = event.dataTransfer.files || [];
+                            stageFile(file);
                         }
                     });
                 });
 
-                document.addEventListener('dragover', (e) => e.preventDefault());
-                document.addEventListener('drop', (e) => e.preventDefault());
-            }
+                document.addEventListener('dragover', (event) => event.preventDefault());
+                document.addEventListener('drop', (event) => event.preventDefault());
+            };
 
-            return { init: bindEvents, handleFiles, buildPayload, categorizeFile };
+            return { init: bindEvents };
         })();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            LeadIntakeForge.init();
-        });
+        document.addEventListener('DOMContentLoaded', () => LeadIntakeForge.init());
     </script>
 </body>
 </html>
