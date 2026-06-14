@@ -6,8 +6,8 @@
     <title>Apex OS | Executive Command Center</title>
     <script src="apex-core.js"></script>
     <script>
-        const session = JSON.parse(sessionStorage.getItem('apex_session') || '{}');
-        if (session.role !== 'Executive') {
+        const userRole = localStorage.getItem('userRole');
+        if (userRole !== 'OWNER') {
             alert('SECURITY CLEARANCE DENIED: Executive Access Required.');
             window.location.replace('login.html');
         }
@@ -51,13 +51,21 @@
             </div>
             <div>
                 <h1 class="text-lg font-black tracking-widest uppercase bg-gradient-to-r from-[#FFD700] to-[#C5A059] bg-clip-text text-transparent">Apex OS</h1>
-                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5">Executive Command</p>
+                <p id="owner-header-label" class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5">Executive Command</p>
+                <script>
+                    (function () {
+                        const label = document.getElementById('owner-header-label');
+                        if (label) {
+                            label.textContent = localStorage.getItem('userEmail') || 'OWNER PANEL';
+                        }
+                    })();
+                </script>
             </div>
         </div>
         <div class="flex items-center space-x-6">
             <button onclick="window.location.href='manager.html'" class="text-zinc-500 hover:text-white transition font-bold text-xs uppercase tracking-widest">Manager Hub</button>
             <div class="h-6 w-px bg-white/10 mx-3"></div>
-            <button class="text-zinc-500 hover:text-white transition font-bold text-xs uppercase tracking-widest">Log Out</button>
+            <button onclick="localStorage.removeItem('userEmail'); localStorage.removeItem('userRole'); window.location.replace('login.html');" class="text-zinc-500 hover:text-white transition font-bold text-xs uppercase tracking-widest">Log Out</button>
         </div>
     </nav>
 
