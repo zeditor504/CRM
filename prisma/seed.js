@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient, UserRole } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
@@ -8,7 +8,7 @@ async function seedBaselineAdministrator() {
   await prisma.user.upsert({
     where: { email: ADMIN_EMAIL },
     update: {
-      role: 'OWNER',
+      role: UserRole.OWNER,
       is_active: true
     },
     create: {
@@ -16,7 +16,7 @@ async function seedBaselineAdministrator() {
       first_name: 'Baseline',
       last_name: 'Administrator',
       password_hash: 'change-me',
-      role: 'OWNER',
+      role: UserRole.OWNER,
       is_active: true
     }
   });
