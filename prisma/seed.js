@@ -4,7 +4,22 @@ const prisma = new PrismaClient();
 
 const ADMIN_EMAIL = 'crmdev786@gmail.com';
 
+async function ensureOwnerRoleEnum() {
+  const existingOwnerRole = await prisma.$queryRaw`
+    SELECT e.enumlabel
+    FROM pg_enum e
+    INNER JOIN pg_type t ON t.oid = e.enumtypid
+    WHERE t.typname = 'UserRole' AND e.enumlabel = 'OWNER'
+  `;
+
+  if (existingOwnerRole.length === 0) {
+    await prisma.$executeRawUnsafe(`ALTER TYPE "UserRole" ADD VALUE IF NOT EXISTS 'OWNER'`);
+  }
+}
+
 async function seedBaselineAdministrator() {
+  await ensureOwnerRoleEnum();
+
   await prisma.user.upsert({
     where: { email: ADMIN_EMAIL },
     update: {
