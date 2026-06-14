@@ -39,7 +39,13 @@
         body { background-color: #0A0A0A !important; color: #E0E0E0 !important; margin: 0; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         .glass-nav { background: linear-gradient(to bottom, rgba(20,20,20,0.6) 0%, rgba(10,10,10,0.7) 100%) !important; backdrop-filter: blur(40px) saturate(120%); border-bottom: 1px solid rgba(255,255,255,0.08); }
         .glass-panel { background-color: rgba(26, 26, 26, 0.85) !important; /* #1A1A1A equivalent */ backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(255,255,255,0.02), 0 30px 65px rgba(0,0,0,0.95); border-radius: 24px; }
-        .health-ring { stroke-dasharray: 100; stroke-dashoffset: 12; transition: stroke-dashoffset 1s ease-out; }
+        .health-ring-svg { transform-origin: center; }
+        .health-ring {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 12;
+            transform-origin: center;
+            transition: stroke-dashoffset 1s ease-out;
+        }
     </style>
 </head>
 <body class="flex flex-col relative">
@@ -67,9 +73,9 @@
             <div class="glass-panel p-8 flex flex-col items-center justify-center relative">
                 <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-widest absolute top-6 left-6">Dealership Health</h3>
                 <div class="relative w-32 h-32 flex items-center justify-center mt-4">
-                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                    <svg class="health-ring-svg w-full h-full" viewBox="0 0 36 36">
                         <path class="text-zinc-800" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                        <path class="text-apex-primary health-ring" stroke-width="3" stroke-dasharray="100, 100" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="text-apex-primary health-ring" stroke-width="3" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                     </svg>
                     <div class="absolute flex flex-col items-center">
                         <span class="text-4xl font-black text-white">88</span>
