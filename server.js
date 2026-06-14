@@ -34,26 +34,35 @@ const authenticateToken = (req, res, next) => {
 // --- API ENDPOINTS ---
 // Login Endpoint — verify email and return uppercase role for client routing
 app.post('/api/login', async (req, res) => {
-    console.log('[LOGIN] Incoming request body:', req.body);
+    console.log('[LOGIN] Incoming request — body:', JSON.stringify(req.body));
 
-    const { email } = req.body;
-    if (!email) {
-        console.log('[LOGIN] Rejected: missing email in payload');
-        return res.status(400).json({ error: 'Email is required' });
-    }
+    try {
+        const { email } = req.body || {};
+        console.log('[LOGIN] Validation state:', { hasBody: !!req.body, emailProvided: !!email, email });
 
-    const user = await prisma.user.findUnique({
-        where: { email },
-        select: { id: true, role: true, email: true, first_name: true }
-    });
+        if (!email) {
+            console.log('[LOGIN] Rejected: missing email in payload');
+            return res.status(400).json({ success: false, error: 'Email is required' });
+        }
 
-    if (user) {
-        const role = String(user.role).toUpperCase();
-        console.log('[LOGIN] Verified user:', { email: user.email, role });
-        res.json({ success: true, role });
-    } else {
+        console.log('[LOGIN] Querying database for email:', email);
+        const user = await prisma.user.findUnique({
+            where: { email },
+            select: { id: true, role: true, email: true, first_name: true }
+        });
+
+        if (user) {
+            const role = String(user.role).toUpperCase();
+            const responsePayload = { success: true, role };
+            console.log('[LOGIN] Verified user — response payload:', responsePayload);
+            return res.json(responsePayload);
+        }
+
         console.log('[LOGIN] No user found for email:', email);
-        res.status(401).json({ success: false, error: 'Invalid credentials' });
+        return res.status(401).json({ success: false, error: 'Invalid credentials' });
+    } catch (error) {
+        console.error('[LOGIN] Unhandled error during authentication:', error);
+        return res.status(500).json({ success: false, error: error.message });
     }
 });
 
