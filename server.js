@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const jwt = require('jsonwebtoken');
-const { Pool } = require('pg');
+const { PrismaClient } = require('@prisma/client');
 const cors = require('cors');
 
 const app = express();
@@ -12,10 +12,7 @@ const io = new Server(server, { cors: { origin: '*' } });
 app.use(cors());
 app.use(express.json());
 
-// PostgreSQL Connection
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL // e.g., Supabase connection string
-});
+const prisma = new PrismaClient();
 
 const JWT_SECRET = 'apex_super_secret_key_change_in_production';
 
@@ -37,10 +34,12 @@ const authenticateToken = (req, res, next) => {
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     // Note: In production, hash passwords with bcrypt
-    const result = await pool.query('SELECT id, role, first_name FROM users WHERE email = $1', [email]);
-    
-    if (result.rows.length > 0) {
-        const user = result.rows[0];
+    const user = await prisma.user.findUnique({
+        where: { email },
+        select: { id: true, role: true, first_name: true }
+    });
+
+    if (user) {
         const accessToken = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '12h' });
         res.json({ accessToken, user });
     } else {
@@ -55,8 +54,11 @@ io.on('connection', (socket) => {
     // Listen for Service Tech updating a bike status
     socket.on('update_ro_status', async (data) => {
         // e.g., data = { ro_id: 123, status: 'Ready for Delivery' }
-        await pool.query('UPDATE repair_orders SET status = $1 WHERE id = $2', [data.status, data.ro_id]);
-        
+        await prisma.repairOrder.update({
+            where: { id: data.ro_id },
+            data: { status: data.status }
+        });
+
         // Push update to ALL connected clients instantly (Showroom, Managers, etc.)
         io.emit('ro_status_changed', data);
     });
