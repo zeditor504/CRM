@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const http = require('http');
 const { Server } = require('socket.io');
 const jwt = require('jsonwebtoken');
@@ -65,6 +66,13 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => console.log('Client disconnected'));
 });
+
+// --- STATIC FILES & ROOT ROUTE ---
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+app.use(express.static(path.join(__dirname)));
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Apex Backend running on port ${PORT}`));
