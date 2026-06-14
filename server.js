@@ -48,7 +48,13 @@ app.post('/api/login', async (req, res) => {
     });
 
     if (user) {
-        const role = String(user.role).toUpperCase();
+        const roleMap = {
+            OWNER: 'OWNER',
+            Executive: 'EXECUTIVE',
+            Manager: 'MANAGER',
+            Staff: 'STAFF'
+        };
+        const role = roleMap[user.role] || String(user.role).toUpperCase();
         console.log('[LOGIN] Verified user:', { email: user.email, role });
         res.json({ success: true, role });
     } else {

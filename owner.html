@@ -7,8 +7,8 @@
     <script src="apex-core.js"></script>
     <script>
         const session = JSON.parse(sessionStorage.getItem('apex_session') || '{}');
-        if (session.role !== 'Executive') {
-            alert('SECURITY CLEARANCE DENIED: Executive Access Required.');
+        if (session.role !== 'OWNER') {
+            alert('SECURITY CLEARANCE DENIED: Owner Access Required.');
             window.location.replace('login.html');
         }
     </script>
