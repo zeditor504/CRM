@@ -274,6 +274,7 @@ function initGlobalButtonRouting() {
             sessionStorage.removeItem('apex_session');
             sessionStorage.removeItem('accessToken');
             sessionStorage.removeItem('user');
+            localStorage.removeItem('apex_user');
             window.location.replace('login.html');
         },
         'USE SUGGESTION': (btn) => {
