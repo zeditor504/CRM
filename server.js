@@ -76,6 +76,56 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => console.log('Client disconnected'));
 });
 
+// --- LEAD IMPORT API ---
+app.post('/api/import-leads', async (req, res) => {
+    const { leads } = req.body;
+
+    if (!Array.isArray(leads) || leads.length === 0) {
+        return res.status(400).json({ error: 'A non-empty leads array is required' });
+    }
+
+    const normalized = leads.map((lead, index) => {
+        const first_name = String(lead.first_name || lead.firstName || '').trim();
+        const last_name = String(lead.last_name || lead.lastName || '').trim();
+
+        if (!first_name || !last_name) {
+            throw new Error(`Row ${index + 1}: first_name and last_name are required`);
+        }
+
+        return {
+            first_name,
+            last_name,
+            phone: lead.phone ? String(lead.phone).trim() : null,
+            email: lead.email ? String(lead.email).trim() : null,
+            lead_score: Number.isFinite(Number(lead.lead_score)) ? Number(lead.lead_score) : 0,
+            status: lead.status ? String(lead.status).trim() : 'New',
+            interested_vin: lead.interested_vin || lead.vin ? String(lead.interested_vin || lead.vin).trim() : null
+        };
+    });
+
+    try {
+        const created = await prisma.$transaction(
+            normalized.map((data) => prisma.lead.create({ data }))
+        );
+
+        console.log(`[IMPORT LEADS] Persisted ${created.length} record(s) to Prisma`);
+        res.json({ success: true, imported: created.length, leads: created });
+    } catch (err) {
+        console.error('[IMPORT LEADS] Failed:', err.message);
+        const status = err.message.includes('required') ? 400 : 500;
+        res.status(status).json({ error: err.message || 'Failed to import leads' });
+    }
+});
+
+// --- STANDALONE MANIFEST ROUTES ---
+app.get('/importleads.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'importleads.html'));
+});
+
+app.get('/deal-desk.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'deal-desk.html'));
+});
+
 // --- STATIC FILES & ROOT ROUTE ---
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'login.html'));
