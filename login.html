@@ -59,12 +59,29 @@
             <p id="login-error" class="hidden text-xs font-bold text-rose-400 uppercase tracking-widest text-center"></p>
             <button type="submit"
                 class="w-full bg-[#00FF9F] text-black font-black text-xs uppercase tracking-widest py-4 rounded-xl hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                Sign In
+                SIGN IN
             </button>
         </form>
     </div>
     <script src="apex-core.js"></script>
     <script>
+        function resetLoginButton(submitBtn) {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'SIGN IN';
+            }
+        }
+
+        function showLoginError(errorEl, message) {
+            const errorMessage = message || 'Authentication failed';
+            console.error('[LOGIN] Displaying error to operator:', errorMessage);
+            if (errorEl) {
+                errorEl.textContent = errorMessage;
+                errorEl.classList.remove('hidden');
+            }
+            alert(errorMessage);
+        }
+
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -74,7 +91,10 @@
             const email = emailInput.value.trim();
             const payload = { email };
 
-            console.log('[LOGIN] Submit intercepted — sending payload:', payload);
+            console.log('[LOGIN] Submit intercepted — validation state:', {
+                emailProvided: !!email,
+                payload
+            });
 
             if (errorEl) {
                 errorEl.classList.add('hidden');
@@ -86,21 +106,35 @@
             }
 
             try {
+                console.log('[LOGIN] Initiating fetch to /api/login with payload:', payload);
                 const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const data = await response.json();
-                console.log('[LOGIN] Server response:', { status: response.status, data });
+                console.log('[LOGIN] Fetch completed — HTTP status:', response.status, 'ok:', response.ok);
+
+                let data;
+                try {
+                    data = await response.json();
+                } catch (parseErr) {
+                    console.error('[LOGIN] Failed to parse server response as JSON:', parseErr);
+                    throw new Error('Invalid server response — expected JSON');
+                }
+
+                console.log('[LOGIN] Server response payload:', { status: response.status, data });
 
                 if (!response.ok) {
+                    throw new Error(data.error || `Authentication failed (HTTP ${response.status})`);
+                }
+
+                if (!data.success) {
                     throw new Error(data.error || 'Authentication failed');
                 }
 
                 const role = data.role;
-                console.log('[LOGIN] Routing user with role:', role);
+                console.log('[LOGIN] Authentication succeeded — routing user with role:', role);
 
                 if (role === 'EXECUTIVE' || role === 'ADMINISTRATOR' || role === 'OWNER') {
                     window.location.href = 'owner.html';
@@ -112,15 +146,13 @@
                     throw new Error('Unknown role: ' + role);
                 }
             } catch (err) {
-                console.error('[LOGIN] Authentication error:', err);
-                if (errorEl) {
-                    errorEl.textContent = err.message || 'Authentication failed';
-                    errorEl.classList.remove('hidden');
-                }
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Sign In';
-                }
+                console.error('[LOGIN] Authentication error — full details:', {
+                    name: err.name,
+                    message: err.message,
+                    stack: err.stack
+                });
+                resetLoginButton(submitBtn);
+                showLoginError(errorEl, err.message);
             }
         });
     </script>
