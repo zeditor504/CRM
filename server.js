@@ -50,10 +50,10 @@ app.post('/api/login', async (req, res) => {
     if (user) {
         const role = String(user.role).toUpperCase();
         console.log('[LOGIN] Verified user:', { email: user.email, role });
-        res.json({ role });
+        res.json({ success: true, role });
     } else {
         console.log('[LOGIN] No user found for email:', email);
-        res.status(401).json({ error: 'Invalid credentials' });
+        res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
 });
 
