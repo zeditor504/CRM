@@ -40,6 +40,19 @@
         .glass-nav { background: linear-gradient(to bottom, rgba(20,20,20,0.6) 0%, rgba(10,10,10,0.7) 100%) !important; backdrop-filter: blur(40px) saturate(120%); border-bottom: 1px solid rgba(255,255,255,0.08); }
         .glass-panel { background-color: rgba(26, 26, 26, 0.85) !important; /* #1A1A1A equivalent */ backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(255,255,255,0.02), 0 30px 65px rgba(0,0,0,0.95); border-radius: 24px; }
         .health-ring { stroke-dasharray: 100; stroke-dashoffset: 12; transition: stroke-dashoffset 1s ease-out; }
+
+        @keyframes subtleGlow {
+            from { text-shadow: 0 0 8px rgba(255, 255, 255, 0); }
+            to   { text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); }
+        }
+
+        .powered-by-apex {
+            animation: subtleGlow 3s ease-in-out infinite alternate;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            -webkit-text-stroke: 0;
+        }
     </style>
 </head>
 <body class="flex flex-col relative">
@@ -50,7 +63,9 @@
                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             </div>
             <div>
-                <h1 class="text-lg font-black tracking-widest uppercase bg-gradient-to-r from-[#FFD700] to-[#C5A059] bg-clip-text text-transparent">Apex OS</h1>
+                <h1 class="text-lg font-black tracking-widest uppercase">
+                    <span id="dashboard-header-label" class="bg-gradient-to-r from-[#FFD700] to-[#C5A059] bg-clip-text text-transparent">OWNER PANEL</span><span class="powered-by-apex text-zinc-500 text-sm ml-2 font-medium tracking-normal capitalize">Powered by Apex OS</span>
+                </h1>
                 <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5">Executive Command</p>
             </div>
         </div>
@@ -142,5 +157,68 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function resolveSessionDisplayName(session) {
+            if (!session || typeof session !== 'object') return null;
+            if (session.username) return session.username;
+            if (session.email) return String(session.email).split('@')[0];
+            return null;
+        }
+
+        function readCachedUserSession() {
+            for (const key of ['apex_user', 'apex_session', 'user']) {
+                const raw = localStorage.getItem(key);
+                if (!raw) continue;
+                try {
+                    const displayName = resolveSessionDisplayName(JSON.parse(raw));
+                    if (displayName) return displayName;
+                } catch (_) {}
+            }
+            return null;
+        }
+
+        function getStoredAccessToken() {
+            return sessionStorage.getItem('accessToken') || localStorage.getItem('accessToken');
+        }
+
+        async function initOwnerDashboardHeader() {
+            const labelEl = document.getElementById('dashboard-header-label');
+            if (!labelEl) return;
+
+            const cachedName = readCachedUserSession();
+            if (cachedName) {
+                labelEl.textContent = cachedName;
+                return;
+            }
+
+            const token = getStoredAccessToken();
+            if (token) {
+                try {
+                    const response = await fetch('/api/profile', {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+
+                    if (response.ok) {
+                        const profile = await response.json();
+                        const profileName = profile.username || profile.displayName || resolveSessionDisplayName(profile);
+                        if (profileName) {
+                            labelEl.textContent = profileName;
+                            localStorage.setItem('apex_user', JSON.stringify({
+                                email: profile.email,
+                                username: profile.username || profileName,
+                                role: profile.role
+                            }));
+                            return;
+                        }
+                    }
+                } catch (_) {}
+            }
+
+            labelEl.textContent = 'OWNER PANEL';
+        }
+
+        document.addEventListener('DOMContentLoaded', initOwnerDashboardHeader);
+    </script>
 </body>
 </html>
