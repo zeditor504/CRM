@@ -81,6 +81,18 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'login.html'));
 });
 
+app.get('/owner.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'owner.html'));
+});
+
+app.get('/manager.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'manager.html'));
+});
+
+app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 app.use(express.static(path.join(__dirname)));
 
 const PORT = process.env.PORT || 3000;
