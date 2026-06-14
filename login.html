@@ -65,6 +65,8 @@
     </div>
     <script src="apex-core.js"></script>
     <script>
+        console.log('Current Session Role:', localStorage.getItem('userRole'));
+
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -99,7 +101,9 @@
                     throw new Error(data.error || 'Authentication failed');
                 }
 
-                const role = data.role;
+                localStorage.setItem('userRole', data.role.toUpperCase());
+
+                const role = data.role.toUpperCase();
                 console.log('[LOGIN] Routing user with role:', role);
 
                 if (role === 'EXECUTIVE' || role === 'ADMINISTRATOR' || role === 'OWNER') {

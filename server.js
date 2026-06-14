@@ -13,6 +13,7 @@ const io = new Server(server, { cors: { origin: '*' } });
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '.')));
 
 const prisma = new PrismaClient();
 
@@ -76,12 +77,23 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => console.log('Client disconnected'));
 });
 
-// --- STATIC FILES & ROOT ROUTE ---
+// --- ROOT ROUTE ---
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'login.html'));
 });
 
-app.use(express.static(path.join(__dirname)));
+// --- DYNAMIC HTML FALLBACK (serves any *.html in project root) ---
+app.get('/:page.html', (req, res, next) => {
+    const filePath = path.join(__dirname, `${req.params.page}.html`);
+    res.sendFile(filePath, (err) => {
+        if (err) next();
+    });
+});
+
+// --- ERROR HANDLERS ---
+app.use((req, res) => {
+    res.status(404).send(`Cannot GET ${req.originalUrl}`);
+});
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Apex Backend running on port ${PORT}`));
